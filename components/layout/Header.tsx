@@ -3,11 +3,9 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Search, Phone, ChevronRight, X, Menu, ShoppingBag, User } from "lucide-react";
+import { Search, ChevronRight, X, Menu, User } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useCartStore } from "@/stores/cartStore";
 import { navigationData, Category, Subcategory } from "@/lib/navigation";
-import { CartDrawer } from "@/components/cart/CartDrawer";
 
 export function Header() {
   const [activeCategory, setActiveCategory] = useState<Category | null>(null);
@@ -16,8 +14,6 @@ export function Header() {
   const [isHovered, setIsHovered] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
   const pathname = usePathname();
-  const { openCart, getItemCount } = useCartStore();
-  const itemCount = getItemCount();
 
   // Check if we're on a product page (pattern: /[category]/[product])
   const isProductPage = pathname?.split("/").filter(Boolean).length === 2 && 
@@ -136,67 +132,35 @@ export function Header() {
               <Menu className="w-5 h-5" strokeWidth={1.5} />
             </button>
 
-            {/* Right icons - Different layout for product pages vs homepage */}
+            {/* Right icons - Search, User, Enquire (NO CART) */}
             <div className="absolute right-4 flex items-center gap-3 flex-shrink-0">
-              {isProductPage ? (
-                <>
-                  {/* Product Page: Phone and Enquire */}
-                  <a
-                    href="tel:+442033704057"
-                    className={`text-[11px] tracking-[0.05em] transition-colors ${
-                      showSolidHeader ? "text-primary-black hover:opacity-60" : "text-white hover:opacity-70"
-                    }`}
-                  >
-                    +44 (0)20 3370 4057
-                  </a>
-                  <Link
-                    href="/contact"
-                    className={`text-[11px] tracking-[0.1em] uppercase transition-colors ${
-                      showSolidHeader ? "text-primary-black hover:opacity-60" : "text-white hover:opacity-70"
-                    }`}
-                  >
-                    Enquire
-                  </Link>
-                </>
-              ) : (
-                <>
-                  {/* Homepage: Search, User, Cart */}
-                  <button
-                    className={`p-2 transition-colors duration-300 ${
-                      showSolidHeader ? "text-primary-black hover:opacity-60" : "text-white hover:opacity-70"
-                    }`}
-                    aria-label="Search"
-                  >
-                    <Search className="w-5 h-5" strokeWidth={1.5} />
-                  </button>
-                  <button
-                    className={`p-2 transition-colors duration-300 hidden sm:block ${
-                      showSolidHeader ? "text-primary-black hover:opacity-60" : "text-white hover:opacity-70"
-                    }`}
-                    aria-label="Account"
-                  >
-                    <User className="w-5 h-5" strokeWidth={1.5} />
-                  </button>
-                  <button
-                    onClick={openCart}
-                    className={`p-2 transition-colors duration-300 relative ${
-                      showSolidHeader ? "text-primary-black hover:opacity-60" : "text-white hover:opacity-70"
-                    }`}
-                    aria-label="Shopping cart"
-                  >
-                    <ShoppingBag className="w-5 h-5" strokeWidth={1.5} />
-                    {itemCount > 0 && (
-                      <span className={`absolute -top-1 -right-1 w-4 h-4 rounded-full flex items-center justify-center text-[10px] ${
-                        showSolidHeader 
-                          ? "bg-primary-black text-white" 
-                          : "bg-white/20 backdrop-blur-sm text-white"
-                      }`}>
-                        {itemCount > 9 ? "9+" : itemCount}
-                      </span>
-                    )}
-                  </button>
-                </>
-              )}
+              <button
+                className={`p-2 transition-colors duration-300 ${
+                  showSolidHeader ? "text-primary-black hover:opacity-60" : "text-white hover:opacity-70"
+                }`}
+                aria-label="Search"
+              >
+                <Search className="w-5 h-5" strokeWidth={1.5} />
+              </button>
+              <button
+                className={`p-2 transition-colors duration-300 hidden sm:block ${
+                  showSolidHeader ? "text-primary-black hover:opacity-60" : "text-white hover:opacity-70"
+                }`}
+                aria-label="Account"
+              >
+                <User className="w-5 h-5" strokeWidth={1.5} />
+              </button>
+              {/* Enquire button instead of cart */}
+              <Link
+                href="/contact"
+                className={`hidden sm:block text-[11px] tracking-[0.1em] uppercase px-4 py-2 border transition-colors duration-300 ${
+                  showSolidHeader
+                    ? "text-primary-black border-primary-black hover:bg-primary-black hover:text-white"
+                    : "text-white border-white hover:bg-white hover:text-primary-black"
+                }`}
+              >
+                Enquire
+              </Link>
             </div>
           </div>
         </nav>
@@ -333,8 +297,6 @@ export function Header() {
           />
         )}
       </AnimatePresence>
-
-      <CartDrawer />
     </>
   );
 }
