@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Search, Phone, ChevronRight, X, Menu, ShoppingBag, User } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCartStore } from "@/stores/cartStore";
@@ -14,8 +15,17 @@ export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
+  const pathname = usePathname();
   const { openCart, getItemCount } = useCartStore();
   const itemCount = getItemCount();
+
+  // Check if we're on a product page (pattern: /[category]/[product])
+  const isProductPage = pathname?.split("/").filter(Boolean).length === 2 && 
+    pathname !== "/" && 
+    !pathname.startsWith("/about") && 
+    !pathname.startsWith("/contact") && 
+    !pathname.startsWith("/projects") && 
+    !pathname.startsWith("/trade");
 
   // Scroll detection
   useEffect(() => {
@@ -74,68 +84,122 @@ export function Header() {
             : "bg-transparent"
         }`}
       >
-        {/* Top Bar */}
-        <div className="border-b border-light-grey/50">
-          <div className="max-w-[1600px] mx-auto px-6 py-2 flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <button
-                className={`flex items-center gap-2 text-[11px] tracking-[0.1em] uppercase transition-colors ${
-                  showSolidHeader ? "text-primary-black" : "text-white"
-                }`}
-              >
-                <Search className="w-4 h-4" strokeWidth={1.5} />
-                <span>Search</span>
-              </button>
-              <a
-                href="tel:+442033704057"
-                className={`text-[11px] tracking-[0.05em] transition-colors ${
-                  showSolidHeader ? "text-primary-black" : "text-white"
-                }`}
-              >
-                +44 (0)20 3370 4057
-              </a>
-            </div>
-
-            {/* Logo */}
-            <Link href="/" className="absolute left-1/2 -translate-x-1/2">
-              <span
-                className={`text-xl tracking-[0.3em] font-display uppercase font-light transition-colors ${
-                  showSolidHeader ? "text-primary-black" : "text-white"
-                }`}
-              >
-                HOUSE OF CLARENCE
-              </span>
+        {/* Main Navigation Bar */}
+        <nav>
+          <div className="flex items-center justify-between h-14 px-8 relative">
+            {/* Logo - Left-aligned on desktop, centered on mobile */}
+            <Link
+              href="/"
+              className={`flex-shrink-0 lg:absolute lg:left-1/2 lg:-translate-x-1/2 text-sm tracking-[0.3em] font-display uppercase font-light transition-colors duration-300 ${
+                showSolidHeader ? "text-primary-black" : "text-white"
+              }`}
+              onClick={closeDropdown}
+            >
+              HOUSE OF CLARENCE
             </Link>
 
-            {/* Right */}
-            <div className="flex items-center gap-4">
-              <Link
-                href="/contact"
-                className={`text-[11px] tracking-[0.1em] uppercase transition-colors ${
-                  showSolidHeader ? "text-primary-black" : "text-white"
-                }`}
-              >
-                Enquire
-              </Link>
-              <button
-                onClick={openCart}
-                className={`p-2 transition-colors relative ${
-                  showSolidHeader ? "text-primary-black hover:opacity-60" : "text-white hover:opacity-70"
-                }`}
-                aria-label="Shopping cart"
-              >
-                <ShoppingBag className="w-5 h-5" strokeWidth={1.5} />
-                {itemCount > 0 && (
-                  <span className={`absolute -top-1 -right-1 w-4 h-4 text-white text-[10px] rounded-full flex items-center justify-center ${
-                    showSolidHeader ? "bg-primary-black" : "bg-white/20 backdrop-blur-sm"
-                  }`}>
-                    {itemCount > 9 ? "9+" : itemCount}
-                  </span>
-                )}
-              </button>
+            {/* Desktop Navigation */}
+            <ul className="hidden lg:flex items-center justify-center flex-grow overflow-hidden whitespace-nowrap">
+              {navigationData.map((category) => (
+                <li key={category.slug} className="flex-shrink-0">
+                  <button
+                    onClick={() => handleCategoryClick(category)}
+                    className={`relative text-[9px] xl:text-[10px] tracking-[0.05em] uppercase py-4 px-1 transition-colors duration-300 ${
+                      showSolidHeader
+                        ? activeCategory?.slug === category.slug
+                          ? "text-primary-black"
+                          : "text-primary-black hover:opacity-60"
+                        : activeCategory?.slug === category.slug
+                          ? "text-white"
+                          : "text-white hover:opacity-70"
+                    }`}
+                  >
+                    {category.name.toUpperCase()}
+                    {/* Active underline */}
+                    {activeCategory?.slug === category.slug && (
+                      <span className={`absolute bottom-3 left-0 right-0 h-[2px] ${
+                        showSolidHeader ? "bg-primary-black" : "bg-white"
+                      }`} />
+                    )}
+                  </button>
+                </li>
+              ))}
+            </ul>
+
+            {/* Mobile hamburger */}
+            <button
+              className={`lg:hidden absolute left-4 p-2 transition-colors duration-300 ${
+                showSolidHeader ? "text-primary-black" : "text-white"
+              }`}
+              aria-label="Open menu"
+            >
+              <Menu className="w-5 h-5" strokeWidth={1.5} />
+            </button>
+
+            {/* Right icons - Different layout for product pages vs homepage */}
+            <div className="absolute right-4 flex items-center gap-3 flex-shrink-0">
+              {isProductPage ? (
+                <>
+                  {/* Product Page: Phone and Enquire */}
+                  <a
+                    href="tel:+442033704057"
+                    className={`text-[11px] tracking-[0.05em] transition-colors ${
+                      showSolidHeader ? "text-primary-black hover:opacity-60" : "text-white hover:opacity-70"
+                    }`}
+                  >
+                    +44 (0)20 3370 4057
+                  </a>
+                  <Link
+                    href="/contact"
+                    className={`text-[11px] tracking-[0.1em] uppercase transition-colors ${
+                      showSolidHeader ? "text-primary-black hover:opacity-60" : "text-white hover:opacity-70"
+                    }`}
+                  >
+                    Enquire
+                  </Link>
+                </>
+              ) : (
+                <>
+                  {/* Homepage: Search, User, Cart */}
+                  <button
+                    className={`p-2 transition-colors duration-300 ${
+                      showSolidHeader ? "text-primary-black hover:opacity-60" : "text-white hover:opacity-70"
+                    }`}
+                    aria-label="Search"
+                  >
+                    <Search className="w-5 h-5" strokeWidth={1.5} />
+                  </button>
+                  <button
+                    className={`p-2 transition-colors duration-300 hidden sm:block ${
+                      showSolidHeader ? "text-primary-black hover:opacity-60" : "text-white hover:opacity-70"
+                    }`}
+                    aria-label="Account"
+                  >
+                    <User className="w-5 h-5" strokeWidth={1.5} />
+                  </button>
+                  <button
+                    onClick={openCart}
+                    className={`p-2 transition-colors duration-300 relative ${
+                      showSolidHeader ? "text-primary-black hover:opacity-60" : "text-white hover:opacity-70"
+                    }`}
+                    aria-label="Shopping cart"
+                  >
+                    <ShoppingBag className="w-5 h-5" strokeWidth={1.5} />
+                    {itemCount > 0 && (
+                      <span className={`absolute -top-1 -right-1 w-4 h-4 rounded-full flex items-center justify-center text-[10px] ${
+                        showSolidHeader 
+                          ? "bg-primary-black text-white" 
+                          : "bg-white/20 backdrop-blur-sm text-white"
+                      }`}>
+                        {itemCount > 9 ? "9+" : itemCount}
+                      </span>
+                    )}
+                  </button>
+                </>
+              )}
             </div>
           </div>
-        </div>
+        </nav>
 
         {/* Main Navigation */}
         <nav className="border-b border-light-grey/30">
