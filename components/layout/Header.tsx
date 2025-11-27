@@ -109,22 +109,24 @@ export function Header() {
             : "bg-transparent border-white/30"
         }`}
       >
-        {/* Top Row - Logo centered with icons on right */}
-        <div className="relative flex items-center justify-center h-14 px-8">
-          {/* Mobile hamburger - Left */}
-          <button
-            className={`lg:hidden absolute left-6 p-2 transition-colors duration-300 ${
-              showSolidHeader ? "text-primary-black" : "text-white"
-            }`}
-            aria-label="Open menu"
-          >
-            <Menu className="w-5 h-5" strokeWidth={1.5} />
-          </button>
+        {/* Top Row - Logo centered with icons on sides */}
+        <div className="flex items-center justify-between h-12 md:h-14 px-4 md:px-8">
+          {/* Left - Mobile hamburger */}
+          <div className="flex items-center w-20 md:w-24">
+            <button
+              className={`lg:hidden p-2 -ml-2 transition-colors duration-300 ${
+                showSolidHeader ? "text-primary-black" : "text-white"
+              }`}
+              aria-label="Open menu"
+            >
+              <Menu className="w-5 h-5" strokeWidth={1.5} />
+            </button>
+          </div>
 
-          {/* Logo - Centered, larger */}
+          {/* Logo - Centered */}
           <Link
             href="/"
-            className={`text-xl md:text-2xl tracking-[0.35em] font-display uppercase font-light transition-colors duration-300 ${
+            className={`text-[13px] md:text-xl lg:text-2xl tracking-[0.2em] md:tracking-[0.35em] font-display uppercase font-light transition-colors duration-300 text-center ${
               showSolidHeader ? "text-primary-black" : "text-white"
             }`}
             onClick={closeDropdown}
@@ -133,9 +135,9 @@ export function Header() {
           </Link>
 
           {/* Right icons - Search and Selection */}
-          <div className="absolute right-6 flex items-center gap-1">
+          <div className="flex items-center justify-end gap-0 md:gap-1 w-20 md:w-24">
             <button
-              className={`p-2 transition-colors duration-300 ${
+              className={`hidden md:block p-2 transition-colors duration-300 ${
                 showSolidHeader ? "text-primary-black hover:opacity-60" : "text-white hover:opacity-70"
               }`}
               aria-label="Search"
@@ -146,14 +148,14 @@ export function Header() {
             {/* Selection Icon */}
             <button
               onClick={openSelection}
-              className={`p-2 transition-colors duration-300 relative ${
+              className={`p-2 -mr-2 md:mr-0 transition-colors duration-300 relative ${
                 showSolidHeader ? "text-primary-black hover:opacity-60" : "text-white hover:opacity-70"
               }`}
               aria-label="Your selection"
             >
               <ClipboardList className="w-5 h-5" strokeWidth={1.5} />
               {selectionCount > 0 && (
-                <span className={`absolute -top-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-medium ${
+                <span className={`absolute -top-0.5 -right-0.5 md:-top-1 md:-right-1 w-4 h-4 md:w-5 md:h-5 rounded-full flex items-center justify-center text-[9px] md:text-[10px] font-medium ${
                   showSolidHeader 
                     ? "bg-primary-black text-white" 
                     : "bg-white text-primary-black"
