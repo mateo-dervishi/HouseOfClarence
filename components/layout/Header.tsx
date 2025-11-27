@@ -7,11 +7,6 @@ import { Search, ChevronRight, X, Menu, User } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { navigationData, Category, Subcategory } from "@/lib/navigation";
 
-// Type guard to ensure category has slug property
-const isCategory = (item: Category): item is Category => {
-  return 'slug' in item && typeof item.slug === 'string';
-};
-
 export function Header() {
   const [activeCategory, setActiveCategory] = useState<Category | null>(null);
   const [hoveredSubcategory, setHoveredSubcategory] = useState<Subcategory | null>(null);
