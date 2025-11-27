@@ -31,8 +31,8 @@ export default function HomePage() {
       <section className="h-screen relative flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image
-            src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1920&h=1080&fit=crop"
-            alt="Luxury bathroom"
+            src="/images/sloane-12.webp"
+            alt="House of Clarence"
             fill
             className="object-cover"
             priority
