@@ -206,7 +206,7 @@ export function Header() {
                 {/* LEFT: Subcategories */}
                 <div className="w-64">
                   <ul className="space-y-4">
-                    {activeCategory.subcategories.map((sub) => (
+                    {activeCategory.subcategories.map((sub: Subcategory) => (
                       <li key={sub.slug}>
                         <button
                           onMouseEnter={() => setHoveredSubcategory(sub)}
@@ -245,7 +245,7 @@ export function Header() {
                         transition={{ duration: 0.15 }}
                       >
                         <ul className="space-y-3">
-                          {hoveredSubcategory.types.map((type) => (
+                          {hoveredSubcategory.types.map((type: { name: string; slug: string }) => (
                             <li key={type.slug}>
                               <Link
                                 href={`/${activeCategory.slug}/${hoveredSubcategory.slug}/${type.slug}`}
