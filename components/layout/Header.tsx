@@ -94,24 +94,24 @@ export function Header() {
       >
         {/* Main Navigation Bar */}
         <nav className="border-b border-light-grey/50">
-          <div className="flex items-center justify-between h-14 px-8 relative">
-            {/* Logo - Centered */}
+          <div className="flex items-center justify-between h-14 px-4 lg:px-6 xl:px-8 relative overflow-hidden">
+            {/* Logo - Left side on desktop */}
             <Link
               href="/"
-              className="absolute left-1/2 -translate-x-1/2 lg:relative lg:left-0 lg:translate-x-0"
+              className="flex-shrink-0 z-10"
             >
-              <span className="text-sm tracking-[0.3em] font-display uppercase font-light text-primary-black">
+              <span className="text-sm tracking-[0.3em] font-display uppercase font-light text-primary-black whitespace-nowrap">
                 HOUSE OF CLARENCE
               </span>
             </Link>
 
-            {/* Desktop Navigation */}
-            <ul className="hidden lg:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
+            {/* Desktop Navigation - Single line, smaller text, centered */}
+            <ul className="hidden lg:flex items-center gap-2 xl:gap-3 absolute left-1/2 -translate-x-1/2 whitespace-nowrap overflow-hidden">
               {navigationData.map((category) => (
-                <li key={category.name}>
+                <li key={category.name} className="flex-shrink-0">
                   <button
                     onClick={() => handleCategoryClick(category.name)}
-                    className={`relative text-[13px] tracking-[0.05em] uppercase py-4 transition-colors ${
+                    className={`relative text-[9px] xl:text-[10px] tracking-[0.05em] uppercase py-4 px-1 transition-colors whitespace-nowrap ${
                       activeDropdown === category.name
                         ? "text-primary-black"
                         : "text-primary-black hover:opacity-60"
@@ -120,17 +120,17 @@ export function Header() {
                     {category.name}
                     {/* Active underline */}
                     {activeDropdown === category.name && (
-                      <span className="absolute bottom-3 left-0 right-0 h-[2px] bg-primary-black" />
+                      <span className="absolute bottom-3 left-1 right-1 h-[2px] bg-primary-black" />
                     )}
                   </button>
                 </li>
               ))}
               {/* Additional static links */}
               {staticLinks.map((link) => (
-                <li key={link.name}>
+                <li key={link.name} className="flex-shrink-0">
                   <Link
                     href={link.href}
-                    className="text-[13px] tracking-[0.05em] uppercase py-4 hover:opacity-60 transition-opacity text-primary-black"
+                    className="text-[9px] xl:text-[10px] tracking-[0.05em] uppercase py-4 px-1 hover:opacity-60 transition-opacity text-primary-black whitespace-nowrap"
                   >
                     {link.name}
                   </Link>
