@@ -38,6 +38,8 @@ export default function ProductPage({ params }: ProductPageProps) {
 
   // Transform product data for ProductInfo component
   const productInfoData = {
+    id: product.id,
+    slug: product.slug,
     name: product.name,
     sku: product.sku,
     price: product.pricing.price,
@@ -45,10 +47,11 @@ export default function ProductPage({ params }: ProductPageProps) {
     salePrice: product.pricing.salePrice,
     salePriceExVat: product.pricing.salePriceExVat,
     colour: product.specifications.colour,
+    image: product.images[0]?.url || "",
     variants: product.variants.map((v) => ({
       slug: v.id,
       colourName: v.attributes.colour || product.specifications.colour,
-      colourHex: "#C9A962",
+      colourHex: v.attributes.colourHex || "#C9A962",
     })),
     description: product.description,
     specifications: [

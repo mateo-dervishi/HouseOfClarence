@@ -3,9 +3,11 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Search, ChevronRight, X, Menu, User } from "lucide-react";
+import { Search, ChevronRight, X, Menu, ClipboardList } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { navigationData, Category, Subcategory } from "@/lib/navigation";
+import { useSelectionStore } from "@/stores/selectionStore";
+import { SelectionDrawer } from "@/components/selection/SelectionDrawer";
 
 export function Header() {
   const [activeCategory, setActiveCategory] = useState<Category | null>(null);
@@ -14,6 +16,9 @@ export function Header() {
   const [isHovered, setIsHovered] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
   const pathname = usePathname();
+  
+  const { openSelection, getItemCount } = useSelectionStore();
+  const selectionCount = getItemCount();
 
   // Check if we're on a product page (pattern: /[category]/[product])
   const isProductPage = pathname?.split("/").filter(Boolean).length === 2 && 
@@ -136,8 +141,8 @@ export function Header() {
               <Menu className="w-5 h-5" strokeWidth={1.5} />
             </button>
 
-            {/* Right icons - Search only */}
-            <div className="hidden lg:flex items-center flex-shrink-0">
+            {/* Right icons - Search and Selection */}
+            <div className="hidden lg:flex items-center gap-1 flex-shrink-0">
               <button
                 className={`p-2 transition-colors duration-300 ${
                   showSolidHeader ? "text-primary-black hover:opacity-60" : "text-white hover:opacity-70"
@@ -145,6 +150,26 @@ export function Header() {
                 aria-label="Search"
               >
                 <Search className="w-5 h-5" strokeWidth={1.5} />
+              </button>
+              
+              {/* Selection Icon */}
+              <button
+                onClick={openSelection}
+                className={`p-2 transition-colors duration-300 relative ${
+                  showSolidHeader ? "text-primary-black hover:opacity-60" : "text-white hover:opacity-70"
+                }`}
+                aria-label="Your selection"
+              >
+                <ClipboardList className="w-5 h-5" strokeWidth={1.5} />
+                {selectionCount > 0 && (
+                  <span className={`absolute -top-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-medium ${
+                    showSolidHeader 
+                      ? "bg-primary-black text-white" 
+                      : "bg-white text-primary-black"
+                  }`}>
+                    {selectionCount > 9 ? "9+" : selectionCount}
+                  </span>
+                )}
               </button>
             </div>
           </div>
@@ -258,6 +283,9 @@ export function Header() {
           />
         )}
       </AnimatePresence>
+
+      {/* Selection Drawer */}
+      <SelectionDrawer />
     </>
   );
 }

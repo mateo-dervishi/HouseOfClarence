@@ -5,6 +5,8 @@ import Link from "next/link";
 import { Product } from "@/types/product";
 import { formatPrice } from "@/lib/utils";
 import { useState } from "react";
+import { Plus, Check } from "lucide-react";
+import { useSelectionStore } from "@/stores/selectionStore";
 
 interface ProductCardProps {
   product: Product;
@@ -13,6 +15,10 @@ interface ProductCardProps {
 export function ProductCard({ product }: ProductCardProps) {
   const [imageError, setImageError] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [justAdded, setJustAdded] = useState(false);
+
+  const { addItem, isInSelection } = useSelectionStore();
+  const isSelected = isInSelection(product.id);
 
   const displayPrice = product.pricing.salePrice || product.pricing.price;
   const displayPriceExVat = product.pricing.salePriceExVat || product.pricing.priceExVat;
@@ -31,6 +37,25 @@ export function ProductCard({ product }: ProductCardProps) {
     }));
 
   const optionsCount = product.variants.length;
+
+  const handleAddToSelection = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    addItem({
+      id: product.id,
+      slug: product.slug,
+      name: product.name,
+      price: displayPrice,
+      priceExVat: displayPriceExVat,
+      image: primaryImage?.url || "",
+      colour: product.specifications?.colour,
+      category: product.category.slug,
+    });
+    
+    setJustAdded(true);
+    setTimeout(() => setJustAdded(false), 1500);
+  };
 
   return (
     <article className="group">
@@ -84,6 +109,27 @@ export function ProductCard({ product }: ProductCardProps) {
               SALE
             </span>
           )}
+
+          {/* Quick Add Button - Shows on hover */}
+          <button
+            onClick={handleAddToSelection}
+            className={`absolute bottom-4 right-4 w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 ${
+              isHovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
+            } ${
+              justAdded
+                ? "bg-green-600 text-white"
+                : isSelected
+                ? "bg-primary-black text-white"
+                : "bg-white text-primary-black hover:bg-primary-black hover:text-white"
+            }`}
+            aria-label="Add to selection"
+          >
+            {justAdded ? (
+              <Check className="w-4 h-4" />
+            ) : (
+              <Plus className="w-4 h-4" />
+            )}
+          </button>
         </div>
 
         {/* Product Info - Name left, Price right */}
