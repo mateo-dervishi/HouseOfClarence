@@ -41,14 +41,16 @@ const staticLinks = [
 
 export function Header() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const [hasScrolled, setHasScrolled] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
   const { openCart, getItemCount } = useCartStore();
   const itemCount = getItemCount();
 
+  // Track scroll position - header becomes solid after scrolling
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      setHasScrolled(window.scrollY > 50);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -84,12 +86,19 @@ export function Header() {
 
   const activeCategory = navigationData.find((cat) => cat.name === activeDropdown);
 
+  // Determine header state: transparent with white text OR solid with black text
+  const isTransparent = !isHovered && !hasScrolled && !activeDropdown;
+
   return (
     <>
       <header
         ref={headerRef}
-        className={`fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md transition-all duration-300 ${
-          isScrolled ? "shadow-sm bg-white/95" : ""
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          isTransparent
+            ? "bg-transparent"
+            : "bg-white/90 backdrop-blur-md border-b border-light-grey/50"
         }`}
       >
         {/* Main Navigation Bar */}
@@ -100,7 +109,9 @@ export function Header() {
               href="/"
               className="flex-shrink-0 z-10"
             >
-              <span className="text-sm tracking-[0.3em] font-display uppercase font-light text-primary-black whitespace-nowrap">
+              <span className={`text-sm tracking-[0.3em] font-display uppercase font-light whitespace-nowrap transition-colors duration-300 ${
+                isTransparent ? "text-white" : "text-primary-black"
+              }`}>
                 HOUSE OF CLARENCE
               </span>
             </Link>
@@ -111,15 +122,17 @@ export function Header() {
                 <li key={category.name} className="flex-shrink-0">
                   <button
                     onClick={() => handleCategoryClick(category.name)}
-                    className={`relative text-[9px] xl:text-[10px] tracking-[0.05em] uppercase py-4 px-1 transition-colors whitespace-nowrap ${
-                      activeDropdown === category.name
-                        ? "text-primary-black"
-                        : "text-primary-black hover:opacity-60"
+                    className={`relative text-[9px] xl:text-[10px] tracking-[0.05em] uppercase py-4 px-1 transition-colors duration-300 whitespace-nowrap ${
+                      isTransparent
+                        ? "text-white hover:opacity-70"
+                        : activeDropdown === category.name
+                          ? "text-primary-black"
+                          : "text-primary-black hover:opacity-60"
                     }`}
                   >
                     {category.name}
                     {/* Active underline */}
-                    {activeDropdown === category.name && (
+                    {activeDropdown === category.name && !isTransparent && (
                       <span className="absolute bottom-3 left-1 right-1 h-[2px] bg-primary-black" />
                     )}
                   </button>
@@ -130,7 +143,11 @@ export function Header() {
                 <li key={link.name} className="flex-shrink-0">
                   <Link
                     href={link.href}
-                    className="text-[9px] xl:text-[10px] tracking-[0.05em] uppercase py-4 px-1 hover:opacity-60 transition-opacity text-primary-black whitespace-nowrap"
+                    className={`text-[9px] xl:text-[10px] tracking-[0.05em] uppercase py-4 px-1 transition-colors duration-300 whitespace-nowrap ${
+                      isTransparent
+                        ? "text-white hover:opacity-70"
+                        : "text-primary-black hover:opacity-60"
+                    }`}
                   >
                     {link.name}
                   </Link>
@@ -139,7 +156,12 @@ export function Header() {
             </ul>
 
             {/* Mobile hamburger */}
-            <button className="lg:hidden absolute left-4 p-2" aria-label="Open menu">
+            <button
+              className={`lg:hidden absolute left-4 p-2 transition-colors duration-300 ${
+                isTransparent ? "text-white" : "text-primary-black"
+              }`}
+              aria-label="Open menu"
+            >
               <Menu className="w-5 h-5" strokeWidth={1.5} />
             </button>
 
@@ -148,7 +170,9 @@ export function Header() {
               href="/"
               className="lg:hidden absolute left-1/2 -translate-x-1/2"
             >
-              <span className="text-xs tracking-[0.3em] font-display uppercase font-light">
+              <span className={`text-xs tracking-[0.3em] font-display uppercase font-light transition-colors duration-300 ${
+                isTransparent ? "text-white" : "text-primary-black"
+              }`}>
                 HOUSE OF CLARENCE
               </span>
             </Link>
@@ -156,25 +180,33 @@ export function Header() {
             {/* Right icons */}
             <div className="absolute right-4 flex items-center gap-3">
               <button
-                className="p-2 hover:opacity-60 transition-opacity"
+                className={`p-2 transition-colors duration-300 ${
+                  isTransparent ? "text-white hover:opacity-70" : "text-primary-black hover:opacity-60"
+                }`}
                 aria-label="Search"
               >
                 <Search className="w-5 h-5" strokeWidth={1.5} />
               </button>
               <button
-                className="p-2 hover:opacity-60 transition-opacity hidden sm:block"
+                className={`p-2 transition-colors duration-300 hidden sm:block ${
+                  isTransparent ? "text-white hover:opacity-70" : "text-primary-black hover:opacity-60"
+                }`}
                 aria-label="Account"
               >
                 <User className="w-5 h-5" strokeWidth={1.5} />
               </button>
               <button
                 onClick={openCart}
-                className="p-2 hover:opacity-60 transition-opacity relative"
+                className={`p-2 transition-colors duration-300 relative ${
+                  isTransparent ? "text-white hover:opacity-70" : "text-primary-black hover:opacity-60"
+                }`}
                 aria-label="Shopping cart"
               >
                 <ShoppingBag className="w-5 h-5" strokeWidth={1.5} />
                 {itemCount > 0 && (
-                  <span className="absolute -top-1 -right-1 w-4 h-4 bg-primary-black text-white text-[10px] rounded-full flex items-center justify-center">
+                  <span className={`absolute -top-1 -right-1 w-4 h-4 text-white text-[10px] rounded-full flex items-center justify-center ${
+                    isTransparent ? "bg-white/20 backdrop-blur-sm" : "bg-primary-black"
+                  }`}>
                     {itemCount > 9 ? "9+" : itemCount}
                   </span>
                 )}
@@ -191,7 +223,7 @@ export function Header() {
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3, ease: [0.32, 0.72, 0, 1] }}
-              className="absolute top-full left-0 right-0 bg-white/95 backdrop-blur-md border-b border-light-grey/50 overflow-hidden z-50"
+              className="absolute top-full left-0 right-0 bg-white border-b border-light-grey overflow-hidden z-50"
             >
               <div className="max-w-[1400px] mx-auto px-8 py-12">
                 <div className="flex justify-between relative">
