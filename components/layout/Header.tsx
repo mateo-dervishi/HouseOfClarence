@@ -94,9 +94,19 @@ export function Header() {
       >
         {/* Main Navigation Bar */}
         <nav className="border-b border-light-grey/50">
-          <div className="flex items-center justify-center h-14 px-8 relative">
+          <div className="flex items-center justify-between h-14 px-8 relative">
+            {/* Logo - Centered */}
+            <Link
+              href="/"
+              className="absolute left-1/2 -translate-x-1/2 lg:relative lg:left-0 lg:translate-x-0"
+            >
+              <span className="text-sm tracking-[0.3em] font-display uppercase font-light text-primary-black">
+                HOUSE OF CLARENCE
+              </span>
+            </Link>
+
             {/* Desktop Navigation */}
-            <ul className="hidden lg:flex items-center gap-8">
+            <ul className="hidden lg:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
               {navigationData.map((category) => (
                 <li key={category.name}>
                   <button
