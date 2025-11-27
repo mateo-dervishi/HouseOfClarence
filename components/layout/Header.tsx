@@ -82,7 +82,7 @@ export function Header() {
       >
         {/* Main Navigation Bar */}
         <nav>
-          <div className="flex items-center h-14 px-8">
+          <div className="flex items-center justify-between h-14 px-8">
             {/* Logo - Left aligned */}
             <Link
               href="/"
@@ -94,8 +94,8 @@ export function Header() {
               HOUSE OF CLARENCE
             </Link>
 
-            {/* Desktop Navigation - Centered */}
-            <ul className="hidden lg:flex items-center justify-center flex-1 overflow-hidden whitespace-nowrap">
+            {/* Desktop Navigation - Categories in single row */}
+            <ul className="hidden lg:flex items-center gap-8 overflow-hidden whitespace-nowrap">
               {navigationData.map((category: Category) => {
                 const isActive = activeCategory?.slug === category.slug;
                 const textColor = showSolidHeader
@@ -110,12 +110,12 @@ export function Header() {
                   <li key={category.slug} className="flex-shrink-0">
                     <button
                       onClick={() => handleCategoryClick(category)}
-                      className={`relative text-[9px] xl:text-[10px] tracking-[0.05em] uppercase py-4 px-1 transition-colors duration-300 ${textColor}`}
+                      className={`relative text-[13px] tracking-[0.05em] uppercase py-4 transition-colors duration-300 ${textColor}`}
                     >
                       {category.name.toUpperCase()}
                       {/* Active underline */}
                       {isActive && (
-                        <span className={`absolute bottom-3 left-0 right-0 h-[2px] ${
+                        <span className={`absolute bottom-0 left-0 right-0 h-[2px] ${
                           showSolidHeader ? "bg-primary-black" : "bg-white"
                         }`} />
                       )}
@@ -127,7 +127,7 @@ export function Header() {
 
             {/* Mobile hamburger */}
             <button
-              className={`lg:hidden ml-auto p-2 transition-colors duration-300 ${
+              className={`lg:hidden p-2 transition-colors duration-300 ${
                 showSolidHeader ? "text-primary-black" : "text-white"
               }`}
               aria-label="Open menu"
@@ -167,30 +167,6 @@ export function Header() {
             </div>
           </div>
         </nav>
-
-        {/* Main Navigation */}
-        <nav className="border-b border-light-grey/30">
-          <div className="max-w-[1600px] mx-auto px-6">
-            <ul className="flex items-center justify-center gap-10 py-4">
-              {navigationData.map((category: Category) => (
-                <li key={category.slug}>
-                  <button
-                    onClick={() => handleCategoryClick(category)}
-                    className={`text-[12px] tracking-[0.15em] uppercase transition-all relative ${
-                      activeCategory?.slug === category.slug
-                        ? "text-primary-black border-b-2 border-primary-black pb-1"
-                        : showSolidHeader
-                        ? "text-warm-grey hover:text-primary-black"
-                        : "text-white hover:opacity-70"
-                    }`}
-                  >
-                    {category.name.toUpperCase()}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </nav>
       </header>
 
       {/* Dropdown Panel */}
@@ -201,7 +177,7 @@ export function Header() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="fixed top-[110px] left-0 right-0 z-40 bg-white shadow-lg border-t border-light-grey"
+            className="fixed top-14 left-0 right-0 z-40 bg-white shadow-lg border-t border-light-grey"
             onMouseLeave={closeDropdown}
           >
             <div className="max-w-[1200px] mx-auto px-12 py-10 relative">
@@ -295,7 +271,7 @@ export function Header() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/20 z-30 top-[110px]"
+            className="fixed inset-0 bg-black/20 z-30 top-14"
             onClick={closeDropdown}
           />
         )}
