@@ -10,17 +10,14 @@ import { Button } from "@/components/ui/button";
 
 interface ProductPageProps {
   params: {
-    category: string;
-    product: string;
+    slug: string;
   };
 }
 
 export default function ProductPage({ params }: ProductPageProps) {
   const router = useRouter();
 
-  const product = mockProducts.find(
-    (p) => p.slug === params.product && p.category.slug === params.category
-  );
+  const product = mockProducts.find((p) => p.slug === params.slug);
 
   if (!product) {
     return (
@@ -124,3 +121,4 @@ export default function ProductPage({ params }: ProductPageProps) {
     </main>
   );
 }
+

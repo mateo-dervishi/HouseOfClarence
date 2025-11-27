@@ -24,7 +24,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
   return (
     <article className="group">
-      <Link href={`/${product.category.slug}/${product.slug}`}>
+      <Link href={`/product/${product.slug}`}>
         {/* Image Container */}
         <div 
           className="aspect-square overflow-hidden bg-[#f5f5f5] relative mb-4"
