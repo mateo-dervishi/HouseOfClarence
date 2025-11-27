@@ -2,11 +2,46 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Search, ChevronRight, X, Menu, ClipboardList } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { navigationData, Category, Subcategory } from "@/lib/navigation";
 import { useSelectionStore } from "@/stores/selectionStore";
 import { SelectionDrawer } from "@/components/selection/SelectionDrawer";
+
+// Featured images for each category dropdown
+const categoryFeaturedImages: Record<string, { image: string; category: string; title: string; href: string }[]> = {
+  bathroom: [
+    { image: "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400&h=500&fit=crop", category: "BATHROOM", title: "NERO MARBLE BASIN", href: "/bathroom/basins" },
+    { image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400&h=500&fit=crop", category: "VANITY UNITS", title: "WALNUT WALL HUNG", href: "/bathroom/vanity-units" },
+    { image: "https://images.unsplash.com/photo-1620626011761-996317b8d101?w=400&h=500&fit=crop", category: "BRASSWARE", title: "BRUSHED BRASS TAP", href: "/bathroom/taps" },
+  ],
+  kitchen: [
+    { image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=500&fit=crop", category: "KITCHEN TAPS", title: "AGED BRONZE MIXER", href: "/kitchen/kitchen-taps" },
+    { image: "https://images.unsplash.com/photo-1556909172-54557c7e4fb7?w=400&h=500&fit=crop", category: "KITCHEN SINKS", title: "BELFAST CERAMIC", href: "/kitchen/kitchen-sinks" },
+    { image: "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=400&h=500&fit=crop", category: "HARDWARE", title: "BRUSHED NICKEL PULL", href: "/kitchen/kitchen-hardware" },
+  ],
+  furniture: [
+    { image: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&h=500&fit=crop", category: "LIVING ROOM", title: "VELVET SOFA EMERALD", href: "/furniture/living-room-furniture" },
+    { image: "https://images.unsplash.com/photo-1617806118233-18e1de247200?w=400&h=500&fit=crop", category: "DINING", title: "OAK DINING TABLE", href: "/furniture/dining-room-furniture" },
+    { image: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=400&h=500&fit=crop", category: "BEDROOM", title: "LINEN HEADBOARD", href: "/furniture/bedroom-furniture" },
+  ],
+  tiling: [
+    { image: "https://images.unsplash.com/photo-1615971677499-5467cbab01c0?w=400&h=500&fit=crop", category: "MARBLE TILES", title: "CALACATTA GOLD", href: "/tiling/marble-tiles" },
+    { image: "https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?w=400&h=500&fit=crop", category: "PORCELAIN", title: "TERRAZZO BIANCO", href: "/tiling/porcelain-tiles" },
+    { image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=500&fit=crop", category: "MOSAIC", title: "HERRINGBONE NERO", href: "/tiling/mosaic-tiles" },
+  ],
+  lighting: [
+    { image: "https://images.unsplash.com/photo-1524484485831-a92ffc0de03f?w=400&h=500&fit=crop", category: "PENDANT LIGHTS", title: "GLASS ORB BRASS", href: "/lighting/pendant-lights" },
+    { image: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=400&h=500&fit=crop", category: "WALL LIGHTS", title: "ART DECO SCONCE", href: "/lighting/wall-lights" },
+    { image: "https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?w=400&h=500&fit=crop", category: "FLOOR LAMPS", title: "MARBLE BASE LAMP", href: "/lighting/floor-lamps" },
+  ],
+  electrical: [
+    { image: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=400&h=500&fit=crop", category: "SWITCHES", title: "BRUSHED BRASS TOGGLE", href: "/electrical/switches" },
+    { image: "https://images.unsplash.com/photo-1545259741-2ea3ebf61fa3?w=400&h=500&fit=crop", category: "SOCKETS", title: "MATTE BLACK USB", href: "/electrical/sockets" },
+    { image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400&h=500&fit=crop", category: "DIMMERS", title: "CHROME DIMMER", href: "/electrical/switches" },
+  ],
+};
 
 export function Header() {
   const [activeCategory, setActiveCategory] = useState<Category | null>(null);
@@ -171,10 +206,10 @@ export function Header() {
             className="fixed top-[88px] left-0 right-0 z-40 bg-white shadow-lg border-t border-light-grey"
             onMouseLeave={closeDropdown}
           >
-            <div className="max-w-[1200px] mx-auto px-12 py-10 relative">
-              <div className="flex gap-20">
+            <div className="max-w-[1400px] mx-auto px-12 py-10 relative">
+              <div className="flex gap-12">
                 {/* LEFT: Subcategories */}
-                <div className="w-64">
+                <div className="w-56 flex-shrink-0">
                   <ul className="space-y-4">
                     {activeCategory.subcategories.map((sub: Subcategory) => (
                       <li key={sub.slug}>
@@ -203,8 +238,8 @@ export function Header() {
                   </ul>
                 </div>
 
-                {/* RIGHT: Types for hovered subcategory */}
-                <div className="flex-1">
+                {/* MIDDLE: Types for hovered subcategory */}
+                <div className="w-48 flex-shrink-0">
                   <AnimatePresence mode="wait">
                     {hoveredSubcategory && (
                       <motion.div
@@ -239,6 +274,36 @@ export function Header() {
                       </motion.div>
                     )}
                   </AnimatePresence>
+                </div>
+
+                {/* RIGHT: Featured Images */}
+                <div className="flex-1 flex gap-4 justify-end">
+                  {categoryFeaturedImages[activeCategory.slug]?.map((item, index) => (
+                    <Link
+                      key={index}
+                      href={item.href}
+                      onClick={closeDropdown}
+                      className="group relative w-[180px] flex-shrink-0"
+                    >
+                      <div className="aspect-[4/5] relative overflow-hidden bg-off-white">
+                        <Image
+                          src={item.image}
+                          alt={item.title}
+                          fill
+                          className="object-cover transition-transform duration-500 group-hover:scale-105"
+                          sizes="180px"
+                        />
+                      </div>
+                      <div className="mt-3">
+                        <p className="text-[10px] tracking-[0.15em] text-warm-grey uppercase">
+                          {item.category}
+                        </p>
+                        <p className="text-[12px] tracking-[0.1em] text-primary-black uppercase font-medium mt-1">
+                          {item.title}
+                        </p>
+                      </div>
+                    </Link>
+                  ))}
                 </div>
               </div>
 
