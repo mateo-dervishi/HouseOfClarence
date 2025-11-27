@@ -1,12 +1,11 @@
 "use client";
 
 import { useSelectionStore, SelectionItem } from "@/stores/selectionStore";
-import { X, Minus, Plus, Trash2, ClipboardList, Maximize2 } from "lucide-react";
+import { X, Minus, Plus, Trash2, ClipboardList, Maximize2, Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { formatPrice } from "@/lib/utils";
 import { useState } from "react";
 
 export function SelectionDrawer() {
@@ -48,7 +47,7 @@ export function SelectionDrawer() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <ClipboardList className="w-5 h-5" strokeWidth={1.5} />
-                    <h2 className="tracking-[0.15em] text-sm uppercase font-display">
+                    <h2 className="tracking-[0.15em] text-sm uppercase font-display text-primary-black">
                       Your Selection
                     </h2>
                     <span className="text-warm-grey text-sm">({itemCount})</span>
@@ -78,7 +77,7 @@ export function SelectionDrawer() {
               {items.length === 0 ? (
                 <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
                   <ClipboardList className="w-16 h-16 text-light-grey mb-4" strokeWidth={1} />
-                  <h3 className="text-lg tracking-[0.1em] uppercase mb-2">No Items Selected</h3>
+                  <h3 className="text-lg tracking-[0.1em] uppercase mb-2 text-primary-black">No Items Selected</h3>
                   <p className="text-warm-grey text-sm mb-6 max-w-xs">
                     Browse our collections and add items you&apos;re interested in to your selection.
                   </p>
@@ -159,7 +158,7 @@ export function SelectionDrawer() {
                                 <Link
                                   href={`/product/${item.slug}`}
                                   onClick={closeSelection}
-                                  className="text-[13px] tracking-[0.02em] leading-snug hover:opacity-70 transition-opacity line-clamp-2"
+                                  className="text-[13px] tracking-[0.02em] leading-snug hover:opacity-70 transition-opacity line-clamp-2 block text-primary-black"
                                 >
                                   {item.name}
                                 </Link>
@@ -170,11 +169,8 @@ export function SelectionDrawer() {
                                   </p>
                                 )}
                                 
-                                <p className="text-[13px] mt-2">
-                                  {formatPrice(item.price)}
-                                  <span className="text-[10px] text-warm-grey ml-1">
-                                    ({formatPrice(item.priceExVat)} ex VAT)
-                                  </span>
+                                <p className="text-[11px] text-warm-grey mt-1 capitalize">
+                                  {item.category}
                                 </p>
 
                                 {/* Quantity Controls */}
@@ -226,6 +222,11 @@ export function SelectionDrawer() {
                       </button>
                     </div>
 
+                    {/* Pricing Note */}
+                    <p className="text-[11px] text-warm-grey text-center">
+                      Pricing provided upon enquiry
+                    </p>
+
                     {/* Enquire Button */}
                     <button
                       onClick={() => {
@@ -234,7 +235,7 @@ export function SelectionDrawer() {
                       }}
                       className="w-full py-4 bg-primary-black text-white text-[13px] tracking-[0.15em] uppercase hover:bg-charcoal transition-colors"
                     >
-                      Enquire About Selection
+                      Request Quote
                     </button>
                     
                     {/* Call Button */}
@@ -280,6 +281,9 @@ function SelectionEnquiryPanel({
     lastName: "",
     email: "",
     phone: "",
+    countryCode: "+44",
+    projectType: "",
+    timeline: "",
     message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -289,15 +293,16 @@ function SelectionEnquiryPanel({
     e.preventDefault();
     setIsSubmitting(true);
     await new Promise((resolve) => setTimeout(resolve, 1500));
+    console.log("Selection Enquiry:", { formData, items, labels });
     setIsSubmitting(false);
     setIsSubmitted(true);
     setTimeout(() => {
       setIsSubmitted(false);
       onClose();
-    }, 2000);
+    }, 2500);
   };
 
-  // Group items by label for the summary
+  // Group items by label
   const groupedItems = labels.map((label) => ({
     label,
     items: items.filter((item) => item.labelId === label.id),
@@ -308,67 +313,73 @@ function SelectionEnquiryPanel({
     <AnimatePresence>
       {isOpen && (
         <>
+          {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/40 z-[60]"
+            className="fixed inset-0 bg-black/50 z-50"
             onClick={onClose}
           />
-
-          <motion.aside
+          
+          {/* Panel */}
+          <motion.div
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "tween", duration: 0.3, ease: [0.32, 0.72, 0, 1] }}
-            className="fixed right-0 top-0 h-full w-full max-w-lg bg-white z-[60] flex flex-col shadow-2xl overflow-hidden"
+            className="fixed right-0 top-0 h-full w-full max-w-lg bg-white z-50 flex flex-col shadow-2xl"
           >
-            <div className="flex items-center justify-between p-6 border-b border-light-grey">
-              <h2 className="text-xl tracking-[0.1em] uppercase font-light">
-                Enquire About Your Selection
+            {/* Header */}
+            <div className="p-6 border-b border-light-grey flex items-center justify-between">
+              <h2 className="text-lg tracking-[0.1em] uppercase font-light text-primary-black">
+                Request Quote
               </h2>
               <button onClick={onClose} className="p-2 hover:bg-off-white transition-colors rounded-full">
-                <X className="w-5 h-5" strokeWidth={1.5} />
+                <X className="w-5 h-5" />
               </button>
             </div>
 
+            {/* Content */}
             <div className="flex-1 overflow-y-auto p-6">
               {isSubmitted ? (
-                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center py-12">
-                  <div className="w-16 h-16 bg-primary-black rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="flex flex-col items-center justify-center h-full text-center"
+                >
+                  <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mb-4">
+                    <Check className="w-8 h-8 text-white" />
                   </div>
-                  <h3 className="text-xl tracking-[0.1em] uppercase mb-2">Thank You</h3>
-                  <p className="text-warm-grey text-sm">Our team will review your selection and be in touch shortly.</p>
+                  <h3 className="text-xl tracking-[0.1em] uppercase mb-2 text-primary-black">Enquiry Sent!</h3>
+                  <p className="text-warm-grey text-sm">
+                    Our team will review your selection and send you a personalised quote within 24 hours.
+                  </p>
                 </motion.div>
               ) : (
-                <>
-                  {/* Selected Items Summary - Grouped by Label */}
-                  <div className="mb-6 p-4 bg-off-white max-h-64 overflow-y-auto">
-                    <h3 className="text-[12px] tracking-[0.1em] uppercase text-warm-grey mb-3">
-                      Your Selected Items ({items.length})
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  {/* Selection Summary */}
+                  <div className="bg-off-white p-4 max-h-48 overflow-y-auto">
+                    <h3 className="text-[11px] tracking-[0.1em] uppercase text-warm-grey mb-3">
+                      Your Selection ({items.reduce((sum, i) => sum + i.quantity, 0)} items)
                     </h3>
                     
-                    {/* Grouped items */}
                     {groupedItems.map(({ label, items: labelItems }) => (
                       labelItems.length > 0 && (
-                        <div key={label.id} className="mb-4">
-                          <div className="flex items-center gap-2 mb-2">
+                        <div key={label.id} className="mb-3">
+                          <div className="flex items-center gap-2 mb-1">
                             <span
                               className="w-2 h-2 rounded-full"
                               style={{ backgroundColor: label.color }}
                             />
-                            <span className="text-[11px] tracking-[0.1em] uppercase font-medium">
+                            <span className="text-[11px] tracking-[0.1em] uppercase font-medium text-primary-black">
                               {label.name}
                             </span>
                           </div>
-                          <ul className="space-y-1 text-[13px] pl-4">
+                          <ul className="space-y-1 pl-4">
                             {labelItems.map((item) => (
-                              <li key={item.id} className="flex justify-between">
-                                <span className="truncate pr-2">{item.quantity}x {item.name}</span>
-                                <span className="flex-shrink-0 text-warm-grey">{formatPrice(item.price * item.quantity)}</span>
+                              <li key={item.id} className="text-[12px] text-warm-grey">
+                                {item.quantity}× {item.name}
                               </li>
                             ))}
                           </ul>
@@ -376,19 +387,17 @@ function SelectionEnquiryPanel({
                       )
                     ))}
                     
-                    {/* Unlabeled items */}
                     {unlabeledItems.length > 0 && (
-                      <div>
+                      <div className="mb-3">
                         {labels.length > 0 && (
-                          <p className="text-[11px] tracking-[0.1em] uppercase text-warm-grey mb-2">
-                            Unassigned Items
+                          <p className="text-[11px] tracking-[0.1em] uppercase text-warm-grey mb-1">
+                            Other Items
                           </p>
                         )}
-                        <ul className="space-y-1 text-[13px]">
+                        <ul className="space-y-1 pl-0">
                           {unlabeledItems.map((item) => (
-                            <li key={item.id} className="flex justify-between">
-                              <span className="truncate pr-2">{item.quantity}x {item.name}</span>
-                              <span className="flex-shrink-0 text-warm-grey">{formatPrice(item.price * item.quantity)}</span>
+                            <li key={item.id} className="text-[12px] text-warm-grey">
+                              {item.quantity}× {item.name}
                             </li>
                           ))}
                         </ul>
@@ -396,74 +405,143 @@ function SelectionEnquiryPanel({
                     )}
                   </div>
 
-                  <form onSubmit={handleSubmit} className="space-y-5">
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-[11px] tracking-[0.1em] uppercase text-warm-grey mb-2">First Name</label>
-                        <input
-                          type="text"
-                          required
-                          value={formData.firstName}
-                          onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                          className="w-full border border-light-grey px-4 py-3 text-[14px] focus:border-primary-black outline-none"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-[11px] tracking-[0.1em] uppercase text-warm-grey mb-2">Last Name</label>
-                        <input
-                          type="text"
-                          required
-                          value={formData.lastName}
-                          onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-                          className="w-full border border-light-grey px-4 py-3 text-[14px] focus:border-primary-black outline-none"
-                        />
-                      </div>
-                    </div>
-
+                  {/* Form Fields */}
+                  <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-[11px] tracking-[0.1em] uppercase text-warm-grey mb-2">Email Address</label>
+                      <label className="block text-[11px] tracking-[0.1em] uppercase text-warm-grey mb-2">
+                        First Name *
+                      </label>
                       <input
-                        type="email"
+                        type="text"
                         required
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full border border-light-grey px-4 py-3 text-[14px] focus:border-primary-black outline-none"
+                        value={formData.firstName}
+                        onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                        className="w-full border border-light-grey px-4 py-3 text-sm focus:border-primary-black outline-none"
                       />
                     </div>
-
                     <div>
-                      <label className="block text-[11px] tracking-[0.1em] uppercase text-warm-grey mb-2">Phone Number</label>
+                      <label className="block text-[11px] tracking-[0.1em] uppercase text-warm-grey mb-2">
+                        Last Name *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={formData.lastName}
+                        onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                        className="w-full border border-light-grey px-4 py-3 text-sm focus:border-primary-black outline-none"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] tracking-[0.1em] uppercase text-warm-grey mb-2">
+                      Email *
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      className="w-full border border-light-grey px-4 py-3 text-sm focus:border-primary-black outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] tracking-[0.1em] uppercase text-warm-grey mb-2">
+                      Phone *
+                    </label>
+                    <div className="flex">
+                      <select
+                        value={formData.countryCode}
+                        onChange={(e) => setFormData({ ...formData, countryCode: e.target.value })}
+                        className="border border-light-grey px-3 py-3 text-sm bg-off-white focus:border-primary-black outline-none"
+                      >
+                        <option value="+44">+44</option>
+                        <option value="+1">+1</option>
+                        <option value="+971">+971</option>
+                        <option value="+353">+353</option>
+                      </select>
                       <input
                         type="tel"
+                        required
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        className="w-full border border-light-grey px-4 py-3 text-[14px] focus:border-primary-black outline-none"
+                        className="flex-1 border border-l-0 border-light-grey px-4 py-3 text-sm focus:border-primary-black outline-none"
                       />
                     </div>
+                  </div>
 
+                  <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-[11px] tracking-[0.1em] uppercase text-warm-grey mb-2">Additional Notes</label>
-                      <textarea
-                        rows={3}
-                        value={formData.message}
-                        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                        className="w-full border border-light-grey px-4 py-3 text-[14px] focus:border-primary-black outline-none resize-none"
-                        placeholder="Any specific requirements or questions..."
-                      />
+                      <label className="block text-[11px] tracking-[0.1em] uppercase text-warm-grey mb-2">
+                        Project Type
+                      </label>
+                      <select
+                        value={formData.projectType}
+                        onChange={(e) => setFormData({ ...formData, projectType: e.target.value })}
+                        className="w-full border border-light-grey px-4 py-3 text-sm bg-white focus:border-primary-black outline-none"
+                      >
+                        <option value="">Select...</option>
+                        <option value="new-build">New Build</option>
+                        <option value="renovation">Renovation</option>
+                        <option value="extension">Extension</option>
+                        <option value="interior-design">Interior Design</option>
+                        <option value="commercial">Commercial</option>
+                      </select>
                     </div>
+                    <div>
+                      <label className="block text-[11px] tracking-[0.1em] uppercase text-warm-grey mb-2">
+                        Timeline
+                      </label>
+                      <select
+                        value={formData.timeline}
+                        onChange={(e) => setFormData({ ...formData, timeline: e.target.value })}
+                        className="w-full border border-light-grey px-4 py-3 text-sm bg-white focus:border-primary-black outline-none"
+                      >
+                        <option value="">Select...</option>
+                        <option value="asap">ASAP</option>
+                        <option value="1-3-months">1-3 Months</option>
+                        <option value="3-6-months">3-6 Months</option>
+                        <option value="6-12-months">6-12 Months</option>
+                        <option value="planning">Just Planning</option>
+                      </select>
+                    </div>
+                  </div>
 
-                    <button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="w-full py-4 bg-primary-black text-white text-[13px] tracking-[0.15em] uppercase hover:bg-charcoal transition-colors disabled:opacity-50"
-                    >
-                      {isSubmitting ? "Submitting..." : "Submit Enquiry"}
-                    </button>
-                  </form>
-                </>
+                  <div>
+                    <label className="block text-[11px] tracking-[0.1em] uppercase text-warm-grey mb-2">
+                      Additional Notes
+                    </label>
+                    <textarea
+                      rows={3}
+                      value={formData.message}
+                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                      placeholder="Any specific requirements, questions, or details about your project..."
+                      className="w-full border border-light-grey px-4 py-3 text-sm focus:border-primary-black outline-none resize-none"
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full py-4 bg-primary-black text-white text-[13px] tracking-[0.15em] uppercase hover:bg-charcoal transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                        </svg>
+                        Sending...
+                      </>
+                    ) : (
+                      "Submit Quote Request"
+                    )}
+                  </button>
+                </form>
               )}
             </div>
-          </motion.aside>
+          </motion.div>
         </>
       )}
     </AnimatePresence>

@@ -22,7 +22,6 @@ import {
   FolderPlus,
 } from "lucide-react";
 import { useSelectionStore, SelectionLabel, SelectionItem } from "@/stores/selectionStore";
-import { formatPrice } from "@/lib/utils";
 
 export default function SelectionPage() {
   const router = useRouter();
@@ -49,8 +48,6 @@ export default function SelectionPage() {
   const [showMobileSidebar, setShowMobileSidebar] = useState(false);
 
   const itemCount = getItemCount();
-  const totalPrice = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const totalPriceExVat = items.reduce((sum, item) => sum + item.priceExVat * item.quantity, 0);
 
   // Group items by label
   const groupedItems = labels.map((label) => ({
@@ -119,7 +116,7 @@ export default function SelectionPage() {
                 Your Selection
               </h1>
               <p className="text-warm-grey mt-1 text-sm">
-                {itemCount} {itemCount === 1 ? "item" : "items"} • {formatPrice(totalPrice)}
+                {itemCount} {itemCount === 1 ? "item" : "items"} • Pricing on request
               </p>
             </div>
 
@@ -134,7 +131,7 @@ export default function SelectionPage() {
                 onClick={() => setShowEnquiryForm(true)}
                 className="px-4 py-2 md:px-6 md:py-3 bg-primary-black text-white text-[11px] md:text-[12px] tracking-[0.1em] uppercase hover:bg-charcoal transition-colors"
               >
-                Submit Enquiry
+                Request Quote
               </button>
             </div>
           </div>
@@ -188,9 +185,6 @@ export default function SelectionPage() {
                 <ul className="space-y-2">
                   {labels.map((label) => {
                     const labelItemCount = items.filter((i) => i.labelId === label.id).length;
-                    const labelTotal = items
-                      .filter((i) => i.labelId === label.id)
-                      .reduce((sum, i) => sum + i.price * i.quantity, 0);
 
                     return (
                       <li
@@ -231,7 +225,7 @@ export default function SelectionPage() {
                               <div className="min-w-0">
                                 <p className="text-sm font-medium truncate">{label.name}</p>
                                 <p className="text-[10px] md:text-[11px] text-warm-grey">
-                                  {labelItemCount} items • {formatPrice(labelTotal)}
+                                  {labelItemCount} {labelItemCount === 1 ? "item" : "items"}
                                 </p>
                               </div>
                             </div>
@@ -273,12 +267,8 @@ export default function SelectionPage() {
                   <span>{labels.length}</span>
                 </div>
                 <div className="border-t border-light-grey pt-3 mt-3">
-                  <div className="flex justify-between font-medium">
-                    <span>Estimated Total</span>
-                    <span>{formatPrice(totalPrice)}</span>
-                  </div>
-                  <p className="text-[11px] text-warm-grey text-right mt-1">
-                    ({formatPrice(totalPriceExVat)} ex VAT)
+                  <p className="text-[12px] text-warm-grey text-center">
+                    Pricing provided upon request
                   </p>
                 </div>
               </div>
@@ -316,18 +306,13 @@ export default function SelectionPage() {
                         className="w-3 h-3 rounded-full flex-shrink-0"
                         style={{ backgroundColor: label.color }}
                       />
-                      <h3 className="text-[13px] md:text-[14px] tracking-[0.1em] uppercase font-medium truncate">
+                      <h3 className="text-[13px] md:text-[14px] tracking-[0.1em] uppercase font-medium truncate text-primary-black">
                         {label.name}
                       </h3>
                       <span className="text-xs md:text-sm text-warm-grey flex-shrink-0">
-                        ({labelItems.length})
+                        ({labelItems.length} {labelItems.length === 1 ? "item" : "items"})
                       </span>
                     </div>
-                    <span className="text-xs md:text-sm font-medium flex-shrink-0">
-                      {formatPrice(
-                        labelItems.reduce((sum, i) => sum + i.price * i.quantity, 0)
-                      )}
-                    </span>
                   </div>
 
                   {/* Items */}
@@ -391,14 +376,14 @@ export default function SelectionPage() {
         {/* Mobile: Fixed Bottom Bar */}
         <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-light-grey p-4 z-40">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-sm text-warm-grey">{itemCount} items</span>
-            <span className="font-medium">{formatPrice(totalPrice)}</span>
+            <span className="text-sm text-warm-grey">{itemCount} {itemCount === 1 ? "item" : "items"}</span>
+            <span className="text-sm text-warm-grey">Pricing on request</span>
           </div>
           <button
             onClick={() => setShowEnquiryForm(true)}
             className="w-full py-3 bg-primary-black text-white text-[12px] tracking-[0.1em] uppercase hover:bg-charcoal transition-colors"
           >
-            Submit Enquiry
+            Request Quote
           </button>
         </div>
 
@@ -412,7 +397,6 @@ export default function SelectionPage() {
         onClose={() => setShowEnquiryForm(false)}
         items={items}
         labels={labels}
-        totalPrice={totalPrice}
       />
     </main>
   );
@@ -463,11 +447,11 @@ function SelectionItemRow({
 
         {/* Details */}
         <div className="flex-1 min-w-0">
-          {/* Title and Price Row */}
+          {/* Title Row */}
           <div className="flex items-start justify-between gap-2">
             <Link
               href={`/product/${item.slug}`}
-              className="text-[13px] md:text-[14px] tracking-[0.02em] hover:opacity-70 transition-opacity line-clamp-2 flex-1 min-w-0"
+              className="text-[13px] md:text-[14px] tracking-[0.02em] hover:opacity-70 transition-opacity line-clamp-2 flex-1 min-w-0 text-primary-black"
             >
               {item.name}
             </Link>
@@ -479,14 +463,12 @@ function SelectionItemRow({
             </button>
           </div>
 
-          {/* Colour and Price */}
-          <div className="flex items-center justify-between mt-1">
+          {/* Details */}
+          <div className="mt-1 space-y-0.5">
             {item.colour && (
               <p className="text-[11px] md:text-[12px] text-warm-grey">Colour: {item.colour}</p>
             )}
-            <p className="text-[13px] md:text-[14px] font-medium ml-auto">
-              {formatPrice(item.price * item.quantity)}
-            </p>
+            <p className="text-[11px] md:text-[12px] text-warm-grey capitalize">{item.category}</p>
           </div>
 
           {/* Actions Row */}
@@ -627,13 +609,11 @@ function EnquiryFormModal({
   onClose,
   items,
   labels,
-  totalPrice,
 }: {
   isOpen: boolean;
   onClose: () => void;
   items: SelectionItem[];
   labels: SelectionLabel[];
-  totalPrice: number;
 }) {
   const [formData, setFormData] = useState({
     firstName: "",
@@ -662,6 +642,7 @@ function EnquiryFormModal({
     items: items.filter((i) => i.labelId === label.id),
   }));
   const unlabeledItems = items.filter((i) => !i.labelId);
+  const totalItems = items.reduce((sum, i) => sum + i.quantity, 0);
 
   return (
     <AnimatePresence>
@@ -683,7 +664,7 @@ function EnquiryFormModal({
             {/* Header */}
             <div className="flex items-center justify-between p-4 md:p-6 border-b border-light-grey flex-shrink-0">
               <h2 className="text-lg md:text-xl tracking-[0.1em] uppercase font-light text-primary-black">
-                Submit Enquiry
+                Request Quote
               </h2>
               <button onClick={onClose} className="p-2 hover:bg-off-white transition-colors -mr-2">
                 <X className="w-5 h-5" />
@@ -701,9 +682,9 @@ function EnquiryFormModal({
                   <div className="w-16 h-16 md:w-20 md:h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4 md:mb-6">
                     <Check className="w-8 h-8 md:w-10 md:h-10 text-white" />
                   </div>
-                  <h3 className="text-xl md:text-2xl tracking-[0.1em] uppercase mb-3 text-primary-black">Enquiry Submitted</h3>
+                  <h3 className="text-xl md:text-2xl tracking-[0.1em] uppercase mb-3 text-primary-black">Request Submitted</h3>
                   <p className="text-warm-grey mb-6 md:mb-8 max-w-md mx-auto text-sm md:text-base">
-                    Thank you for your selection. Our team will be in touch within 24 hours.
+                    Thank you for your selection. Our team will review your requirements and send you a personalised quote within 24 hours.
                   </p>
                   <button
                     onClick={onClose}
@@ -717,7 +698,7 @@ function EnquiryFormModal({
                   {/* Selection Summary */}
                   <div className="bg-off-white p-4 max-h-48 overflow-y-auto">
                     <h3 className="text-[11px] md:text-[12px] tracking-[0.1em] uppercase text-warm-grey mb-3">
-                      Your Selection ({items.length} items) • {formatPrice(totalPrice)}
+                      Your Selection ({totalItems} {totalItems === 1 ? "item" : "items"})
                     </h3>
 
                     {groupedSummary.map(({ label, items: labelItems }) => (
@@ -728,7 +709,7 @@ function EnquiryFormModal({
                               className="w-2 h-2 rounded-full"
                               style={{ backgroundColor: label.color }}
                             />
-                            <span className="text-[11px] md:text-[12px] tracking-[0.1em] uppercase font-medium">
+                            <span className="text-[11px] md:text-[12px] tracking-[0.1em] uppercase font-medium text-primary-black">
                               {label.name}
                             </span>
                           </div>
@@ -884,7 +865,7 @@ function EnquiryFormModal({
                       ) : (
                         <>
                           <Send className="w-4 h-4" />
-                          Submit Enquiry
+                          Submit Quote Request
                         </>
                       )}
                     </button>

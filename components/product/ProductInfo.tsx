@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Link from "next/link";
 import { ChevronDown, Phone, Plus, Check } from "lucide-react";
-import { formatPrice } from "@/lib/utils";
 import { EnquiryPanel } from "./EnquiryPanel";
 import { useSelectionStore } from "@/stores/selectionStore";
 
@@ -13,10 +12,6 @@ interface Props {
     slug: string;
     name: string;
     sku: string;
-    price: number;
-    priceExVat: number;
-    salePrice?: number;
-    salePriceExVat?: number;
     colour?: string;
     colourHex?: string;
     image: string;
@@ -44,17 +39,13 @@ export function ProductInfo({ product }: Props) {
     setOpenSection(openSection === section ? null : section);
   };
 
-  const displayPrice = product.salePrice || product.price;
-  const displayPriceExVat = product.salePriceExVat || product.priceExVat;
-  const isOnSale = !!product.salePrice;
-
   const handleAddToSelection = () => {
     addItem({
       id: product.id,
       slug: product.slug,
       name: product.name,
-      price: displayPrice,
-      priceExVat: displayPriceExVat,
+      price: 0, // Price handled separately via quote
+      priceExVat: 0,
       image: product.image,
       colour: product.colour,
       category: product.category,
@@ -84,26 +75,14 @@ export function ProductInfo({ product }: Props) {
         </nav>
 
         {/* Product Name */}
-        <h1 className="text-2xl lg:text-3xl tracking-[0.05em] font-light mb-6">
+        <h1 className="text-2xl lg:text-3xl tracking-[0.05em] font-light mb-4">
           {product.name}
         </h1>
 
-        {/* Price */}
-        <div className="mb-8">
-          {isOnSale ? (
-            <div className="flex items-baseline gap-3">
-              <span className="text-xl text-warm-grey line-through">
-                {formatPrice(product.price)}
-              </span>
-              <span className="text-2xl">{formatPrice(displayPrice)}</span>
-            </div>
-          ) : (
-            <span className="text-2xl">{formatPrice(displayPrice)}</span>
-          )}
-          <p className="text-[13px] text-warm-grey mt-1">
-            ({formatPrice(displayPriceExVat)} EX VAT)
-          </p>
-        </div>
+        {/* SKU */}
+        <p className="text-[12px] text-warm-grey tracking-[0.05em] mb-8">
+          SKU: {product.sku}
+        </p>
 
         {/* Colour/Variant Selector */}
         {product.variants && product.variants.length > 0 && (
@@ -128,6 +107,16 @@ export function ProductInfo({ product }: Props) {
             </div>
           </div>
         )}
+
+        {/* Pricing Note */}
+        <div className="mb-8 p-4 bg-off-white border border-light-grey">
+          <p className="text-[13px] text-warm-grey leading-relaxed">
+            <span className="font-medium text-primary-black">Pricing on Request</span>
+            <br />
+            Add to your selection and submit an enquiry to receive a personalised quote. 
+            Prices vary based on quantity and project requirements.
+          </p>
+        </div>
 
         {/* ACTION BUTTONS */}
         <div className="space-y-3 mb-10">
@@ -245,13 +234,12 @@ export function ProductInfo({ product }: Props) {
               <div className="pb-6 text-[14px] leading-relaxed text-warm-grey space-y-4">
                 <div>
                   <p className="font-medium text-primary-black mb-2">
-                    Delivery Costs (Mainland UK)
+                    Delivery
                   </p>
-                  <ul className="space-y-1">
-                    <li>Small parcel deliveries - £9.95</li>
-                    <li>Medium pallet deliveries - £40</li>
-                    <li>Large pallet deliveries - £96</li>
-                  </ul>
+                  <p>
+                    Delivery costs and timelines will be provided with your personalised quote.
+                    We offer nationwide delivery across the UK.
+                  </p>
                 </div>
                 <div>
                   <p className="font-medium text-primary-black mb-2">Returns</p>
