@@ -82,11 +82,11 @@ export function Header() {
       >
         {/* Main Navigation Bar */}
         <nav>
-          <div className="flex items-center justify-between h-14 px-8 relative">
-            {/* Logo - Left-aligned on desktop, centered on mobile */}
+          <div className="flex items-center h-14 px-8">
+            {/* Logo - Left aligned */}
             <Link
               href="/"
-              className={`flex-shrink-0 lg:absolute lg:left-1/2 lg:-translate-x-1/2 text-sm tracking-[0.3em] font-display uppercase font-light transition-colors duration-300 ${
+              className={`flex-shrink-0 text-sm tracking-[0.3em] font-display uppercase font-light transition-colors duration-300 ${
                 showSolidHeader ? "text-primary-black" : "text-white"
               }`}
               onClick={closeDropdown}
@@ -94,8 +94,8 @@ export function Header() {
               HOUSE OF CLARENCE
             </Link>
 
-            {/* Desktop Navigation */}
-            <ul className="hidden lg:flex items-center justify-center flex-grow overflow-hidden whitespace-nowrap">
+            {/* Desktop Navigation - Centered */}
+            <ul className="hidden lg:flex items-center justify-center flex-1 overflow-hidden whitespace-nowrap">
               {navigationData.map((category: Category) => {
                 const isActive = activeCategory?.slug === category.slug;
                 const textColor = showSolidHeader
@@ -127,7 +127,7 @@ export function Header() {
 
             {/* Mobile hamburger */}
             <button
-              className={`lg:hidden absolute left-4 p-2 transition-colors duration-300 ${
+              className={`lg:hidden ml-auto p-2 transition-colors duration-300 ${
                 showSolidHeader ? "text-primary-black" : "text-white"
               }`}
               aria-label="Open menu"
@@ -136,7 +136,7 @@ export function Header() {
             </button>
 
             {/* Right icons - Search, User, Enquire (NO CART) */}
-            <div className="absolute right-4 flex items-center gap-3 flex-shrink-0">
+            <div className="hidden lg:flex items-center gap-3 flex-shrink-0">
               <button
                 className={`p-2 transition-colors duration-300 ${
                   showSolidHeader ? "text-primary-black hover:opacity-60" : "text-white hover:opacity-70"
