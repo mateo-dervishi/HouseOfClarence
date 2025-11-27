@@ -7,6 +7,11 @@ import { Search, ChevronRight, X, Menu, User } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { navigationData, Category, Subcategory } from "@/lib/navigation";
 
+// Type guard to ensure category has slug property
+const isCategory = (item: Category): item is Category => {
+  return 'slug' in item && typeof item.slug === 'string';
+};
+
 export function Header() {
   const [activeCategory, setActiveCategory] = useState<Category | null>(null);
   const [hoveredSubcategory, setHoveredSubcategory] = useState<Subcategory | null>(null);
@@ -96,7 +101,7 @@ export function Header() {
 
             {/* Desktop Navigation */}
             <ul className="hidden lg:flex items-center justify-center flex-grow overflow-hidden whitespace-nowrap">
-              {navigationData.map((category) => (
+              {navigationData.map((category: Category) => (
                 <li key={category.slug} className="flex-shrink-0">
                   <button
                     onClick={() => handleCategoryClick(category)}
@@ -169,7 +174,7 @@ export function Header() {
         <nav className="border-b border-light-grey/30">
           <div className="max-w-[1600px] mx-auto px-6">
             <ul className="flex items-center justify-center gap-10 py-4">
-              {navigationData.map((category) => (
+              {navigationData.map((category: Category) => (
                 <li key={category.slug}>
                   <button
                     onClick={() => handleCategoryClick(category)}
