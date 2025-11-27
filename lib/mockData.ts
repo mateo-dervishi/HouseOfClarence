@@ -1,19 +1,17 @@
 import { Product } from "@/types/product";
 
 export const mockProducts: Product[] = [
+  // ═══════════════════════════════════════════════════════════
   // KITCHEN TAPS
+  // ═══════════════════════════════════════════════════════════
   {
     id: "kt-1",
     slug: "deco-claridge-aged-bronze-traditional-pull-out-kitchen-mixer-tap",
     name: "Deco Claridge Aged Bronze Traditional Pull Out Kitchen Mixer Tap",
     sku: "HOC-KT-001",
-    category: {
-      id: "kitchen",
-      name: "Kitchen",
-      slug: "kitchen",
-    },
-    subcategory: "Kitchen Taps",
-    description: "Traditional pull-out kitchen mixer tap in aged bronze finish. Features a classic crosshead design with modern functionality.",
+    category: { id: "kitchen", name: "Kitchen", slug: "kitchen" },
+    subcategory: "kitchen-taps",
+    description: "Traditional pull-out kitchen mixer tap in aged bronze finish. Features a classic crosshead design with modern functionality including a pull-out spray head.",
     specifications: {
       material: "Solid Brass",
       dimensions: { width: 220, height: 420, depth: 250 },
@@ -21,10 +19,7 @@ export const mockProducts: Product[] = [
       colour: "Aged Bronze",
       finish: "Brushed",
     },
-    pricing: {
-      price: 397.00,
-      priceExVat: 330.83,
-    },
+    pricing: { price: 397.00, priceExVat: 330.83 },
     variants: [
       { id: "kt-1-gold", name: "Aged Bronze", sku: "HOC-KT-001-AB", price: 397.00, priceExVat: 330.83, stock: 10, attributes: { colour: "Aged Bronze", colourHex: "#CD7F32" } },
       { id: "kt-1-black", name: "Matte Black", sku: "HOC-KT-001-MB", price: 397.00, priceExVat: 330.83, stock: 8, attributes: { colour: "Matte Black", colourHex: "#1A1A1A" } },
@@ -33,8 +28,8 @@ export const mockProducts: Product[] = [
       { id: "kt-1-nickel", name: "Brushed Nickel", sku: "HOC-KT-001-BN", price: 397.00, priceExVat: 330.83, stock: 12, attributes: { colour: "Brushed Nickel", colourHex: "#848789" } },
     ],
     images: [
-      { id: "kt-1-1", url: "https://images.unsplash.com/photo-1585412459212-4e19768e79fe?w=800&h=1000&fit=crop", alt: "Deco Claridge Kitchen Tap", width: 800, height: 1000 },
-      { id: "kt-1-2", url: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=800&h=1000&fit=crop", alt: "Deco Claridge Kitchen Tap Detail", width: 800, height: 1000 },
+      { id: "kt-1-1", url: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=800&h=1000&fit=crop", alt: "Kitchen Tap Aged Bronze", width: 800, height: 1000 },
+      { id: "kt-1-2", url: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&h=1000&fit=crop", alt: "Kitchen Tap Detail", width: 800, height: 1000 },
     ],
     relatedProducts: ["kt-2", "kt-3"],
     tags: ["kitchen", "tap", "traditional", "bronze"],
@@ -48,13 +43,9 @@ export const mockProducts: Product[] = [
     slug: "lambeth-single-hole-traditional-kitchen-tap-aged-bronze",
     name: "Lambeth Single Hole Traditional Kitchen Tap Aged Bronze",
     sku: "HOC-KT-002",
-    category: {
-      id: "kitchen",
-      name: "Kitchen",
-      slug: "kitchen",
-    },
-    subcategory: "Kitchen Taps",
-    description: "Elegant single hole traditional kitchen tap with crosshead handles. Perfect for period properties.",
+    category: { id: "kitchen", name: "Kitchen", slug: "kitchen" },
+    subcategory: "kitchen-taps",
+    description: "Elegant single hole traditional kitchen tap with crosshead handles. Perfect for period properties with its timeless design.",
     specifications: {
       material: "Solid Brass",
       dimensions: { width: 180, height: 380, depth: 200 },
@@ -62,10 +53,7 @@ export const mockProducts: Product[] = [
       colour: "Aged Bronze",
       finish: "Brushed",
     },
-    pricing: {
-      price: 237.00,
-      priceExVat: 197.50,
-    },
+    pricing: { price: 237.00, priceExVat: 197.50 },
     variants: [
       { id: "kt-2-gold", name: "Aged Bronze", sku: "HOC-KT-002-AB", price: 237.00, priceExVat: 197.50, stock: 10, attributes: { colour: "Aged Bronze", colourHex: "#CD7F32" } },
       { id: "kt-2-black", name: "Matte Black", sku: "HOC-KT-002-MB", price: 237.00, priceExVat: 197.50, stock: 8, attributes: { colour: "Matte Black", colourHex: "#1A1A1A" } },
@@ -88,13 +76,9 @@ export const mockProducts: Product[] = [
     slug: "asbury-4-hole-traditional-kitchen-tap-aged-bronze",
     name: "Asbury 4-Hole Traditional Kitchen Tap Aged Bronze",
     sku: "HOC-KT-003",
-    category: {
-      id: "kitchen",
-      name: "Kitchen",
-      slug: "kitchen",
-    },
-    subcategory: "Kitchen Taps",
-    description: "Classic 4-hole kitchen tap with bridge design. Features separate hot and cold controls.",
+    category: { id: "kitchen", name: "Kitchen", slug: "kitchen" },
+    subcategory: "kitchen-taps",
+    description: "Classic 4-hole kitchen tap with bridge design. Features separate hot and cold controls with elegant crosshead handles.",
     specifications: {
       material: "Solid Brass",
       dimensions: { width: 280, height: 350, depth: 220 },
@@ -102,10 +86,7 @@ export const mockProducts: Product[] = [
       colour: "Aged Bronze",
       finish: "Brushed",
     },
-    pricing: {
-      price: 397.00,
-      priceExVat: 330.83,
-    },
+    pricing: { price: 397.00, priceExVat: 330.83 },
     variants: [
       { id: "kt-3-gold", name: "Aged Bronze", sku: "HOC-KT-003-AB", price: 397.00, priceExVat: 330.83, stock: 8, attributes: { colour: "Aged Bronze", colourHex: "#CD7F32" } },
       { id: "kt-3-black", name: "Matte Black", sku: "HOC-KT-003-MB", price: 397.00, priceExVat: 330.83, stock: 6, attributes: { colour: "Matte Black", colourHex: "#1A1A1A" } },
@@ -113,7 +94,7 @@ export const mockProducts: Product[] = [
       { id: "kt-3-pewter", name: "Pewter", sku: "HOC-KT-003-PW", price: 397.00, priceExVat: 330.83, stock: 4, attributes: { colour: "Pewter", colourHex: "#8A8D8F" } },
     ],
     images: [
-      { id: "kt-3-1", url: "https://images.unsplash.com/photo-1585412459212-4e19768e79fe?w=800&h=1000&fit=crop", alt: "Asbury Kitchen Tap", width: 800, height: 1000 },
+      { id: "kt-3-1", url: "https://images.unsplash.com/photo-1556909114-44e3e70034e2?w=800&h=1000&fit=crop", alt: "Asbury Kitchen Tap", width: 800, height: 1000 },
     ],
     relatedProducts: ["kt-1", "kt-2"],
     tags: ["kitchen", "tap", "traditional", "bronze", "4-hole"],
@@ -127,13 +108,9 @@ export const mockProducts: Product[] = [
     slug: "grantley-3-hole-traditional-kitchen-tap-aged-bronze",
     name: "Grantley 3-Hole Traditional Kitchen Tap Aged Bronze",
     sku: "HOC-KT-004",
-    category: {
-      id: "kitchen",
-      name: "Kitchen",
-      slug: "kitchen",
-    },
-    subcategory: "Kitchen Taps",
-    description: "Traditional 3-hole kitchen tap with lever handles. Timeless design for any kitchen.",
+    category: { id: "kitchen", name: "Kitchen", slug: "kitchen" },
+    subcategory: "kitchen-taps",
+    description: "Traditional 3-hole kitchen tap with lever handles. Timeless design for any classic or contemporary kitchen.",
     specifications: {
       material: "Solid Brass",
       dimensions: { width: 250, height: 380, depth: 200 },
@@ -141,10 +118,7 @@ export const mockProducts: Product[] = [
       colour: "Aged Bronze",
       finish: "Brushed",
     },
-    pricing: {
-      price: 337.00,
-      priceExVat: 280.83,
-    },
+    pricing: { price: 337.00, priceExVat: 280.83 },
     variants: [
       { id: "kt-4-gold", name: "Aged Bronze", sku: "HOC-KT-004-AB", price: 337.00, priceExVat: 280.83, stock: 10, attributes: { colour: "Aged Bronze", colourHex: "#CD7F32" } },
       { id: "kt-4-black", name: "Matte Black", sku: "HOC-KT-004-MB", price: 337.00, priceExVat: 280.83, stock: 8, attributes: { colour: "Matte Black", colourHex: "#1A1A1A" } },
@@ -153,7 +127,7 @@ export const mockProducts: Product[] = [
       { id: "kt-4-pewter", name: "Pewter", sku: "HOC-KT-004-PW", price: 337.00, priceExVat: 280.83, stock: 5, attributes: { colour: "Pewter", colourHex: "#8A8D8F" } },
     ],
     images: [
-      { id: "kt-4-1", url: "https://images.unsplash.com/photo-1585412459212-4e19768e79fe?w=800&h=1000&fit=crop", alt: "Grantley Kitchen Tap", width: 800, height: 1000 },
+      { id: "kt-4-1", url: "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=800&h=1000&fit=crop", alt: "Grantley Kitchen Tap", width: 800, height: 1000 },
     ],
     relatedProducts: ["kt-1", "kt-2"],
     tags: ["kitchen", "tap", "traditional", "bronze", "3-hole"],
@@ -162,19 +136,18 @@ export const mockProducts: Product[] = [
     isFeatured: true,
     deliveryInfo: "Delivery within 7-10 working days",
   },
+  
+  // ═══════════════════════════════════════════════════════════
   // KITCHEN SINKS
+  // ═══════════════════════════════════════════════════════════
   {
     id: "ks-1",
     slug: "belfast-ceramic-sink-white",
     name: "Traditional Belfast Ceramic Kitchen Sink",
     sku: "HOC-KS-001",
-    category: {
-      id: "kitchen",
-      name: "Kitchen",
-      slug: "kitchen",
-    },
-    subcategory: "Kitchen Sinks",
-    description: "Classic Belfast sink in premium white ceramic. Deep bowl design perfect for traditional kitchens.",
+    category: { id: "kitchen", name: "Kitchen", slug: "kitchen" },
+    subcategory: "kitchen-sinks",
+    description: "Classic Belfast sink in premium white ceramic. Deep bowl design perfect for traditional kitchens. Reversible design for left or right drainer configuration.",
     specifications: {
       material: "Ceramic",
       dimensions: { width: 595, height: 255, depth: 460 },
@@ -182,10 +155,7 @@ export const mockProducts: Product[] = [
       colour: "White",
       finish: "Gloss",
     },
-    pricing: {
-      price: 449.00,
-      priceExVat: 374.17,
-    },
+    pricing: { price: 449.00, priceExVat: 374.17 },
     variants: [],
     images: [
       { id: "ks-1-1", url: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&h=1000&fit=crop", alt: "Belfast Ceramic Sink", width: 800, height: 1000 },
@@ -197,19 +167,45 @@ export const mockProducts: Product[] = [
     isFeatured: true,
     deliveryInfo: "Delivery within 10-14 working days",
   },
-  // BATHROOM PRODUCTS
+  {
+    id: "ks-2",
+    slug: "undermount-stainless-steel-sink-double-bowl",
+    name: "Undermount Stainless Steel Double Bowl Sink",
+    sku: "HOC-KS-002",
+    category: { id: "kitchen", name: "Kitchen", slug: "kitchen" },
+    subcategory: "kitchen-sinks",
+    description: "Premium undermount double bowl sink in brushed stainless steel. Features sound-deadening pads and waste kit included.",
+    specifications: {
+      material: "Stainless Steel 304",
+      dimensions: { width: 860, height: 200, depth: 440 },
+      weight: 12,
+      colour: "Brushed Steel",
+      finish: "Brushed",
+    },
+    pricing: { price: 389.00, priceExVat: 324.17 },
+    variants: [],
+    images: [
+      { id: "ks-2-1", url: "https://images.unsplash.com/photo-1564540583246-934409427776?w=800&h=1000&fit=crop", alt: "Stainless Steel Double Bowl Sink", width: 800, height: 1000 },
+    ],
+    relatedProducts: ["ks-1", "kt-1"],
+    tags: ["kitchen", "sink", "stainless-steel", "undermount"],
+    stock: 20,
+    isNew: false,
+    isFeatured: false,
+    deliveryInfo: "Delivery within 7-10 working days",
+  },
+
+  // ═══════════════════════════════════════════════════════════
+  // BATHROOM - VANITY UNITS
+  // ═══════════════════════════════════════════════════════════
   {
     id: "bv-1",
     slug: "hampton-natural-oak-vanity-800mm",
     name: "Hampton Natural Oak Floorstanding Vanity Unit 800mm",
     sku: "HOC-VAN-001",
-    category: {
-      id: "bathroom",
-      name: "Bathroom",
-      slug: "bathroom",
-    },
-    subcategory: "Vanity Units",
-    description: "Handcrafted vanity unit combining natural oak with contemporary design. Features soft-close drawers and integrated basin.",
+    category: { id: "bathroom", name: "Bathroom", slug: "bathroom" },
+    subcategory: "vanity-units",
+    description: "Handcrafted vanity unit combining natural oak with contemporary design. Features soft-close drawers and integrated ceramic basin.",
     specifications: {
       material: "Natural Oak",
       dimensions: { width: 800, height: 850, depth: 500 },
@@ -217,16 +213,13 @@ export const mockProducts: Product[] = [
       colour: "Natural Oak",
       finish: "Matt Lacquer",
     },
-    pricing: {
-      price: 1897.00,
-      priceExVat: 1580.83,
-    },
+    pricing: { price: 1897.00, priceExVat: 1580.83 },
     variants: [],
     images: [
       { id: "bv-1-1", url: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=800&h=1000&fit=crop", alt: "Hampton Natural Oak Vanity Unit", width: 800, height: 1000 },
       { id: "bv-1-2", url: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&h=1000&fit=crop", alt: "Hampton Vanity Detail", width: 800, height: 1000 },
     ],
-    relatedProducts: ["bb-1"],
+    relatedProducts: ["bb-1", "bbs-1"],
     tags: ["bathroom", "vanity", "oak", "contemporary"],
     stock: 5,
     isNew: true,
@@ -234,17 +227,44 @@ export const mockProducts: Product[] = [
     deliveryInfo: "Delivery within 14-21 working days",
   },
   {
+    id: "bv-2",
+    slug: "mayfair-wall-hung-vanity-white-gloss-600mm",
+    name: "Mayfair Wall Hung Vanity Unit White Gloss 600mm",
+    sku: "HOC-VAN-002",
+    category: { id: "bathroom", name: "Bathroom", slug: "bathroom" },
+    subcategory: "vanity-units",
+    description: "Modern wall hung vanity unit in high gloss white finish. Space-saving design with generous storage.",
+    specifications: {
+      material: "MDF",
+      dimensions: { width: 600, height: 500, depth: 450 },
+      weight: 25,
+      colour: "White Gloss",
+      finish: "High Gloss",
+    },
+    pricing: { price: 895.00, priceExVat: 745.83 },
+    variants: [],
+    images: [
+      { id: "bv-2-1", url: "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=800&h=1000&fit=crop", alt: "Mayfair Wall Hung Vanity", width: 800, height: 1000 },
+    ],
+    relatedProducts: ["bv-1", "bbs-1"],
+    tags: ["bathroom", "vanity", "wall-hung", "modern"],
+    stock: 8,
+    isNew: false,
+    isFeatured: true,
+    deliveryInfo: "Delivery within 10-14 working days",
+  },
+
+  // ═══════════════════════════════════════════════════════════
+  // BATHROOM - BATHS
+  // ═══════════════════════════════════════════════════════════
+  {
     id: "bb-1",
     slug: "freestanding-stone-bath-1700mm",
     name: "Freestanding Stone Resin Bath 1700mm",
     sku: "HOC-BTH-001",
-    category: {
-      id: "bathroom",
-      name: "Bathroom",
-      slug: "bathroom",
-    },
-    subcategory: "Baths",
-    description: "Luxurious freestanding bath crafted from premium stone resin. Excellent heat retention.",
+    category: { id: "bathroom", name: "Bathroom", slug: "bathroom" },
+    subcategory: "baths",
+    description: "Luxurious freestanding bath crafted from premium stone resin. Excellent heat retention and contemporary double-ended design.",
     specifications: {
       material: "Stone Resin",
       dimensions: { width: 1700, height: 580, depth: 750 },
@@ -252,13 +272,11 @@ export const mockProducts: Product[] = [
       colour: "White",
       finish: "Matt",
     },
-    pricing: {
-      price: 2495.00,
-      priceExVat: 2079.17,
-    },
+    pricing: { price: 2495.00, priceExVat: 2079.17 },
     variants: [],
     images: [
       { id: "bb-1-1", url: "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=800&h=1000&fit=crop", alt: "Freestanding Stone Bath", width: 800, height: 1000 },
+      { id: "bb-1-2", url: "https://images.unsplash.com/photo-1600607687644-c7171b42498b?w=800&h=1000&fit=crop", alt: "Stone Bath Detail", width: 800, height: 1000 },
     ],
     relatedProducts: ["bv-1"],
     tags: ["bathroom", "bath", "stone", "freestanding"],
@@ -267,87 +285,161 @@ export const mockProducts: Product[] = [
     isFeatured: true,
     deliveryInfo: "Delivery within 14-21 working days",
   },
+
+  // ═══════════════════════════════════════════════════════════
+  // BATHROOM - BASINS
+  // ═══════════════════════════════════════════════════════════
+  {
+    id: "bbs-1",
+    slug: "countertop-ceramic-basin-oval",
+    name: "Countertop Ceramic Basin Oval 550mm",
+    sku: "HOC-BSN-001",
+    category: { id: "bathroom", name: "Bathroom", slug: "bathroom" },
+    subcategory: "basins",
+    description: "Elegant oval countertop basin in premium white ceramic. Thin-rimmed design for a contemporary aesthetic.",
+    specifications: {
+      material: "Ceramic",
+      dimensions: { width: 550, height: 140, depth: 400 },
+      weight: 8,
+      colour: "White",
+      finish: "Gloss",
+    },
+    pricing: { price: 245.00, priceExVat: 204.17 },
+    variants: [],
+    images: [
+      { id: "bbs-1-1", url: "https://images.unsplash.com/photo-1600607687644-c7171b42498b?w=800&h=1000&fit=crop", alt: "Countertop Ceramic Basin", width: 800, height: 1000 },
+    ],
+    relatedProducts: ["bv-1", "bv-2"],
+    tags: ["bathroom", "basin", "ceramic", "countertop"],
+    stock: 25,
+    isNew: false,
+    isFeatured: false,
+    deliveryInfo: "Delivery within 7-10 working days",
+  },
+
+  // ═══════════════════════════════════════════════════════════
   // TILING
+  // ═══════════════════════════════════════════════════════════
   {
     id: "tl-1",
-    slug: "calacatta-gold-marble-tile",
+    slug: "calacatta-gold-marble-tile-600x600",
     name: "Calacatta Gold Marble Tile 600x600mm",
     sku: "HOC-TIL-001",
-    category: {
-      id: "tiling",
-      name: "Tiling",
-      slug: "tiling",
-    },
-    subcategory: "Marble Tiles",
-    description: "Premium Calacatta Gold marble tiles. Each tile is hand-selected for its unique veining pattern.",
+    category: { id: "tiling", name: "Tiling", slug: "tiling" },
+    subcategory: "marble-tiles",
+    description: "Premium Calacatta Gold marble tiles. Each tile is hand-selected for its unique gold veining pattern against a crisp white background.",
     specifications: {
       material: "Natural Marble",
       dimensions: { width: 600, height: 600, depth: 12 },
       colour: "White with Gold Veining",
       finish: "Polished",
     },
-    pricing: {
-      price: 129.50,
-      priceExVat: 107.92,
-    },
+    pricing: { price: 129.50, priceExVat: 107.92 },
     variants: [],
     images: [
       { id: "tl-1-1", url: "https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=800&h=1000&fit=crop", alt: "Calacatta Gold Marble Tile", width: 800, height: 1000 },
     ],
-    relatedProducts: [],
+    relatedProducts: ["tl-2"],
     tags: ["tiles", "marble", "calacatta", "luxury"],
     stock: 200,
     isNew: false,
     isFeatured: true,
     deliveryInfo: "Delivery within 7-10 working days",
   },
+  {
+    id: "tl-2",
+    slug: "terrazzo-venetian-floor-tile",
+    name: "Terrazzo Venetian Floor Tile 600x600mm",
+    sku: "HOC-TIL-002",
+    category: { id: "tiling", name: "Tiling", slug: "tiling" },
+    subcategory: "terrazzo-tiles",
+    description: "Authentic Venetian terrazzo tiles with marble chip aggregate. Classic pattern perfect for floors and feature walls.",
+    specifications: {
+      material: "Terrazzo",
+      dimensions: { width: 600, height: 600, depth: 15 },
+      colour: "Grey with White Chips",
+      finish: "Polished",
+    },
+    pricing: { price: 89.00, priceExVat: 74.17 },
+    variants: [],
+    images: [
+      { id: "tl-2-1", url: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=800&h=1000&fit=crop", alt: "Terrazzo Floor Tile", width: 800, height: 1000 },
+    ],
+    relatedProducts: ["tl-1"],
+    tags: ["tiles", "terrazzo", "floor", "venetian"],
+    stock: 150,
+    isNew: true,
+    isFeatured: true,
+    deliveryInfo: "Delivery within 10-14 working days",
+  },
+
+  // ═══════════════════════════════════════════════════════════
   // LIGHTING
+  // ═══════════════════════════════════════════════════════════
   {
     id: "lt-1",
     slug: "brass-pendant-light-glass-shade",
     name: "Brass Pendant Light with Glass Shade",
     sku: "HOC-LIT-001",
-    category: {
-      id: "lighting",
-      name: "Lighting",
-      slug: "lighting",
-    },
-    subcategory: "Pendant Lights",
-    description: "Elegant brass pendant light with hand-blown glass shade. Perfect for kitchen islands and dining areas.",
+    category: { id: "lighting", name: "Lighting", slug: "lighting" },
+    subcategory: "pendant-lights",
+    description: "Elegant brass pendant light with hand-blown glass shade. Perfect for kitchen islands and dining areas. E27 fitting included.",
     specifications: {
       material: "Brass, Glass",
       dimensions: { width: 300, height: 500, depth: 300 },
       colour: "Brass",
       finish: "Polished",
     },
-    pricing: {
-      price: 425.00,
-      priceExVat: 354.17,
-    },
+    pricing: { price: 425.00, priceExVat: 354.17 },
     variants: [],
     images: [
       { id: "lt-1-1", url: "https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?w=800&h=1000&fit=crop", alt: "Brass Pendant Light", width: 800, height: 1000 },
     ],
-    relatedProducts: [],
+    relatedProducts: ["lt-2"],
     tags: ["lighting", "pendant", "brass", "glass"],
     stock: 12,
     isNew: true,
     isFeatured: true,
     deliveryInfo: "Delivery within 10-14 working days",
   },
+  {
+    id: "lt-2",
+    slug: "contemporary-wall-sconce-black",
+    name: "Contemporary Wall Sconce Matte Black",
+    sku: "HOC-LIT-002",
+    category: { id: "lighting", name: "Lighting", slug: "lighting" },
+    subcategory: "wall-lights",
+    description: "Modern wall sconce in matte black finish. Adjustable arm allows directional lighting. IP44 rated for bathroom use.",
+    specifications: {
+      material: "Steel, Glass",
+      dimensions: { width: 120, height: 350, depth: 200 },
+      colour: "Matte Black",
+      finish: "Powder Coated",
+    },
+    pricing: { price: 175.00, priceExVat: 145.83 },
+    variants: [],
+    images: [
+      { id: "lt-2-1", url: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=800&h=1000&fit=crop", alt: "Wall Sconce Black", width: 800, height: 1000 },
+    ],
+    relatedProducts: ["lt-1"],
+    tags: ["lighting", "wall-light", "sconce", "contemporary"],
+    stock: 18,
+    isNew: false,
+    isFeatured: false,
+    deliveryInfo: "Delivery within 7-10 working days",
+  },
+
+  // ═══════════════════════════════════════════════════════════
   // FURNITURE
+  // ═══════════════════════════════════════════════════════════
   {
     id: "fr-1",
     slug: "oak-dining-table-2400mm",
     name: "Solid Oak Dining Table 2400mm",
     sku: "HOC-FRN-001",
-    category: {
-      id: "furniture",
-      name: "Furniture",
-      slug: "furniture",
-    },
-    subcategory: "Dining Room Furniture",
-    description: "Handcrafted solid oak dining table with live edge detail. Seats 8-10 people comfortably.",
+    category: { id: "furniture", name: "Furniture", slug: "furniture" },
+    subcategory: "dining-room-furniture",
+    description: "Handcrafted solid oak dining table with live edge detail. Seats 8-10 people comfortably. Each table is unique due to natural grain variations.",
     specifications: {
       material: "Solid Oak",
       dimensions: { width: 2400, height: 760, depth: 1000 },
@@ -355,10 +447,7 @@ export const mockProducts: Product[] = [
       colour: "Natural Oak",
       finish: "Oil",
     },
-    pricing: {
-      price: 3495.00,
-      priceExVat: 2912.50,
-    },
+    pricing: { price: 3495.00, priceExVat: 2912.50 },
     variants: [],
     images: [
       { id: "fr-1-1", url: "https://images.unsplash.com/photo-1617806118233-18e1de247200?w=800&h=1000&fit=crop", alt: "Oak Dining Table", width: 800, height: 1000 },
@@ -370,29 +459,52 @@ export const mockProducts: Product[] = [
     isFeatured: true,
     deliveryInfo: "Delivery within 21-28 working days",
   },
+  {
+    id: "fr-2",
+    slug: "leather-armchair-cognac",
+    name: "Leather Armchair Cognac",
+    sku: "HOC-FRN-002",
+    category: { id: "furniture", name: "Furniture", slug: "furniture" },
+    subcategory: "living-room-furniture",
+    description: "Premium full-grain leather armchair in rich cognac. Solid oak frame with brass detailing. Exceptional comfort and craftsmanship.",
+    specifications: {
+      material: "Full Grain Leather, Oak",
+      dimensions: { width: 780, height: 850, depth: 820 },
+      weight: 35,
+      colour: "Cognac",
+      finish: "Natural",
+    },
+    pricing: { price: 1895.00, priceExVat: 1579.17 },
+    variants: [],
+    images: [
+      { id: "fr-2-1", url: "https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=800&h=1000&fit=crop", alt: "Leather Armchair", width: 800, height: 1000 },
+    ],
+    relatedProducts: ["fr-1"],
+    tags: ["furniture", "armchair", "leather", "living-room"],
+    stock: 4,
+    isNew: true,
+    isFeatured: true,
+    deliveryInfo: "Delivery within 14-21 working days",
+  },
+
+  // ═══════════════════════════════════════════════════════════
   // ELECTRICAL
+  // ═══════════════════════════════════════════════════════════
   {
     id: "el-1",
     slug: "brass-toggle-switch-1-gang",
     name: "Solid Brass Toggle Switch 1 Gang",
     sku: "HOC-ELC-001",
-    category: {
-      id: "electrical",
-      name: "Electrical",
-      slug: "electrical",
-    },
-    subcategory: "Switches",
-    description: "Premium solid brass toggle switch with satin finish. British made with 20 year warranty.",
+    category: { id: "electrical", name: "Electrical", slug: "electrical" },
+    subcategory: "switches",
+    description: "Premium solid brass toggle switch with satin finish. British made with 20 year warranty. Compatible with LED and incandescent bulbs.",
     specifications: {
       material: "Solid Brass",
       dimensions: { width: 86, height: 86, depth: 28 },
       colour: "Satin Brass",
       finish: "Satin",
     },
-    pricing: {
-      price: 89.00,
-      priceExVat: 74.17,
-    },
+    pricing: { price: 89.00, priceExVat: 74.17 },
     variants: [
       { id: "el-1-brass", name: "Satin Brass", sku: "HOC-ELC-001-SB", price: 89.00, priceExVat: 74.17, stock: 50, attributes: { colour: "Satin Brass", colourHex: "#D4AF37" } },
       { id: "el-1-black", name: "Matte Black", sku: "HOC-ELC-001-MB", price: 89.00, priceExVat: 74.17, stock: 40, attributes: { colour: "Matte Black", colourHex: "#1A1A1A" } },
@@ -402,11 +514,41 @@ export const mockProducts: Product[] = [
     images: [
       { id: "el-1-1", url: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=1000&fit=crop", alt: "Brass Toggle Switch", width: 800, height: 1000 },
     ],
-    relatedProducts: [],
+    relatedProducts: ["el-2"],
     tags: ["electrical", "switch", "brass", "toggle"],
     stock: 50,
     isNew: false,
     isFeatured: true,
+    deliveryInfo: "Delivery within 3-5 working days",
+  },
+  {
+    id: "el-2",
+    slug: "brass-double-socket-usb",
+    name: "Solid Brass Double Socket with USB",
+    sku: "HOC-ELC-002",
+    category: { id: "electrical", name: "Electrical", slug: "electrical" },
+    subcategory: "sockets",
+    description: "Premium double socket with integrated USB-A and USB-C ports. Fast charging capable. British made.",
+    specifications: {
+      material: "Solid Brass",
+      dimensions: { width: 146, height: 86, depth: 28 },
+      colour: "Satin Brass",
+      finish: "Satin",
+    },
+    pricing: { price: 145.00, priceExVat: 120.83 },
+    variants: [
+      { id: "el-2-brass", name: "Satin Brass", sku: "HOC-ELC-002-SB", price: 145.00, priceExVat: 120.83, stock: 30, attributes: { colour: "Satin Brass", colourHex: "#D4AF37" } },
+      { id: "el-2-black", name: "Matte Black", sku: "HOC-ELC-002-MB", price: 145.00, priceExVat: 120.83, stock: 25, attributes: { colour: "Matte Black", colourHex: "#1A1A1A" } },
+      { id: "el-2-chrome", name: "Polished Chrome", sku: "HOC-ELC-002-PC", price: 145.00, priceExVat: 120.83, stock: 40, attributes: { colour: "Polished Chrome", colourHex: "#C0C0C0" } },
+    ],
+    images: [
+      { id: "el-2-1", url: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=1000&fit=crop", alt: "Brass Double Socket", width: 800, height: 1000 },
+    ],
+    relatedProducts: ["el-1"],
+    tags: ["electrical", "socket", "brass", "usb"],
+    stock: 30,
+    isNew: true,
+    isFeatured: false,
     deliveryInfo: "Delivery within 3-5 working days",
   },
 ];

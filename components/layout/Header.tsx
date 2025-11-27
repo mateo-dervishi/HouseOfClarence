@@ -78,7 +78,7 @@ export function Header() {
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${
           showSolidHeader
             ? "bg-white/95 backdrop-blur-md border-light-grey/50"
-            : "bg-transparent border-white/10"
+            : "bg-transparent border-white/30"
         }`}
       >
         {/* Main Navigation Bar */}
