@@ -1,6 +1,6 @@
 "use client";
 
-import { useSelectionStore } from "@/stores/selectionStore";
+import { useSelectionStore, SelectionItem } from "@/stores/selectionStore";
 import { X, Minus, Plus, Trash2, ClipboardList } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
@@ -213,7 +213,7 @@ function SelectionEnquiryPanel({
 }: {
   isOpen: boolean;
   onClose: () => void;
-  items: typeof useSelectionStore extends () => infer R ? R extends { items: infer I } ? I : never : never;
+  items: SelectionItem[];
 }) {
   const [formData, setFormData] = useState({
     firstName: "",
