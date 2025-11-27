@@ -28,8 +28,25 @@ export default function HomePage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="h-screen relative flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
+      <section className="h-screen relative flex items-center justify-center overflow-hidden bg-black">
+        {/* Background Image with Fade-in + Slow Zoom */}
+        <motion.div
+          initial={{ opacity: 0, scale: 1.05 }}
+          animate={{ 
+            opacity: 1, 
+            scale: 1.15 
+          }}
+          transition={{
+            opacity: { duration: 1.5, ease: "easeOut" },
+            scale: { 
+              duration: 30, 
+              ease: "linear",
+              repeat: Infinity,
+              repeatType: "reverse"
+            },
+          }}
+          className="absolute inset-0 z-0"
+        >
           <Image
             src="/images/sloane-12.webp"
             alt="House of Clarence"
@@ -38,29 +55,42 @@ export default function HomePage() {
             priority
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-black/30" />
-        </div>
+        </motion.div>
+        <div className="absolute inset-0 bg-black/30 z-[1]" />
+        
+        {/* Content with Staggered Fade-in */}
         <motion.div
-          className="relative z-10 text-center text-white px-6"
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
+          transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
+          className="relative z-10 text-center text-white px-6"
         >
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-display tracking-[0.3em] mb-6">
             REFINED FINISHING
           </h1>
-          <p className="text-lg md:text-xl mb-8 max-w-2xl mx-auto font-light">
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 1 }}
+            className="text-lg md:text-xl mb-8 max-w-2xl mx-auto font-light"
+          >
             For discerning spaces
-          </p>
-          <Button variant="outline" className="bg-white/10 backdrop-blur-sm border-white text-white hover:bg-white hover:text-primary-black">
-            EXPLORE COLLECTIONS
-          </Button>
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 1.2 }}
+          >
+            <Button variant="outline" className="bg-white/10 backdrop-blur-sm border-white text-white hover:bg-white hover:text-primary-black">
+              EXPLORE COLLECTIONS
+            </Button>
+          </motion.div>
         </motion.div>
         <motion.div
           className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 0.5 }}
+          transition={{ delay: 1.5, duration: 0.5 }}
         >
           <div className="w-6 h-10 border-2 border-white rounded-full flex items-start justify-center p-2">
             <motion.div
