@@ -83,7 +83,7 @@ export function Header() {
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${
           showSolidHeader
             ? "bg-white/95 backdrop-blur-md border-light-grey/50"
-            : "bg-transparent border-white/20"
+            : "bg-transparent border-white/10"
         }`}
       >
         {/* Main Navigation Bar */}
@@ -101,7 +101,7 @@ export function Header() {
             </Link>
 
             {/* Desktop Navigation - Categories in single row */}
-            <ul className="hidden lg:flex items-center gap-6 xl:gap-8 overflow-hidden whitespace-nowrap">
+            <ul className="hidden lg:flex items-center gap-5 overflow-hidden whitespace-nowrap">
               {navigationData.map((category: Category) => {
                 const isActive = activeCategory?.slug === category.slug;
                 const textColor = showSolidHeader
@@ -116,13 +116,13 @@ export function Header() {
                   <li key={category.slug} className="flex-shrink-0">
                     <button
                       onClick={() => handleCategoryClick(category)}
-                      className={`relative text-[11px] xl:text-[12px] tracking-[0.15em] uppercase py-4 transition-colors duration-300 ${textColor}`}
+                      className={`relative text-[11px] tracking-[0.12em] uppercase py-4 transition-colors duration-300 ${textColor}`}
                     >
                       {category.name.toUpperCase()}
                       {/* Active underline */}
                       {isActive && (
                         <span className={`absolute bottom-3 left-0 right-0 h-[1px] ${
-                          showSolidHeader ? "bg-primary-black" : "bg-white"
+                          showSolidHeader ? "bg-primary-black" : "bg-white/70"
                         }`} />
                       )}
                     </button>
@@ -134,7 +134,7 @@ export function Header() {
                 <li key={link.name} className="flex-shrink-0">
                   <Link
                     href={link.href}
-                    className={`text-[11px] xl:text-[12px] tracking-[0.15em] uppercase py-4 transition-colors duration-300 ${
+                    className={`text-[11px] tracking-[0.12em] uppercase py-4 transition-colors duration-300 ${
                       showSolidHeader ? "text-primary-black hover:opacity-60" : "text-white hover:opacity-70"
                     }`}
                     onClick={closeDropdown}
