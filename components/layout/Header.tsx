@@ -68,11 +68,6 @@ export function Header() {
     }
   };
 
-  // Static links for NEW IN and LAST CHANCE
-  const staticLinks = [
-    { name: "NEW IN", href: "/new-in" },
-    { name: "LAST CHANCE", href: "/last-chance" },
-  ];
 
   return (
     <>
@@ -129,20 +124,6 @@ export function Header() {
                   </li>
                 );
               })}
-              {/* Static links: NEW IN, LAST CHANCE */}
-              {staticLinks.map((link) => (
-                <li key={link.name} className="flex-shrink-0">
-                  <Link
-                    href={link.href}
-                    className={`text-[11px] tracking-[0.12em] uppercase py-4 transition-colors duration-300 ${
-                      showSolidHeader ? "text-primary-black hover:opacity-60" : "text-white hover:opacity-70"
-                    }`}
-                    onClick={closeDropdown}
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
             </ul>
 
             {/* Mobile hamburger */}

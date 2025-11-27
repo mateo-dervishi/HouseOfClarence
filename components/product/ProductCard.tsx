@@ -22,12 +22,22 @@ export function ProductCard({ product }: ProductCardProps) {
   const primaryImage = product.images[0];
   const hoverImage = product.images[1];
 
+  // Get variant colors for swatches
+  const variantColors = product.variants
+    .filter((v) => v.attributes?.colourHex)
+    .map((v) => ({
+      name: v.attributes.colour || v.name,
+      hex: v.attributes.colourHex as string,
+    }));
+
+  const optionsCount = product.variants.length;
+
   return (
     <article className="group">
       <Link href={`/product/${product.slug}`}>
         {/* Image Container */}
         <div 
-          className="aspect-square overflow-hidden bg-[#f5f5f5] relative mb-4"
+          className="aspect-[4/5] overflow-hidden bg-[#f5f5f5] relative mb-5"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
@@ -76,38 +86,54 @@ export function ProductCard({ product }: ProductCardProps) {
           )}
         </div>
 
-        {/* Product Info */}
-        <div className="text-center space-y-2">
-          {/* Color indicator if available */}
-          {product.specifications?.colour && (
-            <p className="text-[11px] tracking-[0.05em] text-warm-grey">
-              Colour: {product.specifications.colour}
+        {/* Product Info - Name left, Price right */}
+        <div className="space-y-2">
+          <div className="flex justify-between items-start gap-4">
+            {/* Product Name */}
+            <h3 className="text-[12px] tracking-[0.02em] uppercase leading-tight font-medium flex-1">
+              {product.name}
+            </h3>
+
+            {/* Price */}
+            <div className="text-[12px] text-right flex-shrink-0">
+              {isOnSale ? (
+                <div className="flex items-center gap-1">
+                  <span className="text-warm-grey line-through">
+                    {formatPrice(product.pricing.price)}
+                  </span>
+                  <span className="text-primary-black">
+                    {formatPrice(displayPrice)}
+                  </span>
+                </div>
+              ) : (
+                <span>{formatPrice(displayPrice)}</span>
+              )}
+              <span className="text-[10px] text-warm-grey">
+                ({formatPrice(displayPriceExVat)} EX VAT)
+              </span>
+            </div>
+          </div>
+
+          {/* Options Count */}
+          {optionsCount > 0 && (
+            <p className="text-[11px] text-warm-grey">
+              {optionsCount} Options
             </p>
           )}
 
-          {/* Product Name */}
-          <h3 className="text-[13px] tracking-[0.02em] leading-snug group-hover:opacity-70 transition-opacity">
-            {product.name}
-          </h3>
-
-          {/* Price */}
-          <div className="text-[13px]">
-            {isOnSale ? (
-              <div className="flex items-center justify-center gap-2">
-                <span className="text-warm-grey line-through">
-                  {formatPrice(product.pricing.price)}
-                </span>
-                <span className="text-primary-black">
-                  {formatPrice(displayPrice)}
-                </span>
-              </div>
-            ) : (
-              <span>{formatPrice(displayPrice)}</span>
-            )}
-            <span className="text-[11px] text-warm-grey ml-1">
-              ({formatPrice(displayPriceExVat)} EX VAT)
-            </span>
-          </div>
+          {/* Color Swatches */}
+          {variantColors.length > 0 && (
+            <div className="flex gap-1.5 pt-1">
+              {variantColors.map((color, index) => (
+                <div
+                  key={index}
+                  className="w-5 h-5 rounded-full border border-light-grey"
+                  style={{ backgroundColor: color.hex }}
+                  title={color.name}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </Link>
     </article>
