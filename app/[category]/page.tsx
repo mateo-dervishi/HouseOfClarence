@@ -1,7 +1,9 @@
+"use client";
+
 import { ProductCard } from "@/components/product/ProductCard";
 import { mockProducts } from "@/lib/mockData";
 import { CATEGORIES } from "@/lib/constants";
-import { notFound } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 
 interface CategoryPageProps {
@@ -25,10 +27,12 @@ const stagger = {
 };
 
 export default function CategoryPage({ params }: CategoryPageProps) {
+  const router = useRouter();
   const category = CATEGORIES.find((cat) => cat.slug === params.category);
 
   if (!category) {
-    notFound();
+    router.push("/404");
+    return null;
   }
 
   // Filter products by category
