@@ -88,12 +88,12 @@ export function Header() {
     <>
       <header
         ref={headerRef}
-        className={`fixed top-0 left-0 right-0 z-50 bg-white transition-all duration-300 ${
-          isScrolled ? "shadow-sm" : ""
+        className={`fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md transition-all duration-300 ${
+          isScrolled ? "shadow-sm bg-white/95" : ""
         }`}
       >
         {/* Main Navigation Bar */}
-        <nav className="border-b border-light-grey">
+        <nav className="border-b border-light-grey/50">
           <div className="flex items-center justify-center h-14 px-8 relative">
             {/* Desktop Navigation */}
             <ul className="hidden lg:flex items-center gap-8">
@@ -181,7 +181,7 @@ export function Header() {
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3, ease: [0.32, 0.72, 0, 1] }}
-              className="absolute top-full left-0 right-0 bg-white border-b border-light-grey overflow-hidden z-50"
+              className="absolute top-full left-0 right-0 bg-white/95 backdrop-blur-md border-b border-light-grey/50 overflow-hidden z-50"
             >
               <div className="max-w-[1400px] mx-auto px-8 py-12">
                 <div className="flex justify-between relative">
