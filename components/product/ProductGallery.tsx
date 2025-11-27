@@ -3,8 +3,16 @@
 import { useState } from "react";
 import Image from "next/image";
 
+interface ProductImage {
+  id: string;
+  url: string;
+  alt: string;
+  width: number;
+  height: number;
+}
+
 interface Props {
-  images: { id: string; url: string; alt: string; width: number; height: number }[];
+  images: ProductImage[];
   name: string;
 }
 
@@ -13,8 +21,8 @@ export function ProductGallery({ images, name }: Props) {
 
   if (!images || images.length === 0) {
     return (
-      <div className="flex gap-4">
-        <div className="flex-1 aspect-square relative bg-off-white overflow-hidden">
+      <div className="space-y-4">
+        <div className="aspect-square relative bg-[#f5f5f5] overflow-hidden">
           <div className="w-full h-full flex items-center justify-center text-warm-grey">
             No image available
           </div>
@@ -24,34 +32,9 @@ export function ProductGallery({ images, name }: Props) {
   }
 
   return (
-    <div className="flex gap-4">
-      {/* Thumbnail Strip - Vertical */}
-      {images.length > 1 && (
-        <div className="flex flex-col gap-3 w-20 flex-shrink-0">
-          {images.map((img, index) => (
-            <button
-              key={img.id || index}
-              onClick={() => setSelectedIndex(index)}
-              className={`aspect-square relative overflow-hidden border transition-all ${
-                selectedIndex === index
-                  ? "border-primary-black"
-                  : "border-light-grey hover:border-warm-grey"
-              }`}
-            >
-              <Image
-                src={img.url}
-                alt={img.alt || `${name} view ${index + 1}`}
-                fill
-                className="object-cover"
-                sizes="80px"
-              />
-            </button>
-          ))}
-        </div>
-      )}
-
+    <div className="space-y-4">
       {/* Main Image */}
-      <div className="flex-1 aspect-square relative bg-off-white overflow-hidden">
+      <div className="aspect-square relative bg-[#f5f5f5] overflow-hidden">
         <Image
           src={images[selectedIndex]?.url || images[0].url}
           alt={images[selectedIndex]?.alt || name}
@@ -80,7 +63,31 @@ export function ProductGallery({ images, name }: Props) {
           </svg>
         </button>
       </div>
+
+      {/* Thumbnail Strip - Horizontal */}
+      {images.length > 1 && (
+        <div className="flex gap-3 overflow-x-auto pb-2">
+          {images.map((img, index) => (
+            <button
+              key={img.id || index}
+              onClick={() => setSelectedIndex(index)}
+              className={`flex-shrink-0 w-20 h-20 relative overflow-hidden border-2 transition-all ${
+                selectedIndex === index
+                  ? "border-primary-black"
+                  : "border-transparent hover:border-warm-grey"
+              }`}
+            >
+              <Image
+                src={img.url}
+                alt={img.alt || `${name} view ${index + 1}`}
+                fill
+                className="object-cover"
+                sizes="80px"
+              />
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
-

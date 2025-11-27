@@ -4,7 +4,9 @@ import { ProductCard } from "@/components/product/ProductCard";
 import { mockProducts } from "@/lib/mockData";
 import { CATEGORIES } from "@/lib/constants";
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { ChevronDown } from "lucide-react";
+import Image from "next/image";
 
 interface CategoryPageProps {
   params: {
@@ -12,22 +14,10 @@ interface CategoryPageProps {
   };
 }
 
-const fadeUp = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
-};
-
-const stagger = {
-  animate: {
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-};
-
 export default function CategoryPage({ params }: CategoryPageProps) {
   const router = useRouter();
+  const [sortBy, setSortBy] = useState("featured");
+  
   const category = CATEGORIES.find((cat) => cat.slug === params.category);
 
   if (!category) {
@@ -40,83 +30,97 @@ export default function CategoryPage({ params }: CategoryPageProps) {
     (product) => product.category.slug === params.category
   );
 
+  // Sort products
+  const sortedProducts = [...categoryProducts].sort((a, b) => {
+    switch (sortBy) {
+      case "price-low":
+        return (a.pricing.salePrice || a.pricing.price) - (b.pricing.salePrice || b.pricing.price);
+      case "price-high":
+        return (b.pricing.salePrice || b.pricing.price) - (a.pricing.salePrice || a.pricing.price);
+      case "newest":
+        return b.isNew ? 1 : -1;
+      default:
+        return 0;
+    }
+  });
+
   return (
-    <main className="pt-24">
-      {/* Breadcrumb */}
-      <nav className="container mx-auto px-6 py-4">
-        <div className="text-xs tracking-widest uppercase text-warm-grey">
-          <a href="/" className="hover:text-primary-black transition-colors">
-            HOME
-          </a>
-          <span className="mx-2">/</span>
-          <span>{category.name.toUpperCase()}</span>
+    <main className="pt-14">
+      {/* Hero Banner */}
+      <section className="relative h-[40vh] min-h-[300px] bg-[#f5f5f5] overflow-hidden">
+        <Image
+          src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1920&h=600&fit=crop"
+          alt={category.name}
+          fill
+          className="object-cover"
+          priority
+        />
+        <div className="absolute inset-0 bg-black/30" />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <h1 className="text-white text-3xl md:text-5xl tracking-[0.2em] font-light uppercase">
+            {category.name}
+          </h1>
         </div>
+      </section>
+
+      {/* Breadcrumb */}
+      <nav className="max-w-[1600px] mx-auto px-6 py-6">
+        <ol className="flex items-center gap-2 text-[12px] tracking-[0.05em] text-warm-grey">
+          <li>
+            <a href="/" className="hover:text-primary-black transition-colors">
+              Home
+            </a>
+          </li>
+          <li>/</li>
+          <li className="text-primary-black capitalize">{category.name}</li>
+        </ol>
       </nav>
 
-      {/* Category Header */}
-      <header className="text-center py-16 px-6">
-        <motion.h1
-          className="text-3xl md:text-4xl tracking-[0.3em] font-light mb-4"
-          {...fadeUp}
-        >
-          {category.name.toUpperCase()}
-        </motion.h1>
-        {category.description && (
-          <motion.p
-            className="mt-4 text-warm-grey max-w-xl mx-auto leading-relaxed"
-            {...fadeUp}
-          >
-            {category.description}
-          </motion.p>
-        )}
-      </header>
-
-      {/* Filter Bar - Simplified for now */}
-      <aside className="sticky top-16 z-40 border-b border-light-grey bg-white">
-        <div className="container mx-auto px-6">
-          <div className="flex items-center justify-between py-4">
-            <div className="text-sm text-warm-grey">
-              {categoryProducts.length} {categoryProducts.length === 1 ? "product" : "products"}
-            </div>
-            <div className="flex items-center gap-4">
-              <select className="text-sm border-0 bg-transparent focus:outline-none cursor-pointer">
-                <option>Sort by: Featured</option>
-                <option>Price: Low to High</option>
-                <option>Price: High to Low</option>
-                <option>Newest First</option>
+      {/* Filter Bar */}
+      <div className="border-y border-light-grey">
+        <div className="max-w-[1600px] mx-auto px-6 py-4 flex items-center justify-between">
+          <p className="text-[13px] text-warm-grey">
+            {sortedProducts.length} {sortedProducts.length === 1 ? "Product" : "Products"}
+          </p>
+          <div className="flex items-center gap-6">
+            {/* Sort Dropdown */}
+            <div className="relative">
+              <select 
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="text-[13px] bg-transparent border-none cursor-pointer appearance-none pr-6 focus:outline-none"
+              >
+                <option value="featured">Sort by: Featured</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="newest">Newest</option>
               </select>
+              <ChevronDown className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none" />
             </div>
           </div>
         </div>
-      </aside>
+      </div>
 
       {/* Product Grid */}
-      <section className="py-12 px-6">
-        <div className="container mx-auto">
-          {categoryProducts.length > 0 ? (
-            <motion.div
-              className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8"
-              variants={stagger}
-              initial="initial"
-              animate="animate"
+      <section className="max-w-[1600px] mx-auto px-6 py-12">
+        {sortedProducts.length > 0 ? (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-12">
+            {sortedProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-24">
+            <p className="text-warm-grey mb-4">No products found in this category.</p>
+            <a
+              href="/"
+              className="text-[13px] tracking-[0.1em] uppercase underline hover:opacity-60 transition-opacity"
             >
-              {categoryProducts.map((product) => (
-                <motion.div key={product.id} variants={fadeUp}>
-                  <ProductCard product={product} />
-                </motion.div>
-              ))}
-            </motion.div>
-          ) : (
-            <div className="text-center py-24">
-              <p className="text-warm-grey mb-4">No products found in this category.</p>
-              <a href="/" className="text-sm underline hover:text-primary-black transition-colors">
-                Return to homepage
-              </a>
-            </div>
-          )}
-        </div>
+              Return to homepage
+            </a>
+          </div>
+        )}
       </section>
     </main>
   );
 }
-

@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { mockProducts } from "@/lib/mockData";
 import { ProductCard } from "@/components/product/ProductCard";
 import { ProductGallery } from "@/components/product/ProductGallery";
@@ -24,8 +25,12 @@ export default function ProductPage({ params }: ProductPageProps) {
   if (!product) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen px-6 text-center">
-        <h1 className="text-6xl md:text-8xl font-display tracking-widest mb-4">404</h1>
-        <h2 className="text-2xl md:text-3xl tracking-widest mb-4">PRODUCT NOT FOUND</h2>
+        <h1 className="text-6xl md:text-8xl font-display tracking-widest mb-4">
+          404
+        </h1>
+        <h2 className="text-2xl md:text-3xl tracking-widest mb-4">
+          PRODUCT NOT FOUND
+        </h2>
         <p className="text-warm-grey mb-8 max-w-md">
           The product you are looking for does not exist.
         </p>
@@ -38,11 +43,15 @@ export default function ProductPage({ params }: ProductPageProps) {
   const productInfoData = {
     name: product.name,
     sku: product.sku,
+    price: product.pricing.price,
+    priceExVat: product.pricing.priceExVat,
+    salePrice: product.pricing.salePrice,
+    salePriceExVat: product.pricing.salePriceExVat,
     colour: product.specifications.colour,
     variants: product.variants.map((v) => ({
       slug: v.id,
       colourName: v.attributes.colour || product.specifications.colour,
-      colourHex: "#C9A962", // Default accent gold, can be enhanced later
+      colourHex: "#C9A962",
     })),
     description: product.description,
     specifications: [
@@ -54,6 +63,8 @@ export default function ProductPage({ params }: ProductPageProps) {
       { label: "Colour", value: product.specifications.colour },
       { label: "Finish", value: product.specifications.finish },
     ],
+    category: product.category.slug,
+    subcategory: product.subcategory,
   };
 
   const relatedProducts = mockProducts
@@ -61,23 +72,23 @@ export default function ProductPage({ params }: ProductPageProps) {
     .slice(0, 6);
 
   return (
-    <main className="pt-32">
+    <main className="pt-14">
       {/* Breadcrumb */}
-      <nav className="max-w-[1600px] mx-auto px-6 py-4">
-        <ol className="flex items-center gap-2 text-[11px] tracking-[0.05em] text-warm-grey uppercase">
+      <nav className="max-w-[1600px] mx-auto px-6 py-6">
+        <ol className="flex items-center gap-2 text-[12px] tracking-[0.05em] text-warm-grey">
           <li>
-            <a href="/" className="hover:text-primary-black transition-colors">
+            <Link href="/" className="hover:text-primary-black transition-colors">
               Home
-            </a>
+            </Link>
           </li>
           <li>/</li>
           <li>
-            <a
+            <Link
               href={`/${product.category.slug}`}
-              className="hover:text-primary-black transition-colors"
+              className="hover:text-primary-black transition-colors capitalize"
             >
               {product.category.name}
-            </a>
+            </Link>
           </li>
           <li>/</li>
           <li className="text-primary-black">{product.name}</li>
@@ -86,27 +97,27 @@ export default function ProductPage({ params }: ProductPageProps) {
 
       {/* Product Section */}
       <section className="max-w-[1600px] mx-auto px-6 pb-20">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
           {/* LEFT: Image Gallery */}
           <ProductGallery images={product.images} name={product.name} />
 
           {/* RIGHT: Product Info */}
-          <div className="lg:sticky lg:top-36 lg:self-start">
-            <ProductInfo product={productInfoData} />
-          </div>
+          <ProductInfo product={productInfoData} />
         </div>
       </section>
 
       {/* Related Products */}
       {relatedProducts.length > 0 && (
-        <section className="max-w-[1600px] mx-auto px-6 py-16 border-t border-light-grey">
-          <h2 className="text-2xl tracking-[0.15em] uppercase font-display font-light mb-12 text-center">
-            Related Products
-          </h2>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-            {relatedProducts.map((relatedProduct) => (
-              <ProductCard key={relatedProduct.id} product={relatedProduct} />
-            ))}
+        <section className="border-t border-light-grey py-16">
+          <div className="max-w-[1600px] mx-auto px-6">
+            <h2 className="text-center text-[15px] tracking-[0.2em] uppercase mb-12">
+              You May Also Like
+            </h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+              {relatedProducts.map((relatedProduct) => (
+                <ProductCard key={relatedProduct.id} product={relatedProduct} />
+              ))}
+            </div>
           </div>
         </section>
       )}

@@ -2,96 +2,114 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Heart } from "lucide-react";
 import { Product } from "@/types/product";
-import { formatPrice, formatPriceWithVat } from "@/lib/utils";
+import { formatPrice } from "@/lib/utils";
 import { useState } from "react";
-import { motion } from "framer-motion";
 
 interface ProductCardProps {
   product: Product;
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-  const [isWishlisted, setIsWishlisted] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   const displayPrice = product.pricing.salePrice || product.pricing.price;
   const displayPriceExVat = product.pricing.salePriceExVat || product.pricing.priceExVat;
   const isOnSale = !!product.pricing.salePrice;
 
+  // Get second image for hover effect if available
+  const primaryImage = product.images[0];
+  const hoverImage = product.images[1];
+
   return (
-    <motion.article
-      className="group cursor-pointer"
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-    >
+    <article className="group">
       <Link href={`/${product.category.slug}/${product.slug}`}>
-        <div className="aspect-[4/5] overflow-hidden bg-off-white relative">
-          {product.images[0] && !imageError ? (
-            <Image
-              src={product.images[0].url}
-              alt={product.images[0].alt || product.name}
-              fill
-              className="object-cover transition-transform duration-700 group-hover:scale-105"
-              onError={() => setImageError(true)}
-              sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-            />
+        {/* Image Container */}
+        <div 
+          className="aspect-square overflow-hidden bg-[#f5f5f5] relative mb-4"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          {primaryImage && !imageError ? (
+            <>
+              {/* Primary Image */}
+              <Image
+                src={primaryImage.url}
+                alt={primaryImage.alt || product.name}
+                fill
+                className={`object-cover transition-opacity duration-500 ${
+                  isHovered && hoverImage ? "opacity-0" : "opacity-100"
+                }`}
+                onError={() => setImageError(true)}
+                sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+              />
+              {/* Hover Image */}
+              {hoverImage && (
+                <Image
+                  src={hoverImage.url}
+                  alt={hoverImage.alt || `${product.name} - alternate view`}
+                  fill
+                  className={`object-cover transition-opacity duration-500 ${
+                    isHovered ? "opacity-100" : "opacity-0"
+                  }`}
+                  sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                />
+              )}
+            </>
           ) : (
-            <div className="w-full h-full bg-light-grey flex items-center justify-center">
+            <div className="w-full h-full flex items-center justify-center">
               <span className="text-warm-grey text-sm">Image Coming Soon</span>
             </div>
           )}
 
-          {/* Badges */}
-          <div className="absolute top-4 left-4 flex flex-col gap-2">
-            {product.isNew && (
-              <span className="bg-primary-black text-white text-xs px-3 py-1 tracking-wider uppercase">
-                NEW
-              </span>
-            )}
-            {isOnSale && (
-              <span className="bg-accent-gold text-primary-black text-xs px-3 py-1 tracking-wider uppercase">
-                SALE
-              </span>
-            )}
-          </div>
-
-          {/* Wishlist Button */}
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              setIsWishlisted(!isWishlisted);
-            }}
-            className="absolute top-4 right-4 p-2 bg-white/80 backdrop-blur-sm rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-            aria-label="Add to wishlist"
-          >
-            <Heart
-              className={`h-5 w-5 ${
-                isWishlisted ? "fill-primary-black text-primary-black" : "text-primary-black"
-              }`}
-            />
-          </button>
+          {/* Badge */}
+          {product.isNew && (
+            <span className="absolute top-4 left-4 bg-white text-[10px] tracking-[0.1em] uppercase px-3 py-1.5">
+              NEW
+            </span>
+          )}
+          {isOnSale && !product.isNew && (
+            <span className="absolute top-4 left-4 bg-white text-[10px] tracking-[0.1em] uppercase px-3 py-1.5">
+              SALE
+            </span>
+          )}
         </div>
-        <div className="mt-4 text-center">
-          <h3 className="text-sm tracking-wide font-light">{product.name}</h3>
-          <div className="mt-1">
+
+        {/* Product Info */}
+        <div className="text-center space-y-2">
+          {/* Color indicator if available */}
+          {product.specifications?.colour && (
+            <p className="text-[11px] tracking-[0.05em] text-warm-grey">
+              Colour: {product.specifications.colour}
+            </p>
+          )}
+
+          {/* Product Name */}
+          <h3 className="text-[13px] tracking-[0.02em] leading-snug group-hover:opacity-70 transition-opacity">
+            {product.name}
+          </h3>
+
+          {/* Price */}
+          <div className="text-[13px]">
             {isOnSale ? (
-              <div>
-                <span className="text-warm-grey line-through mr-2">
+              <div className="flex items-center justify-center gap-2">
+                <span className="text-warm-grey line-through">
                   {formatPrice(product.pricing.price)}
                 </span>
-                <span className="text-primary-black">{formatPrice(displayPrice)}</span>
+                <span className="text-primary-black">
+                  {formatPrice(displayPrice)}
+                </span>
               </div>
             ) : (
-              <p className="text-warm-grey">{formatPrice(displayPrice)}</p>
+              <span>{formatPrice(displayPrice)}</span>
             )}
+            <span className="text-[11px] text-warm-grey ml-1">
+              ({formatPrice(displayPriceExVat)} EX VAT)
+            </span>
           </div>
         </div>
       </Link>
-    </motion.article>
+    </article>
   );
 }
-

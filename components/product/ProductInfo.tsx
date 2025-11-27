@@ -1,16 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import { Phone } from "lucide-react";
-import { EnquiryPanel } from "./EnquiryPanel";
-import { ProductAccordion } from "./ProductAccordion";
+import Link from "next/link";
+import { ChevronDown, Phone, Mail } from "lucide-react";
+import { formatPrice } from "@/lib/utils";
 
 interface Props {
   product: {
     name: string;
     sku: string;
-    rating?: number;
-    reviewCount?: number;
+    price: number;
+    priceExVat: number;
+    salePrice?: number;
+    salePriceExVat?: number;
     colour?: string;
     colourHex?: string;
     variants?: {
@@ -20,65 +22,75 @@ interface Props {
     }[];
     description: string;
     specifications?: { label: string; value: string }[];
+    category: string;
+    subcategory: string;
   };
 }
 
 export function ProductInfo({ product }: Props) {
-  const [isEnquiryOpen, setIsEnquiryOpen] = useState(false);
+  const [openSection, setOpenSection] = useState<string | null>("description");
+
+  const toggleSection = (section: string) => {
+    setOpenSection(openSection === section ? null : section);
+  };
+
+  const displayPrice = product.salePrice || product.price;
+  const displayPriceExVat = product.salePriceExVat || product.priceExVat;
+  const isOnSale = !!product.salePrice;
 
   return (
-    <div className="space-y-6">
+    <div className="lg:sticky lg:top-24 lg:self-start">
+      {/* Breadcrumb mini */}
+      <nav className="mb-4">
+        <ol className="flex items-center gap-2 text-[11px] tracking-[0.05em] text-warm-grey">
+          <li>
+            <a href={`/${product.category}`} className="hover:text-primary-black capitalize transition-colors">
+              {product.category}
+            </a>
+          </li>
+          <li>/</li>
+          <li>
+            <a href={`/${product.category}/${product.subcategory}`} className="hover:text-primary-black capitalize transition-colors">
+              {product.subcategory}
+            </a>
+          </li>
+        </ol>
+      </nav>
+
       {/* Product Name */}
-      <h1 className="text-2xl lg:text-3xl tracking-[0.05em] font-display font-light uppercase">
+      <h1 className="text-2xl lg:text-3xl tracking-[0.05em] font-light mb-6">
         {product.name}
       </h1>
 
-      {/* Reviews (optional) */}
-      {product.rating && (
-        <div className="flex items-center gap-2">
-          <div className="flex">
-            {[...Array(5)].map((_, i) => (
-              <svg
-                key={i}
-                className={`w-4 h-4 ${
-                  i < Math.floor(product.rating!)
-                    ? "text-primary-black"
-                    : "text-light-grey"
-                }`}
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-              </svg>
-            ))}
-          </div>
-          {product.reviewCount && (
-            <span className="text-[12px] text-warm-grey">
-              {product.reviewCount.toLocaleString()} reviews
+      {/* Price */}
+      <div className="mb-8">
+        {isOnSale ? (
+          <div className="flex items-baseline gap-3">
+            <span className="text-xl text-warm-grey line-through">
+              {formatPrice(product.price)}
             </span>
-          )}
-        </div>
-      )}
+            <span className="text-2xl">{formatPrice(displayPrice)}</span>
+          </div>
+        ) : (
+          <span className="text-2xl">{formatPrice(displayPrice)}</span>
+        )}
+        <p className="text-[13px] text-warm-grey mt-1">
+          ({formatPrice(displayPriceExVat)} EX VAT)
+        </p>
+      </div>
 
-      {/* Colour Selector */}
+      {/* Colour/Variant Selector */}
       {product.variants && product.variants.length > 0 && (
-        <div className="space-y-3">
-          <div className="flex items-center gap-3">
-            <span className="text-[12px] tracking-[0.1em] uppercase text-warm-grey">
-              Colour
-            </span>
-            {product.colour && (
-              <span className="text-[12px] tracking-[0.1em] uppercase text-primary-black">
-                {product.colour}
-              </span>
-            )}
-          </div>
-          <div className="flex gap-3">
+        <div className="mb-8">
+          <p className="text-[12px] tracking-[0.1em] uppercase text-warm-grey mb-3">
+            Colour: <span className="text-primary-black">{product.colour}</span>
+          </p>
+          <div className="flex gap-2">
             {product.variants.map((variant) => (
-              <a
+              <Link
                 key={variant.slug}
                 href={`/product/${variant.slug}`}
-                className={`w-10 h-10 rounded-full border-2 transition-all ${
+                className={`w-10 h-10 rounded-full border-2 transition-colors ${
                   variant.colourName === product.colour
                     ? "border-primary-black"
                     : "border-light-grey hover:border-warm-grey"
@@ -91,41 +103,116 @@ export function ProductInfo({ product }: Props) {
         </div>
       )}
 
-      {/* Action Buttons */}
-      <div className="space-y-3 pt-4">
-        {/* Call Now */}
+      {/* ENQUIRE BUTTONS (No Add to Cart) */}
+      <div className="space-y-3 mb-10">
+        <Link
+          href={`/contact?product=${encodeURIComponent(product.name)}`}
+          className="block w-full py-4 bg-primary-black text-white text-center text-[13px] tracking-[0.15em] uppercase hover:bg-charcoal transition-colors"
+        >
+          Enquire About This Product
+        </Link>
         <a
           href="tel:+442033704057"
-          className="w-full py-4 border border-primary-black text-primary-black text-[12px] tracking-[0.15em] uppercase font-medium flex items-center justify-center gap-2 hover:bg-off-white transition-colors"
+          className="flex items-center justify-center gap-2 w-full py-4 border border-primary-black text-center text-[13px] tracking-[0.15em] uppercase hover:bg-primary-black hover:text-white transition-colors"
         >
-          <Phone className="w-4 h-4" strokeWidth={1.5} />
-          Call Now: +44 (0)20 3370 4057
+          <Phone className="w-4 h-4" />
+          Call: 020 3370 4057
         </a>
-
-        {/* Enquire Button */}
-        <button
-          onClick={() => setIsEnquiryOpen(true)}
-          className="w-full py-4 border border-primary-black text-primary-black text-[12px] tracking-[0.15em] uppercase font-medium hover:bg-off-white transition-colors"
-        >
-          Enquire
-        </button>
       </div>
 
-      {/* Accordion Sections */}
-      <div className="pt-6 border-t border-light-grey">
-        <ProductAccordion
-          description={product.description}
-          specifications={product.specifications}
-        />
-      </div>
+      {/* Collapsible Sections */}
+      <div className="border-t border-light-grey">
+        {/* Description */}
+        <div className="border-b border-light-grey">
+          <button
+            onClick={() => toggleSection("description")}
+            className="w-full flex items-center justify-between py-5 text-left"
+          >
+            <span className="text-[13px] tracking-[0.1em] uppercase">
+              Description
+            </span>
+            <ChevronDown
+              className={`w-4 h-4 transition-transform ${
+                openSection === "description" ? "rotate-180" : ""
+              }`}
+            />
+          </button>
+          {openSection === "description" && (
+            <div className="pb-6 text-[14px] leading-relaxed text-warm-grey">
+              <p>{product.description}</p>
+            </div>
+          )}
+        </div>
 
-      {/* Enquiry Slide-out Panel */}
-      <EnquiryPanel
-        isOpen={isEnquiryOpen}
-        onClose={() => setIsEnquiryOpen(false)}
-        productName={product.name}
-      />
+        {/* Specification */}
+        {product.specifications && product.specifications.length > 0 && (
+          <div className="border-b border-light-grey">
+            <button
+              onClick={() => toggleSection("specification")}
+              className="w-full flex items-center justify-between py-5 text-left"
+            >
+              <span className="text-[13px] tracking-[0.1em] uppercase">
+                Specification
+              </span>
+              <ChevronDown
+                className={`w-4 h-4 transition-transform ${
+                  openSection === "specification" ? "rotate-180" : ""
+                }`}
+              />
+            </button>
+            {openSection === "specification" && (
+              <div className="pb-6 text-[14px] text-warm-grey">
+                <ul className="space-y-2">
+                  {product.specifications.map((spec, index) => (
+                    <li key={index} className="flex">
+                      <span className="w-40 text-warm-grey">{spec.label}</span>
+                      <span className="text-primary-black">{spec.value}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Shipping & Returns */}
+        <div className="border-b border-light-grey">
+          <button
+            onClick={() => toggleSection("shipping")}
+            className="w-full flex items-center justify-between py-5 text-left"
+          >
+            <span className="text-[13px] tracking-[0.1em] uppercase">
+              Shipping & Returns
+            </span>
+            <ChevronDown
+              className={`w-4 h-4 transition-transform ${
+                openSection === "shipping" ? "rotate-180" : ""
+              }`}
+            />
+          </button>
+          {openSection === "shipping" && (
+            <div className="pb-6 text-[14px] leading-relaxed text-warm-grey space-y-4">
+              <div>
+                <p className="font-medium text-primary-black mb-2">
+                  Delivery Costs (Mainland UK)
+                </p>
+                <ul className="space-y-1">
+                  <li>Small parcel deliveries - £9.95</li>
+                  <li>Medium pallet deliveries - £40</li>
+                  <li>Large pallet deliveries - £96</li>
+                </ul>
+              </div>
+              <div>
+                <p className="font-medium text-primary-black mb-2">Returns</p>
+                <p>
+                  You have 14 days from the date of receiving your order to
+                  initiate a return. Please contact us to arrange.
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
-
