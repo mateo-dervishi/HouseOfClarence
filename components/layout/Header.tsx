@@ -191,6 +191,18 @@ export function Header() {
                 </li>
               );
             })}
+            {/* Bespoke - Special link */}
+            <li>
+              <Link
+                href="/bespoke"
+                onClick={closeDropdown}
+                className={`relative text-[11px] tracking-[0.12em] uppercase py-2 transition-all duration-300 hover:scale-110 origin-center ${
+                  showSolidHeader ? "text-primary-black" : "text-white"
+                } opacity-80 hover:opacity-100`}
+              >
+                BESPOKE
+              </Link>
+            </li>
           </ul>
         </nav>
       </header>
