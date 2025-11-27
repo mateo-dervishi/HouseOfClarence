@@ -1,24 +1,25 @@
 "use client";
 
 import { useSelectionStore, SelectionItem } from "@/stores/selectionStore";
-import { X, Minus, Plus, Trash2, ClipboardList } from "lucide-react";
+import { X, Minus, Plus, Trash2, ClipboardList, Maximize2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { formatPrice } from "@/lib/utils";
 import { useState } from "react";
-import { EnquiryPanel } from "@/components/product/EnquiryPanel";
 
 export function SelectionDrawer() {
-  const { isOpen, closeSelection, items, updateQuantity, removeItem, clearSelection, getItemCount } = useSelectionStore();
+  const router = useRouter();
+  const { isOpen, closeSelection, items, labels, updateQuantity, removeItem, clearSelection, getItemCount } = useSelectionStore();
   const [showEnquiry, setShowEnquiry] = useState(false);
   
   const itemCount = getItemCount();
-  
-  // Create a summary of all items for the enquiry
-  const selectionSummary = items
-    .map((item) => `${item.quantity}x ${item.name}${item.colour ? ` (${item.colour})` : ""}`)
-    .join("\n");
+
+  const handleViewFullPage = () => {
+    closeSelection();
+    router.push("/selection");
+  };
 
   return (
     <>
@@ -43,21 +44,34 @@ export function SelectionDrawer() {
               className="fixed right-0 top-0 h-full w-full max-w-md bg-white z-50 flex flex-col shadow-2xl"
             >
               {/* Header */}
-              <header className="p-6 border-b border-light-grey flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <ClipboardList className="w-5 h-5" strokeWidth={1.5} />
-                  <h2 className="tracking-[0.15em] text-sm uppercase font-display">
-                    Your Selection
-                  </h2>
-                  <span className="text-warm-grey text-sm">({itemCount})</span>
+              <header className="p-6 border-b border-light-grey">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <ClipboardList className="w-5 h-5" strokeWidth={1.5} />
+                    <h2 className="tracking-[0.15em] text-sm uppercase font-display">
+                      Your Selection
+                    </h2>
+                    <span className="text-warm-grey text-sm">({itemCount})</span>
+                  </div>
+                  <button
+                    onClick={closeSelection}
+                    className="p-2 hover:bg-off-white transition-colors rounded-full"
+                    aria-label="Close selection"
+                  >
+                    <X className="h-5 w-5" strokeWidth={1.5} />
+                  </button>
                 </div>
-                <button
-                  onClick={closeSelection}
-                  className="p-2 hover:bg-off-white transition-colors rounded-full"
-                  aria-label="Close selection"
-                >
-                  <X className="h-5 w-5" strokeWidth={1.5} />
-                </button>
+                
+                {/* View Full Page Button */}
+                {items.length > 0 && (
+                  <button
+                    onClick={handleViewFullPage}
+                    className="mt-4 w-full flex items-center justify-center gap-2 py-3 border border-light-grey text-[12px] tracking-[0.1em] uppercase text-warm-grey hover:border-primary-black hover:text-primary-black transition-colors"
+                  >
+                    <Maximize2 className="w-4 h-4" />
+                    Expand to Full Page & Organise
+                  </button>
+                )}
               </header>
 
               {/* Content */}
@@ -77,82 +91,125 @@ export function SelectionDrawer() {
                 </div>
               ) : (
                 <>
+                  {/* Labels Preview */}
+                  {labels.length > 0 && (
+                    <div className="px-4 py-3 bg-off-white border-b border-light-grey">
+                      <p className="text-[10px] tracking-[0.1em] uppercase text-warm-grey mb-2">
+                        Organised by {labels.length} room{labels.length > 1 ? "s" : ""}
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {labels.map((label) => (
+                          <span
+                            key={label.id}
+                            className="inline-flex items-center gap-1.5 px-2 py-1 text-[10px] tracking-wide bg-white border border-light-grey"
+                          >
+                            <span
+                              className="w-2 h-2 rounded-full"
+                              style={{ backgroundColor: label.color }}
+                            />
+                            {label.name}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
                   {/* Items List */}
                   <div className="flex-1 overflow-y-auto">
                     <ul className="divide-y divide-light-grey">
-                      {items.map((item) => (
-                        <li key={item.id} className="p-4">
-                          <div className="flex gap-4">
-                            {/* Image */}
-                            <Link
-                              href={`/product/${item.slug}`}
-                              onClick={closeSelection}
-                              className="flex-shrink-0 w-24 h-24 bg-off-white relative overflow-hidden"
-                            >
-                              <Image
-                                src={item.image}
-                                alt={item.name}
-                                fill
-                                className="object-cover"
-                                sizes="96px"
-                              />
-                            </Link>
-
-                            {/* Details */}
-                            <div className="flex-1 min-w-0">
+                      {items.map((item) => {
+                        const itemLabel = labels.find((l) => l.id === item.labelId);
+                        return (
+                          <li key={item.id} className="p-4">
+                            <div className="flex gap-4">
+                              {/* Image */}
                               <Link
                                 href={`/product/${item.slug}`}
                                 onClick={closeSelection}
-                                className="text-[13px] tracking-[0.02em] leading-snug hover:opacity-70 transition-opacity line-clamp-2"
+                                className="flex-shrink-0 w-24 h-24 bg-off-white relative overflow-hidden"
                               >
-                                {item.name}
+                                <Image
+                                  src={item.image}
+                                  alt={item.name}
+                                  fill
+                                  className="object-cover"
+                                  sizes="96px"
+                                />
                               </Link>
-                              
-                              {item.colour && (
-                                <p className="text-[11px] text-warm-grey mt-1">
-                                  Colour: {item.colour}
-                                </p>
-                              )}
-                              
-                              <p className="text-[13px] mt-2">
-                                {formatPrice(item.price)}
-                                <span className="text-[10px] text-warm-grey ml-1">
-                                  ({formatPrice(item.priceExVat)} ex VAT)
-                                </span>
-                              </p>
 
-                              {/* Quantity Controls */}
-                              <div className="flex items-center justify-between mt-3">
-                                <div className="flex items-center border border-light-grey">
-                                  <button
-                                    onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                                    className="p-2 hover:bg-off-white transition-colors"
-                                    aria-label="Decrease quantity"
+                              {/* Details */}
+                              <div className="flex-1 min-w-0">
+                                {/* Label Badge */}
+                                {itemLabel && (
+                                  <span
+                                    className="inline-flex items-center gap-1 px-2 py-0.5 text-[9px] tracking-wide uppercase mb-1"
+                                    style={{ 
+                                      backgroundColor: `${itemLabel.color}15`,
+                                      color: itemLabel.color,
+                                    }}
                                   >
-                                    <Minus className="w-3 h-3" />
-                                  </button>
-                                  <span className="px-4 text-sm">{item.quantity}</span>
+                                    <span
+                                      className="w-1.5 h-1.5 rounded-full"
+                                      style={{ backgroundColor: itemLabel.color }}
+                                    />
+                                    {itemLabel.name}
+                                  </span>
+                                )}
+                                
+                                <Link
+                                  href={`/product/${item.slug}`}
+                                  onClick={closeSelection}
+                                  className="text-[13px] tracking-[0.02em] leading-snug hover:opacity-70 transition-opacity line-clamp-2"
+                                >
+                                  {item.name}
+                                </Link>
+                                
+                                {item.colour && (
+                                  <p className="text-[11px] text-warm-grey mt-1">
+                                    Colour: {item.colour}
+                                  </p>
+                                )}
+                                
+                                <p className="text-[13px] mt-2">
+                                  {formatPrice(item.price)}
+                                  <span className="text-[10px] text-warm-grey ml-1">
+                                    ({formatPrice(item.priceExVat)} ex VAT)
+                                  </span>
+                                </p>
+
+                                {/* Quantity Controls */}
+                                <div className="flex items-center justify-between mt-3">
+                                  <div className="flex items-center border border-light-grey">
+                                    <button
+                                      onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                                      className="p-2 hover:bg-off-white transition-colors"
+                                      aria-label="Decrease quantity"
+                                    >
+                                      <Minus className="w-3 h-3" />
+                                    </button>
+                                    <span className="px-4 text-sm">{item.quantity}</span>
+                                    <button
+                                      onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                                      className="p-2 hover:bg-off-white transition-colors"
+                                      aria-label="Increase quantity"
+                                    >
+                                      <Plus className="w-3 h-3" />
+                                    </button>
+                                  </div>
+                                  
                                   <button
-                                    onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                    className="p-2 hover:bg-off-white transition-colors"
-                                    aria-label="Increase quantity"
+                                    onClick={() => removeItem(item.id)}
+                                    className="p-2 text-warm-grey hover:text-primary-black transition-colors"
+                                    aria-label="Remove item"
                                   >
-                                    <Plus className="w-3 h-3" />
+                                    <Trash2 className="w-4 h-4" />
                                   </button>
                                 </div>
-                                
-                                <button
-                                  onClick={() => removeItem(item.id)}
-                                  className="p-2 text-warm-grey hover:text-primary-black transition-colors"
-                                  aria-label="Remove item"
-                                >
-                                  <Trash2 className="w-4 h-4" />
-                                </button>
                               </div>
                             </div>
-                          </div>
-                        </li>
-                      ))}
+                          </li>
+                        );
+                      })}
                     </ul>
                   </div>
 
@@ -200,6 +257,7 @@ export function SelectionDrawer() {
         isOpen={showEnquiry}
         onClose={() => setShowEnquiry(false)}
         items={items}
+        labels={labels}
       />
     </>
   );
@@ -210,10 +268,12 @@ function SelectionEnquiryPanel({
   isOpen,
   onClose,
   items,
+  labels,
 }: {
   isOpen: boolean;
   onClose: () => void;
   items: SelectionItem[];
+  labels: { id: string; name: string; color: string }[];
 }) {
   const [formData, setFormData] = useState({
     firstName: "",
@@ -236,6 +296,13 @@ function SelectionEnquiryPanel({
       onClose();
     }, 2000);
   };
+
+  // Group items by label for the summary
+  const groupedItems = labels.map((label) => ({
+    label,
+    items: items.filter((item) => item.labelId === label.id),
+  }));
+  const unlabeledItems = items.filter((item) => !item.labelId);
 
   return (
     <AnimatePresence>
@@ -278,19 +345,55 @@ function SelectionEnquiryPanel({
                 </motion.div>
               ) : (
                 <>
-                  {/* Selected Items Summary */}
-                  <div className="mb-6 p-4 bg-off-white">
+                  {/* Selected Items Summary - Grouped by Label */}
+                  <div className="mb-6 p-4 bg-off-white max-h-64 overflow-y-auto">
                     <h3 className="text-[12px] tracking-[0.1em] uppercase text-warm-grey mb-3">
                       Your Selected Items ({items.length})
                     </h3>
-                    <ul className="space-y-2 text-[13px] max-h-32 overflow-y-auto">
-                      {items.map((item) => (
-                        <li key={item.id} className="flex justify-between">
-                          <span className="truncate pr-2">{item.quantity}x {item.name}</span>
-                          <span className="flex-shrink-0 text-warm-grey">{formatPrice(item.price * item.quantity)}</span>
-                        </li>
-                      ))}
-                    </ul>
+                    
+                    {/* Grouped items */}
+                    {groupedItems.map(({ label, items: labelItems }) => (
+                      labelItems.length > 0 && (
+                        <div key={label.id} className="mb-4">
+                          <div className="flex items-center gap-2 mb-2">
+                            <span
+                              className="w-2 h-2 rounded-full"
+                              style={{ backgroundColor: label.color }}
+                            />
+                            <span className="text-[11px] tracking-[0.1em] uppercase font-medium">
+                              {label.name}
+                            </span>
+                          </div>
+                          <ul className="space-y-1 text-[13px] pl-4">
+                            {labelItems.map((item) => (
+                              <li key={item.id} className="flex justify-between">
+                                <span className="truncate pr-2">{item.quantity}x {item.name}</span>
+                                <span className="flex-shrink-0 text-warm-grey">{formatPrice(item.price * item.quantity)}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )
+                    ))}
+                    
+                    {/* Unlabeled items */}
+                    {unlabeledItems.length > 0 && (
+                      <div>
+                        {labels.length > 0 && (
+                          <p className="text-[11px] tracking-[0.1em] uppercase text-warm-grey mb-2">
+                            Unassigned Items
+                          </p>
+                        )}
+                        <ul className="space-y-1 text-[13px]">
+                          {unlabeledItems.map((item) => (
+                            <li key={item.id} className="flex justify-between">
+                              <span className="truncate pr-2">{item.quantity}x {item.name}</span>
+                              <span className="flex-shrink-0 text-warm-grey">{formatPrice(item.price * item.quantity)}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
                   </div>
 
                   <form onSubmit={handleSubmit} className="space-y-5">
@@ -366,4 +469,3 @@ function SelectionEnquiryPanel({
     </AnimatePresence>
   );
 }
-
