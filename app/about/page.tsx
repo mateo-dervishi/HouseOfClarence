@@ -53,7 +53,7 @@ export default function AboutPage() {
               environments.
             </p>
             <p>
-              Whether you're an interior designer, architect, trade professional, or homeowner
+              Whether you&apos;re an interior designer, architect, trade professional, or homeowner
               with a discerning eye, House of Clarence provides the finishing touches that
               elevate your project from good to exceptional.
             </p>
