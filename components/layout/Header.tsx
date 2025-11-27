@@ -86,19 +86,9 @@ export function Header() {
             : "bg-transparent border-white/30"
         }`}
       >
-        {/* Top Row - Logo centered with icons on right */}
-        <div className="relative flex items-center justify-center h-12 px-8">
-          {/* Mobile hamburger - Left */}
-          <button
-            className={`lg:hidden absolute left-6 p-2 transition-colors duration-300 ${
-              showSolidHeader ? "text-primary-black" : "text-white"
-            }`}
-            aria-label="Open menu"
-          >
-            <Menu className="w-5 h-5" strokeWidth={1.5} />
-          </button>
-
-          {/* Logo - Centered */}
+        {/* Top Row - Logo left with icons on right */}
+        <div className="flex items-center justify-between h-12 px-8">
+          {/* Logo - Left */}
           <Link
             href="/"
             className={`text-lg md:text-xl tracking-[0.35em] font-display uppercase font-light transition-colors duration-300 ${
@@ -110,7 +100,17 @@ export function Header() {
           </Link>
 
           {/* Right icons - Search and Selection */}
-          <div className="absolute right-6 flex items-center gap-1">
+          <div className="flex items-center gap-1">
+            {/* Mobile hamburger */}
+            <button
+              className={`lg:hidden p-2 transition-colors duration-300 ${
+                showSolidHeader ? "text-primary-black" : "text-white"
+              }`}
+              aria-label="Open menu"
+            >
+              <Menu className="w-5 h-5" strokeWidth={1.5} />
+            </button>
+
             <button
               className={`p-2 transition-colors duration-300 ${
                 showSolidHeader ? "text-primary-black hover:opacity-60" : "text-white hover:opacity-70"
