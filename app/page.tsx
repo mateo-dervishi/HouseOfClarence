@@ -8,7 +8,8 @@ import { Input } from "@/components/ui/input";
 import { CATEGORIES } from "@/lib/constants";
 import { featuredProducts } from "@/lib/mockData";
 import { ArrowRight } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 
 const fadeUp = {
   initial: { opacity: 0, y: 20 },
@@ -25,26 +26,34 @@ const stagger = {
 };
 
 export default function HomePage() {
+  const heroRef = useRef(null);
+
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+
+  // Image moves slower than scroll (parallax)
+  const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
+  const imageScale = useTransform(scrollYProgress, [0, 1], [1.05, 1]);
+
+  // Overlay gets darker as you scroll
+  const overlayOpacity = useTransform(scrollYProgress, [0, 1], [0.3, 0.5]);
+
+  // Text transforms
+  const textY = useTransform(scrollYProgress, [0, 1], ["0%", "40%"]);
+  const textOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
+
   return (
     <>
       {/* Hero Section */}
-      <section className="h-screen relative flex items-center justify-center overflow-hidden bg-black">
-        {/* Background Image with Fade-in + Slow Zoom */}
+      <section ref={heroRef} className="h-screen relative flex items-center justify-center overflow-hidden bg-black">
+        {/* Parallax Background Image with Fade-in */}
         <motion.div
-          initial={{ opacity: 0, scale: 1.05 }}
-          animate={{ 
-            opacity: 1, 
-            scale: 1.15 
-          }}
-          transition={{
-            opacity: { duration: 1.5, ease: "easeOut" },
-            scale: { 
-              duration: 30, 
-              ease: "linear",
-              repeat: Infinity,
-              repeatType: "reverse"
-            },
-          }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.5, ease: "easeOut" }}
+          style={{ y: imageY, scale: imageScale }}
           className="absolute inset-0 z-0"
         >
           <Image
@@ -56,13 +65,19 @@ export default function HomePage() {
             sizes="100vw"
           />
         </motion.div>
-        <div className="absolute inset-0 bg-black/30 z-[1]" />
         
-        {/* Content with Staggered Fade-in */}
+        {/* Dynamic Overlay */}
+        <motion.div
+          style={{ opacity: overlayOpacity }}
+          className="absolute inset-0 bg-black z-[1]"
+        />
+        
+        {/* Parallax Text Content */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
+          style={{ y: textY, opacity: textOpacity }}
           className="relative z-10 text-center text-white px-6"
         >
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-display tracking-[0.3em] mb-6">
