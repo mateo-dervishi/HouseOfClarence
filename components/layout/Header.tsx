@@ -96,30 +96,33 @@ export function Header() {
 
             {/* Desktop Navigation */}
             <ul className="hidden lg:flex items-center justify-center flex-grow overflow-hidden whitespace-nowrap">
-              {navigationData.map((category: Category) => (
-                <li key={category.slug} className="flex-shrink-0">
-                  <button
-                    onClick={() => handleCategoryClick(category)}
-                    className={`relative text-[9px] xl:text-[10px] tracking-[0.05em] uppercase py-4 px-1 transition-colors duration-300 ${
-                      showSolidHeader
-                        ? activeCategory?.slug === category.slug
-                          ? "text-primary-black"
-                          : "text-primary-black hover:opacity-60"
-                        : activeCategory?.slug === category.slug
-                          ? "text-white"
-                          : "text-white hover:opacity-70"
-                    }`}
-                  >
-                    {category.name.toUpperCase()}
-                    {/* Active underline */}
-                    {activeCategory?.slug === category.slug && (
-                      <span className={`absolute bottom-3 left-0 right-0 h-[2px] ${
-                        showSolidHeader ? "bg-primary-black" : "bg-white"
-                      }`} />
-                    )}
-                  </button>
-                </li>
-              ))}
+              {navigationData.map((category: Category) => {
+                const isActive = activeCategory?.slug === category.slug;
+                const textColor = showSolidHeader
+                  ? isActive
+                    ? "text-primary-black"
+                    : "text-primary-black hover:opacity-60"
+                  : isActive
+                    ? "text-white"
+                    : "text-white hover:opacity-70";
+                
+                return (
+                  <li key={category.slug} className="flex-shrink-0">
+                    <button
+                      onClick={() => handleCategoryClick(category)}
+                      className={`relative text-[9px] xl:text-[10px] tracking-[0.05em] uppercase py-4 px-1 transition-colors duration-300 ${textColor}`}
+                    >
+                      {category.name.toUpperCase()}
+                      {/* Active underline */}
+                      {isActive && (
+                        <span className={`absolute bottom-3 left-0 right-0 h-[2px] ${
+                          showSolidHeader ? "bg-primary-black" : "bg-white"
+                        }`} />
+                      )}
+                    </button>
+                  </li>
+                );
+              })}
             </ul>
 
             {/* Mobile hamburger */}
