@@ -84,7 +84,7 @@ export default function SelectionPage() {
       <main className="min-h-screen bg-off-white pt-32 pb-20">
         <div className="max-w-2xl mx-auto px-6 text-center">
           <ClipboardList className="w-20 h-20 text-light-grey mx-auto mb-6" strokeWidth={1} />
-          <h1 className="text-3xl tracking-[0.15em] font-light mb-4">YOUR SELECTION IS EMPTY</h1>
+          <h1 className="text-3xl tracking-[0.15em] font-light mb-4 text-primary-black">YOUR SELECTION IS EMPTY</h1>
           <p className="text-warm-grey leading-relaxed mb-8">
             Browse our collections and add items you&apos;re interested in to your selection.
           </p>
@@ -112,7 +112,7 @@ export default function SelectionPage() {
               <ArrowLeft className="w-4 h-4" />
               <span className="text-sm">Back</span>
             </button>
-            <h1 className="text-2xl md:text-3xl tracking-[0.15em] font-light uppercase">
+            <h1 className="text-2xl md:text-3xl tracking-[0.15em] font-light uppercase text-primary-black">
               Your Selection
             </h1>
             <p className="text-warm-grey mt-2">
