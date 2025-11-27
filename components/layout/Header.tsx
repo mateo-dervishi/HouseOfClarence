@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { Search, ChevronRight, X, Menu, ClipboardList } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { navigationData, Category, Subcategory } from "@/lib/navigation";
@@ -13,20 +12,10 @@ export function Header() {
   const [activeCategory, setActiveCategory] = useState<Category | null>(null);
   const [hoveredSubcategory, setHoveredSubcategory] = useState<Subcategory | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
-  const pathname = usePathname();
-  
+
   const { openSelection, getItemCount } = useSelectionStore();
   const selectionCount = getItemCount();
-
-  // Check if we're on a product page (pattern: /[category]/[product])
-  const isProductPage = pathname?.split("/").filter(Boolean).length === 2 && 
-    pathname !== "/" && 
-    !pathname.startsWith("/about") && 
-    !pathname.startsWith("/contact") && 
-    !pathname.startsWith("/projects") && 
-    !pathname.startsWith("/trade");
 
   // Scroll detection
   useEffect(() => {
@@ -57,7 +46,8 @@ export function Header() {
     return () => document.removeEventListener("keydown", handleEscape);
   }, []);
 
-  const showSolidHeader = isScrolled || isHovered || activeCategory;
+  // Only show solid header on scroll or when dropdown is open (not on hover)
+  const showSolidHeader = isScrolled || activeCategory;
 
   const closeDropdown = () => {
     setActiveCategory(null);
@@ -78,8 +68,6 @@ export function Header() {
     <>
       <header
         ref={headerRef}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${
           showSolidHeader
             ? "bg-white/95 backdrop-blur-md border-light-grey/50"
@@ -148,18 +136,14 @@ export function Header() {
             {navigationData.map((category: Category) => {
               const isActive = activeCategory?.slug === category.slug;
               const textColor = showSolidHeader
-                ? isActive
-                  ? "text-primary-black"
-                  : "text-primary-black hover:opacity-60"
-                : isActive
-                  ? "text-white"
-                  : "text-white hover:opacity-70";
+                ? "text-primary-black"
+                : "text-white";
               
               return (
                 <li key={category.slug}>
                   <button
                     onClick={() => handleCategoryClick(category)}
-                    className={`relative text-[11px] tracking-[0.12em] uppercase py-2 transition-colors duration-300 ${textColor}`}
+                    className={`relative text-[11px] tracking-[0.12em] uppercase py-2 transition-all duration-300 hover:scale-110 origin-center ${textColor} ${isActive ? "" : "opacity-80 hover:opacity-100"}`}
                   >
                     {category.name.toUpperCase()}
                     {/* Active underline */}
