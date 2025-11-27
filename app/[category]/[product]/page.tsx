@@ -1,15 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { mockProducts } from "@/lib/mockData";
-import { Button } from "@/components/ui/button";
-import { formatPrice, formatPriceWithVat } from "@/lib/utils";
-import { useCartStore } from "@/stores/cartStore";
 import { ProductCard } from "@/components/product/ProductCard";
-import { ChevronDown, ChevronUp } from "lucide-react";
-import { motion } from "framer-motion";
+import { ProductGallery } from "@/components/product/ProductGallery";
+import { ProductInfo } from "@/components/product/ProductInfo";
+import { Button } from "@/components/ui/button";
 
 interface ProductPageProps {
   params: {
@@ -19,10 +15,6 @@ interface ProductPageProps {
 }
 
 export default function ProductPage({ params }: ProductPageProps) {
-  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-  const [selectedVariant, setSelectedVariant] = useState<string | null>(null);
-  const [expandedSection, setExpandedSection] = useState<string | null>(null);
-  const addItem = useCartStore((state) => state.addItem);
   const router = useRouter();
 
   const product = mockProducts.find(
@@ -42,259 +34,82 @@ export default function ProductPage({ params }: ProductPageProps) {
     );
   }
 
-  const variant = selectedVariant
-    ? product.variants.find((v) => v.id === selectedVariant)
-    : null;
-
-  const displayPrice = variant?.salePrice || variant?.price || product.pricing.salePrice || product.pricing.price;
-  const displayPriceExVat = variant?.salePriceExVat || variant?.priceExVat || product.pricing.salePriceExVat || product.pricing.priceExVat;
-  const isOnSale = !!(variant?.salePrice || product.pricing.salePrice);
-
-  const handleAddToCart = () => {
-    addItem(product, variant || undefined, 1);
-  };
-
-  const toggleSection = (section: string) => {
-    setExpandedSection(expandedSection === section ? null : section);
+  // Transform product data for ProductInfo component
+  const productInfoData = {
+    name: product.name,
+    sku: product.sku,
+    colour: product.specifications.colour,
+    variants: product.variants.map((v) => ({
+      slug: v.id,
+      colourName: v.attributes.colour || product.specifications.colour,
+      colourHex: "#C9A962", // Default accent gold, can be enhanced later
+    })),
+    description: product.description,
+    specifications: [
+      { label: "Material", value: product.specifications.material },
+      {
+        label: "Dimensions",
+        value: `${product.specifications.dimensions.width}mm × ${product.specifications.dimensions.height}mm × ${product.specifications.dimensions.depth}mm`,
+      },
+      { label: "Colour", value: product.specifications.colour },
+      { label: "Finish", value: product.specifications.finish },
+    ],
   };
 
   const relatedProducts = mockProducts
     .filter((p) => p.id !== product.id && p.category.id === product.category.id)
-    .slice(0, 4);
+    .slice(0, 6);
 
   return (
-    <main className="pt-20">
+    <main className="pt-32">
       {/* Breadcrumb */}
-      <nav className="container mx-auto px-6 py-4">
-        <div className="text-xs tracking-widest uppercase text-warm-grey">
-          <a href="/" className="hover:text-primary-black transition-colors">
-            HOME
-          </a>
-          <span className="mx-2">/</span>
-          <a
-            href={`/${product.category.slug}`}
-            className="hover:text-primary-black transition-colors"
-          >
-            {product.category.name.toUpperCase()}
-          </a>
-          <span className="mx-2">/</span>
-          <span>{product.subcategory.toUpperCase()}</span>
-        </div>
+      <nav className="max-w-[1600px] mx-auto px-6 py-4">
+        <ol className="flex items-center gap-2 text-[11px] tracking-[0.05em] text-warm-grey uppercase">
+          <li>
+            <a href="/" className="hover:text-primary-black transition-colors">
+              Home
+            </a>
+          </li>
+          <li>/</li>
+          <li>
+            <a
+              href={`/${product.category.slug}`}
+              className="hover:text-primary-black transition-colors"
+            >
+              {product.category.name}
+            </a>
+          </li>
+          <li>/</li>
+          <li className="text-primary-black">{product.name}</li>
+        </ol>
       </nav>
 
-      {/* Product Content */}
-      <div className="container mx-auto px-6 py-8 lg:py-16">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
-          {/* Image Gallery */}
-          <div className="sticky top-24">
-            {product.images.length > 0 && (
-              <>
-                <div className="relative aspect-[4/5] overflow-hidden bg-off-white mb-4">
-                  <Image
-                    src={product.images[selectedImageIndex]?.url || product.images[0].url}
-                    alt={product.images[selectedImageIndex]?.alt || product.name}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                    priority
-                  />
-                </div>
-                {product.images.length > 1 && (
-                  <div className="grid grid-cols-4 gap-2">
-                    {product.images.map((image, index) => (
-                      <button
-                        key={image.id}
-                        onClick={() => setSelectedImageIndex(index)}
-                        className={`relative aspect-square overflow-hidden border-2 transition-colors ${
-                          selectedImageIndex === index
-                            ? "border-primary-black"
-                            : "border-transparent hover:border-light-grey"
-                        }`}
-                      >
-                        <Image
-                          src={image.url}
-                          alt={image.alt}
-                          fill
-                          className="object-cover"
-                          sizes="(max-width: 1024px) 25vw, 12.5vw"
-                        />
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </>
-            )}
-          </div>
+      {/* Product Section */}
+      <section className="max-w-[1600px] mx-auto px-6 pb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          {/* LEFT: Image Gallery */}
+          <ProductGallery images={product.images} name={product.name} />
 
-          {/* Product Info */}
-          <div className="py-8 lg:py-16">
-            <span className="text-xs tracking-widest text-warm-grey">
-              {product.category.name.toUpperCase()} / {product.subcategory.toUpperCase()}
-            </span>
-            <h1 className="text-2xl md:text-3xl tracking-wide mt-4 mb-6 font-light">
-              {product.name}
-            </h1>
-
-            {/* Price Block */}
-            <div className="mt-6 border-t border-b border-light-grey py-4">
-              {isOnSale && (
-                <p className="text-sm text-warm-grey line-through mb-1">
-                  {formatPrice(variant?.price || product.pricing.price)}
-                </p>
-              )}
-              <p className="text-xl md:text-2xl">{formatPrice(displayPrice)}</p>
-              <p className="text-sm text-warm-grey mt-1">
-                ({formatPrice(displayPriceExVat)} EX VAT)
-              </p>
-            </div>
-
-            {/* Variants */}
-            {product.variants.length > 0 && (
-              <div className="mt-8 space-y-6">
-                {Object.keys(product.variants[0].attributes).map((attrKey) => (
-                  <div key={attrKey}>
-                    <label className="text-sm tracking-widest uppercase mb-2 block">
-                      {attrKey}
-                    </label>
-                    <div className="flex flex-wrap gap-2">
-                      {Array.from(
-                        new Set(product.variants.map((v) => v.attributes[attrKey]))
-                      ).map((value) => {
-                        const variantForValue = product.variants.find(
-                          (v) => v.attributes[attrKey] === value
-                        );
-                        return (
-                          <button
-                            key={value}
-                            onClick={() => setSelectedVariant(variantForValue?.id || null)}
-                            className={`px-4 py-2 border text-sm transition-colors ${
-                              selectedVariant === variantForValue?.id
-                                ? "border-primary-black bg-primary-black text-white"
-                                : "border-light-grey hover:border-primary-black"
-                            }`}
-                          >
-                            {value}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {/* Add to Cart */}
-            <Button
-              className="w-full mt-8"
-              onClick={handleAddToCart}
-              disabled={variant ? variant.stock === 0 : product.stock === 0}
-            >
-              {variant ? (variant.stock === 0 ? "OUT OF STOCK" : "ADD TO BASKET") : product.stock === 0 ? "OUT OF STOCK" : "ADD TO BASKET"}
-            </Button>
-
-            {/* Collapsible Details */}
-            <div className="mt-8 space-y-4">
-              {/* Description */}
-              <div>
-                <button
-                  onClick={() => toggleSection("description")}
-                  className="w-full flex items-center justify-between py-4 border-b border-light-grey text-sm tracking-widest uppercase"
-                >
-                  DESCRIPTION
-                  {expandedSection === "description" ? (
-                    <ChevronUp className="h-4 w-4" />
-                  ) : (
-                    <ChevronDown className="h-4 w-4" />
-                  )}
-                </button>
-                {expandedSection === "description" && (
-                  <div className="py-4 text-warm-grey leading-relaxed">
-                    {product.description}
-                  </div>
-                )}
-              </div>
-
-              {/* Specifications */}
-              <div>
-                <button
-                  onClick={() => toggleSection("specifications")}
-                  className="w-full flex items-center justify-between py-4 border-b border-light-grey text-sm tracking-widest uppercase"
-                >
-                  SPECIFICATIONS
-                  {expandedSection === "specifications" ? (
-                    <ChevronUp className="h-4 w-4" />
-                  ) : (
-                    <ChevronDown className="h-4 w-4" />
-                  )}
-                </button>
-                {expandedSection === "specifications" && (
-                  <div className="py-4 space-y-2 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-warm-grey">Material:</span>
-                      <span>{product.specifications.material}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-warm-grey">Dimensions:</span>
-                      <span>
-                        {product.specifications.dimensions.width}mm ×{" "}
-                        {product.specifications.dimensions.height}mm ×{" "}
-                        {product.specifications.dimensions.depth}mm
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-warm-grey">Colour:</span>
-                      <span>{product.specifications.colour}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-warm-grey">Finish:</span>
-                      <span>{product.specifications.finish}</span>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Delivery */}
-              <div>
-                <button
-                  onClick={() => toggleSection("delivery")}
-                  className="w-full flex items-center justify-between py-4 border-b border-light-grey text-sm tracking-widest uppercase"
-                >
-                  DELIVERY & RETURNS
-                  {expandedSection === "delivery" ? (
-                    <ChevronUp className="h-4 w-4" />
-                  ) : (
-                    <ChevronDown className="h-4 w-4" />
-                  )}
-                </button>
-                {expandedSection === "delivery" && (
-                  <div className="py-4 text-warm-grey leading-relaxed">
-                    <p className="mb-2">{product.deliveryInfo}</p>
-                    <p>
-                      Returns accepted within 30 days of delivery. Items must be in original
-                      condition and packaging.
-                    </p>
-                  </div>
-                )}
-              </div>
-            </div>
+          {/* RIGHT: Product Info */}
+          <div className="lg:sticky lg:top-36 lg:self-start">
+            <ProductInfo product={productInfoData} />
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Complete the Look / Related Products */}
+      {/* Related Products */}
       {relatedProducts.length > 0 && (
-        <section className="mt-24 py-16 bg-off-white">
-          <div className="container mx-auto px-6">
-            <h2 className="text-center tracking-widest text-2xl mb-12">COMPLETE THE LOOK</h2>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-              {relatedProducts.map((relatedProduct) => (
-                <ProductCard key={relatedProduct.id} product={relatedProduct} />
-              ))}
-            </div>
+        <section className="max-w-[1600px] mx-auto px-6 py-16 border-t border-light-grey">
+          <h2 className="text-2xl tracking-[0.15em] uppercase font-display font-light mb-12 text-center">
+            Related Products
+          </h2>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+            {relatedProducts.map((relatedProduct) => (
+              <ProductCard key={relatedProduct.id} product={relatedProduct} />
+            ))}
           </div>
         </section>
       )}
     </main>
   );
 }
-
