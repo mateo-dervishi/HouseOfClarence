@@ -47,6 +47,7 @@ export function Header() {
   const [activeCategory, setActiveCategory] = useState<Category | null>(null);
   const [hoveredSubcategory, setHoveredSubcategory] = useState<Subcategory | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
 
   const { openSelection, getItemCount } = useSelectionStore();
@@ -110,23 +111,25 @@ export function Header() {
         }`}
       >
         {/* Top Row - Logo centered with icons on sides */}
-        <div className="flex items-center justify-between h-12 md:h-14 px-4 md:px-8">
+        <div className="flex items-center justify-between h-12 md:h-14 px-3 md:px-8">
           {/* Left - Mobile hamburger */}
-          <div className="flex items-center w-20 md:w-24">
-            <button
-              className={`lg:hidden p-2 -ml-2 transition-colors duration-300 ${
-                showSolidHeader ? "text-primary-black" : "text-white"
-              }`}
-              aria-label="Open menu"
-            >
-              <Menu className="w-5 h-5" strokeWidth={1.5} />
-            </button>
-          </div>
+          <button
+            onClick={() => setMobileMenuOpen(true)}
+            className={`lg:hidden flex items-center justify-center w-10 h-10 -ml-1 transition-colors duration-300 z-10 ${
+              showSolidHeader ? "text-primary-black" : "text-white"
+            }`}
+            aria-label="Open menu"
+          >
+            <Menu className="w-6 h-6" strokeWidth={1.5} />
+          </button>
+          
+          {/* Spacer for desktop */}
+          <div className="hidden lg:block w-24" />
 
           {/* Logo - Centered */}
           <Link
             href="/"
-            className={`text-[13px] md:text-xl lg:text-2xl tracking-[0.2em] md:tracking-[0.35em] font-display uppercase font-light transition-colors duration-300 text-center ${
+            className={`text-[12px] sm:text-[14px] md:text-xl lg:text-2xl tracking-[0.15em] sm:tracking-[0.2em] md:tracking-[0.35em] font-display uppercase font-light transition-colors duration-300 text-center flex-shrink-0 ${
               showSolidHeader ? "text-primary-black" : "text-white"
             }`}
             onClick={closeDropdown}
@@ -135,9 +138,9 @@ export function Header() {
           </Link>
 
           {/* Right icons - Search and Selection */}
-          <div className="flex items-center justify-end gap-0 md:gap-1 w-20 md:w-24">
+          <div className="flex items-center justify-end">
             <button
-              className={`hidden md:block p-2 transition-colors duration-300 ${
+              className={`hidden md:flex items-center justify-center w-10 h-10 transition-colors duration-300 ${
                 showSolidHeader ? "text-primary-black hover:opacity-60" : "text-white hover:opacity-70"
               }`}
               aria-label="Search"
@@ -148,14 +151,14 @@ export function Header() {
             {/* Selection Icon */}
             <button
               onClick={openSelection}
-              className={`p-2 -mr-2 md:mr-0 transition-colors duration-300 relative ${
+              className={`flex items-center justify-center w-10 h-10 -mr-1 md:mr-0 transition-colors duration-300 relative ${
                 showSolidHeader ? "text-primary-black hover:opacity-60" : "text-white hover:opacity-70"
               }`}
               aria-label="Your selection"
             >
               <ClipboardList className="w-5 h-5" strokeWidth={1.5} />
               {selectionCount > 0 && (
-                <span className={`absolute -top-0.5 -right-0.5 md:-top-1 md:-right-1 w-4 h-4 md:w-5 md:h-5 rounded-full flex items-center justify-center text-[9px] md:text-[10px] font-medium ${
+                <span className={`absolute top-1 right-1 md:top-0.5 md:right-0.5 w-4 h-4 md:w-5 md:h-5 rounded-full flex items-center justify-center text-[9px] md:text-[10px] font-medium ${
                   showSolidHeader 
                     ? "bg-primary-black text-white" 
                     : "bg-white text-primary-black"
@@ -344,6 +347,103 @@ export function Header() {
             className="fixed inset-0 bg-black/20 z-30 top-[88px]"
             onClick={closeDropdown}
           />
+        )}
+      </AnimatePresence>
+
+      {/* Mobile Menu Drawer */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/50 z-50 lg:hidden"
+              onClick={() => setMobileMenuOpen(false)}
+            />
+            
+            {/* Drawer */}
+            <motion.div
+              initial={{ x: "-100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "-100%" }}
+              transition={{ type: "tween", duration: 0.3, ease: [0.32, 0.72, 0, 1] }}
+              className="fixed top-0 left-0 bottom-0 w-[85%] max-w-sm bg-white z-50 lg:hidden overflow-y-auto"
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between p-4 border-b border-light-grey">
+                <span className="text-sm tracking-[0.15em] uppercase font-display">Menu</span>
+                <button
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="p-2 -mr-2"
+                  aria-label="Close menu"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              
+              {/* Categories */}
+              <nav className="p-4">
+                <ul className="space-y-1">
+                  {navigationData.map((category) => (
+                    <li key={category.slug}>
+                      <details className="group">
+                        <summary className="flex items-center justify-between py-3 text-[14px] tracking-[0.1em] uppercase cursor-pointer list-none">
+                          {category.name}
+                          <ChevronRight className="w-4 h-4 transition-transform group-open:rotate-90" />
+                        </summary>
+                        <ul className="pl-4 pb-2 space-y-1">
+                          {category.subcategories.map((sub) => (
+                            <li key={sub.slug}>
+                              <Link
+                                href={`/${category.slug}/${sub.slug}`}
+                                onClick={() => setMobileMenuOpen(false)}
+                                className="block py-2 text-[13px] text-warm-grey hover:text-primary-black transition-colors"
+                              >
+                                {sub.name}
+                              </Link>
+                            </li>
+                          ))}
+                          <li>
+                            <Link
+                              href={`/${category.slug}`}
+                              onClick={() => setMobileMenuOpen(false)}
+                              className="block py-2 text-[13px] font-medium text-primary-black"
+                            >
+                              Shop All {category.name}
+                            </Link>
+                          </li>
+                        </ul>
+                      </details>
+                    </li>
+                  ))}
+                  
+                  {/* Bespoke */}
+                  <li>
+                    <Link
+                      href="/bespoke"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="block py-3 text-[14px] tracking-[0.1em] uppercase"
+                    >
+                      Bespoke
+                    </Link>
+                  </li>
+                </ul>
+              </nav>
+              
+              {/* Bottom Links */}
+              <div className="border-t border-light-grey p-4 mt-4">
+                <a
+                  href="tel:+442033704057"
+                  className="flex items-center gap-3 py-3 text-[13px]"
+                >
+                  <span className="text-warm-grey">Call Us:</span>
+                  <span className="font-medium">020 3370 4057</span>
+                </a>
+              </div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
 
