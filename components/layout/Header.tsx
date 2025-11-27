@@ -68,16 +68,22 @@ export function Header() {
     }
   };
 
+  // Static links for NEW IN and LAST CHANCE
+  const staticLinks = [
+    { name: "NEW IN", href: "/new-in" },
+    { name: "LAST CHANCE", href: "/last-chance" },
+  ];
+
   return (
     <>
       <header
         ref={headerRef}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${
           showSolidHeader
-            ? "bg-white/95 backdrop-blur-md shadow-sm"
-            : "bg-transparent"
+            ? "bg-white/95 backdrop-blur-md border-light-grey/50"
+            : "bg-transparent border-white/20"
         }`}
       >
         {/* Main Navigation Bar */}
@@ -95,7 +101,7 @@ export function Header() {
             </Link>
 
             {/* Desktop Navigation - Categories in single row */}
-            <ul className="hidden lg:flex items-center gap-8 overflow-hidden whitespace-nowrap">
+            <ul className="hidden lg:flex items-center gap-6 xl:gap-8 overflow-hidden whitespace-nowrap">
               {navigationData.map((category: Category) => {
                 const isActive = activeCategory?.slug === category.slug;
                 const textColor = showSolidHeader
@@ -110,12 +116,12 @@ export function Header() {
                   <li key={category.slug} className="flex-shrink-0">
                     <button
                       onClick={() => handleCategoryClick(category)}
-                      className={`relative text-[13px] tracking-[0.05em] uppercase py-4 transition-colors duration-300 ${textColor}`}
+                      className={`relative text-[11px] xl:text-[12px] tracking-[0.15em] uppercase py-4 transition-colors duration-300 ${textColor}`}
                     >
                       {category.name.toUpperCase()}
                       {/* Active underline */}
                       {isActive && (
-                        <span className={`absolute bottom-0 left-0 right-0 h-[2px] ${
+                        <span className={`absolute bottom-3 left-0 right-0 h-[1px] ${
                           showSolidHeader ? "bg-primary-black" : "bg-white"
                         }`} />
                       )}
@@ -123,6 +129,20 @@ export function Header() {
                   </li>
                 );
               })}
+              {/* Static links: NEW IN, LAST CHANCE */}
+              {staticLinks.map((link) => (
+                <li key={link.name} className="flex-shrink-0">
+                  <Link
+                    href={link.href}
+                    className={`text-[11px] xl:text-[12px] tracking-[0.15em] uppercase py-4 transition-colors duration-300 ${
+                      showSolidHeader ? "text-primary-black hover:opacity-60" : "text-white hover:opacity-70"
+                    }`}
+                    onClick={closeDropdown}
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
             </ul>
 
             {/* Mobile hamburger */}
@@ -135,8 +155,8 @@ export function Header() {
               <Menu className="w-5 h-5" strokeWidth={1.5} />
             </button>
 
-            {/* Right icons - Search, User, Enquire (NO CART) */}
-            <div className="hidden lg:flex items-center gap-3 flex-shrink-0">
+            {/* Right icons - Search only */}
+            <div className="hidden lg:flex items-center flex-shrink-0">
               <button
                 className={`p-2 transition-colors duration-300 ${
                   showSolidHeader ? "text-primary-black hover:opacity-60" : "text-white hover:opacity-70"
@@ -145,25 +165,6 @@ export function Header() {
               >
                 <Search className="w-5 h-5" strokeWidth={1.5} />
               </button>
-              <button
-                className={`p-2 transition-colors duration-300 hidden sm:block ${
-                  showSolidHeader ? "text-primary-black hover:opacity-60" : "text-white hover:opacity-70"
-                }`}
-                aria-label="Account"
-              >
-                <User className="w-5 h-5" strokeWidth={1.5} />
-              </button>
-              {/* Enquire button instead of cart */}
-              <Link
-                href="/contact"
-                className={`hidden sm:block text-[11px] tracking-[0.1em] uppercase px-4 py-2 border transition-colors duration-300 ${
-                  showSolidHeader
-                    ? "text-primary-black border-primary-black hover:bg-primary-black hover:text-white"
-                    : "text-white border-white hover:bg-white hover:text-primary-black"
-                }`}
-              >
-                Enquire
-              </Link>
             </div>
           </div>
         </nav>
