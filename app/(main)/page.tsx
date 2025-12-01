@@ -144,18 +144,22 @@ export default function HomePage() {
             FOR DISCERNING SPACES
           </motion.p>
           <motion.div
-            variants={{
-              hidden: { y: 15, scale: 0.98 },
-              visible: { y: 0, scale: 1 },
-            }}
-            transition={{ duration: 0.7, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
+            initial={{ visibility: "hidden" }}
+            animate={{ visibility: "visible" }}
+            transition={{ delay: 0.6 }}
           >
-            <Link 
-              href="/bathroom"
-              className="inline-block px-8 py-4 border border-white text-white text-[13px] tracking-[0.15em] uppercase bg-white/10 backdrop-blur-sm hover:bg-white/20 hover:scale-105 transition-all duration-300"
+            <motion.div
+              initial={{ y: 15, scale: 0.98 }}
+              animate={{ y: 0, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
             >
-              EXPLORE COLLECTIONS
-            </Link>
+              <Link 
+                href="/bathroom"
+                className="inline-block px-8 py-4 border border-white text-white text-[13px] tracking-[0.15em] uppercase bg-white/10 backdrop-blur-sm hover:bg-white/20 hover:scale-105 transition-all duration-300"
+              >
+                EXPLORE COLLECTIONS
+              </Link>
+            </motion.div>
           </motion.div>
         </motion.div>
 
