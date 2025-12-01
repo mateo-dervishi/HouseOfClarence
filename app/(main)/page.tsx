@@ -141,7 +141,7 @@ export default function HomePage() {
             transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
             className="text-lg md:text-xl mb-8 max-w-2xl mx-auto font-light"
           >
-            For discerning spaces
+            FOR DISCERNING SPACES
           </motion.p>
           <motion.div
             variants={{
