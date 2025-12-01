@@ -127,13 +127,9 @@ export default function HomePage() {
           >
             For discerning spaces
           </motion.p>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ 
-              opacity: { duration: 0.01, delay: 1.2 },
-              scale: { duration: 0.4, delay: 1.2, ease: "easeOut" }
-            }}
+          <div 
+            className="animate-fade-in-up"
+            style={{ animationDelay: '1.2s', animationFillMode: 'both' }}
           >
             <Link 
               href="/bathroom"
@@ -141,7 +137,7 @@ export default function HomePage() {
             >
               EXPLORE COLLECTIONS
             </Link>
-          </motion.div>
+          </div>
         </motion.div>
 
         <motion.div

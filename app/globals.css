@@ -46,6 +46,29 @@
   }
 }
 
+/* Button fade-in animation that works with backdrop-blur */
+@keyframes fade-in-up {
+  0% {
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  0.01% {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(10px);
+  }
+  100% {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.5s ease-out;
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
