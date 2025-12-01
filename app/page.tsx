@@ -125,7 +125,7 @@ export default function HomePage() {
             transition={{ duration: 1, delay: 1 }}
             className="text-lg md:text-xl mb-8 max-w-2xl mx-auto font-light"
           >
-            Premium second fix & finishing materials for discerning spaces
+            For discerning spaces
           </motion.p>
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
