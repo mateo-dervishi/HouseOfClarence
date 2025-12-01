@@ -128,9 +128,12 @@ export default function HomePage() {
             Premium second fix & finishing materials for discerning spaces
           </motion.p>
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 1.2 }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ 
+              opacity: { duration: 0.01, delay: 1.2 },
+              scale: { duration: 0.4, delay: 1.2, ease: "easeOut" }
+            }}
           >
             <Link 
               href="/bathroom"
