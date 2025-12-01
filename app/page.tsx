@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { mockProducts } from "@/lib/mockData";
 import { Phone } from "lucide-react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 
 const fadeUp = {
   initial: { opacity: 0, y: 30 },
@@ -67,11 +67,18 @@ const collections = [
 
 export default function HomePage() {
   const heroRef = useRef(null);
+  const [showButton, setShowButton] = useState(false);
 
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ["start start", "end start"],
   });
+
+  // Show button after delay
+  useEffect(() => {
+    const timer = setTimeout(() => setShowButton(true), 1200);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Parallax effects
   const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
@@ -127,18 +134,14 @@ export default function HomePage() {
           >
             For discerning spaces
           </motion.p>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0, delay: 1.2 }}
-          >
+          {showButton && (
             <Link 
               href="/bathroom"
               className="inline-block px-8 py-4 border border-white text-white text-[13px] tracking-[0.15em] uppercase bg-white/10 backdrop-blur-sm hover:bg-white/20 hover:scale-105 transition-all duration-300"
             >
               EXPLORE COLLECTIONS
             </Link>
-          </motion.div>
+          )}
         </motion.div>
 
         <motion.div
