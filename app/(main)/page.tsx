@@ -139,7 +139,7 @@ export default function HomePage() {
               visible: { opacity: 1, y: 0 },
             }}
             transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
-            className="text-lg md:text-xl mb-8 max-w-2xl mx-auto font-light"
+            className="text-[13px] md:text-[15px] tracking-[0.2em] mb-8 max-w-2xl mx-auto font-light"
           >
             FOR DISCERNING SPACES
           </motion.p>
