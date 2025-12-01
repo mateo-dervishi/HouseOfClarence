@@ -211,7 +211,7 @@ export default function RegisterPage() {
                   </label>
                   <label
                     className={`flex items-center justify-center p-4 border cursor-pointer transition-colors ${
-                      formData.accountType === "trade"
+                      formData.accountType === "professional"
                         ? "border-primary-black bg-white"
                         : "border-light-grey bg-white hover:border-warm-grey"
                     }`}
@@ -219,12 +219,12 @@ export default function RegisterPage() {
                     <input
                       type="radio"
                       name="accountType"
-                      value="trade"
-                      checked={formData.accountType === "trade"}
+                      value="professional"
+                      checked={formData.accountType === "professional"}
                       onChange={handleChange}
                       className="sr-only"
                     />
-                    <span className="text-[13px] tracking-[0.1em] uppercase">Trade / Designer</span>
+                    <span className="text-[13px] tracking-[0.1em] uppercase">Designer / Professional</span>
                   </label>
                 </div>
               </div>

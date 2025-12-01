@@ -23,7 +23,7 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="min-h-screen flex">
+    <main className="h-screen flex overflow-hidden">
       {/* Left - Image */}
       <div className="hidden lg:block lg:w-1/2 relative">
         <Image
@@ -55,15 +55,8 @@ export default function LoginPage() {
       </div>
 
       {/* Right - Form */}
-      <div className="flex-1 flex flex-col justify-center px-6 py-12 lg:px-16 xl:px-24 bg-off-white">
+      <div className="flex-1 flex flex-col justify-center px-6 py-8 lg:px-16 xl:px-24 bg-off-white">
         <div className="w-full max-w-md mx-auto">
-          {/* Logo */}
-          <Link href="/" className="block mb-10">
-            <h1 className="text-lg tracking-[0.3em] font-display uppercase text-center lg:text-left">
-              HOUSE OF CLARENCE
-            </h1>
-          </Link>
-
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -72,11 +65,11 @@ export default function LoginPage() {
             <h2 className="text-2xl font-display tracking-[0.15em] uppercase mb-2">
               Sign In
             </h2>
-            <p className="text-warm-grey text-[14px] mb-8">
+            <p className="text-warm-grey text-[14px] mb-6">
               Access your account to manage your selections and projects
             </p>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-5">
               {/* Email */}
               <div>
                 <label
@@ -155,50 +148,13 @@ export default function LoginPage() {
               </button>
             </form>
 
-            {/* Divider */}
-            <div className="relative my-8">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-light-grey" />
-              </div>
-              <div className="relative flex justify-center">
-                <span className="px-4 bg-off-white text-[12px] text-warm-grey tracking-[0.1em] uppercase">
-                  New to House of Clarence?
-                </span>
-              </div>
-            </div>
-
             {/* Register Link */}
-            <Link
-              href="/register"
-              className="block w-full py-4 border border-primary-black text-primary-black text-[13px] tracking-[0.15em] uppercase text-center hover:bg-primary-black hover:text-white transition-colors"
-            >
-              Create an Account
-            </Link>
-
-            {/* Benefits */}
-            <div className="mt-10 pt-8 border-t border-light-grey">
-              <p className="text-[12px] tracking-[0.1em] uppercase text-warm-grey mb-4">
-                Account Benefits
-              </p>
-              <ul className="space-y-3 text-[13px] text-charcoal">
-                <li className="flex items-start gap-3">
-                  <span className="w-1.5 h-1.5 rounded-full bg-accent-gold mt-1.5 flex-shrink-0" />
-                  Save and organise your product selections by room
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="w-1.5 h-1.5 rounded-full bg-accent-gold mt-1.5 flex-shrink-0" />
-                  Request quotes for your entire project
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="w-1.5 h-1.5 rounded-full bg-accent-gold mt-1.5 flex-shrink-0" />
-                  Track your enquiries and orders
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="w-1.5 h-1.5 rounded-full bg-accent-gold mt-1.5 flex-shrink-0" />
-                  Access exclusive trade pricing
-                </li>
-              </ul>
-            </div>
+            <p className="text-center mt-6 text-[14px] text-warm-grey">
+              New to House of Clarence?{" "}
+              <Link href="/register" className="text-primary-black underline hover:opacity-60">
+                Create an account
+              </Link>
+            </p>
           </motion.div>
         </div>
       </div>

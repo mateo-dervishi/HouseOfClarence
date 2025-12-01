@@ -78,10 +78,6 @@ export const NAVIGATION: { name: string; href: string; children?: { name: string
     href: "/projects",
   },
   {
-    name: "TRADE",
-    href: "/trade",
-  },
-  {
     name: "ABOUT",
     href: "/about",
   },

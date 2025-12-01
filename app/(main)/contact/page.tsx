@@ -145,18 +145,6 @@ export default function ContactPage() {
               </div>
             </div>
 
-            <div className="pt-8 border-t border-light-grey">
-              <h3 className="text-sm tracking-widest uppercase text-primary-black mb-4">
-                TRADE ENQUIRIES
-              </h3>
-              <p className="text-warm-grey mb-4">
-                Are you a trade professional? Apply for a trade account to access exclusive
-                pricing and dedicated support.
-              </p>
-              <Button variant="outline" asChild>
-                <a href="/trade">APPLY FOR TRADE ACCOUNT</a>
-              </Button>
-            </div>
           </motion.div>
         </div>
       </section>

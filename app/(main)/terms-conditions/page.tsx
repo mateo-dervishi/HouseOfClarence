@@ -135,7 +135,6 @@ export default function TermsConditionsPage() {
               <ul className="list-disc pl-6 text-warm-grey space-y-2">
                 <li>A deposit may be required to confirm orders (typically 50%)</li>
                 <li>Balance payment due prior to dispatch unless credit terms have been agreed</li>
-                <li>Trade account customers may be offered payment terms subject to credit approval</li>
                 <li>All prices are in GBP (£) unless otherwise stated</li>
               </ul>
               <p className="text-warm-grey leading-relaxed mt-4">
