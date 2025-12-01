@@ -55,15 +55,8 @@ export default function LoginPage() {
       </div>
 
       {/* Right - Form */}
-      <div className="flex-1 flex flex-col justify-center px-6 py-12 lg:px-16 xl:px-24 bg-off-white">
+      <div className="flex-1 flex flex-col justify-center px-6 py-12 lg:px-16 xl:px-24 bg-off-white pt-24 lg:pt-12">
         <div className="w-full max-w-md mx-auto">
-          {/* Logo */}
-          <Link href="/" className="block mb-12">
-            <h1 className="text-xl tracking-[0.3em] font-display uppercase text-center lg:text-left">
-              HOUSE OF CLARENCE
-            </h1>
-          </Link>
-
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

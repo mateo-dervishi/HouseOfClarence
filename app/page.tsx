@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { mockProducts } from "@/lib/mockData";
 import { Phone } from "lucide-react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
+import { useRef } from "react";
 
 const fadeUp = {
   initial: { opacity: 0, y: 30 },
@@ -67,18 +67,10 @@ const collections = [
 
 export default function HomePage() {
   const heroRef = useRef(null);
-  const [showButton, setShowButton] = useState(false);
-
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ["start start", "end start"],
   });
-
-  // Show button after delay
-  useEffect(() => {
-    const timer = setTimeout(() => setShowButton(true), 1200);
-    return () => clearTimeout(timer);
-  }, []);
 
   // Parallax effects
   const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
@@ -116,33 +108,56 @@ export default function HomePage() {
           className="absolute inset-0 bg-black z-[1]"
         />
         
-        <div 
+        <motion.div 
           style={{ opacity: textOpacity as unknown as number }}
           className="relative z-10 text-center text-white px-6"
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: {},
+            visible: {
+              transition: {
+                staggerChildren: 0.15,
+                delayChildren: 0.3,
+              },
+            },
+          }}
         >
           <motion.h1 
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: { opacity: 1, y: 0 },
+            }}
+            transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
             className="text-4xl md:text-6xl lg:text-7xl font-display tracking-[0.3em] mb-6"
           >
             REFINED FINISHING
           </motion.h1>
           <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+            variants={{
+              hidden: { opacity: 0, y: 15 },
+              visible: { opacity: 1, y: 0 },
+            }}
+            transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
             className="text-lg md:text-xl mb-8 max-w-2xl mx-auto font-light"
           >
             For discerning spaces
           </motion.p>
-          <Link 
-            href="/bathroom"
-            className={`inline-block px-8 py-4 border border-white text-white text-[13px] tracking-[0.15em] uppercase bg-white/10 backdrop-blur-sm hover:bg-white/20 hover:scale-105 transition-all duration-300 ${showButton ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+          <motion.div
+            variants={{
+              hidden: { opacity: 0, y: 10 },
+              visible: { opacity: 1, y: 0 },
+            }}
+            transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
           >
-            EXPLORE COLLECTIONS
-          </Link>
-        </div>
+            <Link 
+              href="/bathroom"
+              className="inline-block px-8 py-4 border border-white text-white text-[13px] tracking-[0.15em] uppercase bg-white/10 backdrop-blur-sm hover:bg-white/20 hover:scale-105 transition-all duration-300"
+            >
+              EXPLORE COLLECTIONS
+            </Link>
+          </motion.div>
+        </motion.div>
 
         <motion.div
           className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
