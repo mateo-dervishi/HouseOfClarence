@@ -3,10 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ProductCard } from "@/components/product/ProductCard";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { mockProducts } from "@/lib/mockData";
-import { ArrowRight, Phone } from "lucide-react";
+import { Phone } from "lucide-react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 
@@ -83,7 +82,6 @@ export default function HomePage() {
 
   // Get products by category for featured sections
   const bathroomProducts = mockProducts.filter(p => p.category.slug === "bathroom").slice(0, 4);
-  const kitchenProducts = mockProducts.filter(p => p.category.slug === "kitchen").slice(0, 4);
 
   return (
     <>
@@ -134,9 +132,12 @@ export default function HomePage() {
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 1.2 }}
           >
-            <Button variant="outline" className="bg-white/10 backdrop-blur-sm border-white text-white hover:bg-white hover:text-primary-black" asChild>
-              <Link href="/bathroom">EXPLORE COLLECTIONS</Link>
-            </Button>
+            <Link 
+              href="/bathroom"
+              className="inline-block px-8 py-4 border border-white text-white text-[13px] tracking-[0.15em] uppercase bg-white/10 backdrop-blur-sm hover:bg-white/20 hover:scale-105 transition-all duration-300"
+            >
+              EXPLORE COLLECTIONS
+            </Link>
           </motion.div>
         </motion.div>
 
@@ -215,23 +216,24 @@ export default function HomePage() {
               </p>
               <div className="space-y-3 mb-8">
                 <Link href="/bathroom/baths" className="block text-sm tracking-wider hover:text-warm-grey transition-colors">
-                  → Freestanding Baths
+                  Freestanding Baths
                 </Link>
                 <Link href="/bathroom/basins" className="block text-sm tracking-wider hover:text-warm-grey transition-colors">
-                  → Stone & Marble Basins
+                  Stone & Marble Basins
                 </Link>
                 <Link href="/bathroom/vanity-units" className="block text-sm tracking-wider hover:text-warm-grey transition-colors">
-                  → Vanity Units
+                  Vanity Units
                 </Link>
                 <Link href="/bathroom/taps" className="block text-sm tracking-wider hover:text-warm-grey transition-colors">
-                  → Brassware & Taps
+                  Brassware & Taps
                 </Link>
               </div>
-              <Button variant="outline" asChild>
-                <Link href="/bathroom">
-                  SHOP BATHROOM <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
+              <Link 
+                href="/bathroom"
+                className="inline-block px-8 py-4 border border-primary-black text-primary-black text-[13px] tracking-[0.15em] uppercase hover:bg-primary-black/5 hover:scale-105 transition-all duration-300"
+              >
+                SHOP BATHROOM
+              </Link>
             </motion.div>
           </div>
         </div>
@@ -279,20 +281,21 @@ export default function HomePage() {
               </p>
               <div className="space-y-3 mb-8">
                 <Link href="/kitchen/kitchen-sinks" className="block text-sm tracking-wider hover:text-warm-grey transition-colors">
-                  → Kitchen Sinks
+                  Kitchen Sinks
                 </Link>
                 <Link href="/kitchen/kitchen-taps" className="block text-sm tracking-wider hover:text-warm-grey transition-colors">
-                  → Kitchen Taps
+                  Kitchen Taps
                 </Link>
                 <Link href="/kitchen/kitchen-hardware" className="block text-sm tracking-wider hover:text-warm-grey transition-colors">
-                  → Cabinet Hardware
+                  Cabinet Hardware
                 </Link>
               </div>
-              <Button variant="outline" asChild>
-                <Link href="/kitchen">
-                  SHOP KITCHEN <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
+              <Link 
+                href="/kitchen"
+                className="inline-block px-8 py-4 border border-primary-black text-primary-black text-[13px] tracking-[0.15em] uppercase hover:bg-primary-black/5 hover:scale-105 transition-all duration-300"
+              >
+                SHOP KITCHEN
+              </Link>
             </motion.div>
           </div>
           
@@ -395,8 +398,8 @@ export default function HomePage() {
                   <p className="text-white/80 text-sm mb-4 max-w-sm">
                     Marble, porcelain, terrazzo & mosaic tiles
                   </p>
-                  <span className="text-white text-sm tracking-wider group-hover:underline">
-                    Shop Tiling →
+                  <span className="text-white text-sm tracking-wider opacity-80 group-hover:opacity-100 transition-opacity">
+                    Shop Tiling
                   </span>
                 </div>
               </Link>
@@ -426,8 +429,8 @@ export default function HomePage() {
                   <p className="text-white/80 text-sm mb-4 max-w-sm">
                     Pendant, wall & statement lighting
                   </p>
-                  <span className="text-white text-sm tracking-wider group-hover:underline">
-                    Shop Lighting →
+                  <span className="text-white text-sm tracking-wider opacity-80 group-hover:opacity-100 transition-opacity">
+                    Shop Lighting
                   </span>
                 </div>
               </Link>
@@ -465,8 +468,8 @@ export default function HomePage() {
                   <p className="text-white/80 text-sm mb-4 max-w-sm">
                     Living, dining, bedroom & study furniture
                   </p>
-                  <span className="text-white text-sm tracking-wider group-hover:underline">
-                    Shop Furniture →
+                  <span className="text-white text-sm tracking-wider opacity-80 group-hover:opacity-100 transition-opacity">
+                    Shop Furniture
                   </span>
                 </div>
               </Link>
@@ -496,8 +499,8 @@ export default function HomePage() {
                   <p className="text-white/80 text-sm mb-4">
                     Designer switches & sockets
                   </p>
-                  <span className="text-white text-sm tracking-wider group-hover:underline">
-                    Shop Electrical →
+                  <span className="text-white text-sm tracking-wider opacity-80 group-hover:opacity-100 transition-opacity">
+                    Shop Electrical
                   </span>
                 </div>
               </Link>
@@ -537,16 +540,18 @@ export default function HomePage() {
               </p>
             </div>
             <div className="mt-8 flex flex-col sm:flex-row gap-4">
-              <Button variant="outline" asChild>
-                <Link href="/about">
-                  OUR STORY <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-              <Button variant="outline" asChild>
-                <Link href="/bespoke">
-                  BESPOKE SERVICE <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
+              <Link 
+                href="/about"
+                className="inline-block px-8 py-4 border border-primary-black text-primary-black text-[13px] tracking-[0.15em] uppercase hover:bg-primary-black/5 hover:scale-105 transition-all duration-300 text-center"
+              >
+                OUR STORY
+              </Link>
+              <Link 
+                href="/bespoke"
+                className="inline-block px-8 py-4 border border-primary-black text-primary-black text-[13px] tracking-[0.15em] uppercase hover:bg-primary-black/5 hover:scale-105 transition-all duration-300 text-center"
+              >
+                BESPOKE SERVICE
+              </Link>
             </div>
           </motion.div>
 
@@ -583,17 +588,19 @@ export default function HomePage() {
               Pricing varies based on quantity and project scope.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button asChild>
-                <a href="tel:+442033704057">
-                  <Phone className="w-4 h-4 mr-2" />
-                  CALL: 020 3370 4057
-                </a>
-              </Button>
-              <Button variant="outline" asChild>
-                <Link href="/contact">
-                  SEND ENQUIRY <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
+              <a 
+                href="tel:+442033704057"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-primary-black text-white text-[13px] tracking-[0.15em] uppercase hover:bg-charcoal hover:scale-105 transition-all duration-300"
+              >
+                <Phone className="w-4 h-4" />
+                CALL: 020 3370 4057
+              </a>
+              <Link 
+                href="/contact"
+                className="inline-block px-8 py-4 border border-primary-black text-primary-black text-[13px] tracking-[0.15em] uppercase hover:bg-primary-black/5 hover:scale-105 transition-all duration-300 text-center"
+              >
+                SEND ENQUIRY
+              </Link>
             </div>
           </motion.div>
         </div>
@@ -619,9 +626,12 @@ export default function HomePage() {
               className="flex-1 bg-charcoal border-charcoal text-white placeholder:text-warm-grey focus:border-white"
               required
             />
-            <Button type="submit" className="whitespace-nowrap bg-white text-primary-black hover:bg-off-white">
+            <button 
+              type="submit" 
+              className="px-8 py-3 bg-white text-primary-black text-[13px] tracking-[0.15em] uppercase hover:bg-off-white hover:scale-105 transition-all duration-300"
+            >
               SUBSCRIBE
-            </Button>
+            </button>
           </form>
           <p className="text-[11px] text-warm-grey mt-4">
             By signing up you agree to our <Link href="/privacy-policy" className="underline hover:text-white">privacy policy</Link>
