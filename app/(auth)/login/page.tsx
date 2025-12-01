@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Eye, EyeOff, ArrowRight } from "lucide-react";
+import { Eye, EyeOff, ArrowRight, ArrowLeft } from "lucide-react";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -55,7 +55,16 @@ export default function LoginPage() {
       </div>
 
       {/* Right - Form */}
-      <div className="flex-1 flex flex-col justify-center px-6 py-8 lg:px-16 xl:px-24 bg-off-white">
+      <div className="flex-1 flex flex-col justify-center px-6 py-8 lg:px-16 xl:px-24 bg-off-white relative">
+        {/* Back to Home */}
+        <Link 
+          href="/" 
+          className="absolute top-6 left-6 lg:left-16 flex items-center gap-2 text-[13px] text-warm-grey hover:text-primary-black transition-colors"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Back to Home
+        </Link>
+
         <div className="w-full max-w-md mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

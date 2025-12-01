@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Eye, EyeOff, ArrowRight, Check } from "lucide-react";
+import { Eye, EyeOff, ArrowRight, ArrowLeft, Check } from "lucide-react";
 
 export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -87,15 +87,17 @@ export default function RegisterPage() {
       </div>
 
       {/* Right - Form */}
-      <div className="flex-1 flex flex-col justify-center px-6 py-12 lg:px-12 xl:px-20 bg-off-white overflow-y-auto">
-        <div className="w-full max-w-lg mx-auto">
-          {/* Logo */}
-          <Link href="/" className="block mb-8">
-            <h1 className="text-lg tracking-[0.3em] font-display uppercase text-center lg:text-left">
-              HOUSE OF CLARENCE
-            </h1>
-          </Link>
+      <div className="flex-1 flex flex-col px-6 py-12 lg:px-12 xl:px-20 bg-off-white overflow-y-auto relative">
+        {/* Back to Home */}
+        <Link 
+          href="/" 
+          className="flex items-center gap-2 text-[13px] text-warm-grey hover:text-primary-black transition-colors mb-8"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Back to Home
+        </Link>
 
+        <div className="w-full max-w-lg mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
