@@ -152,7 +152,7 @@ export default function HomePage() {
           >
             <Link 
               href="/bathroom"
-              className="inline-block px-8 py-4 border border-white text-white text-[13px] tracking-[0.15em] uppercase bg-white/10 backdrop-blur-sm hover:bg-white/20 hover:scale-105 transition-all duration-300"
+              className="inline-block px-8 py-4 border border-white/80 text-white text-[13px] tracking-[0.15em] uppercase bg-black/20 hover:bg-black/30 hover:scale-105 transition-all duration-300"
             >
               EXPLORE COLLECTIONS
             </Link>
