@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Search, ChevronRight, X, Menu, ClipboardList } from "lucide-react";
+import { Search, ChevronRight, X, Menu, ClipboardList, User } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { navigationData, Category, Subcategory } from "@/lib/navigation";
 import { useSelectionStore } from "@/stores/selectionStore";
@@ -137,7 +137,7 @@ export function Header() {
             HOUSE OF CLARENCE
           </Link>
 
-          {/* Right icons - Search and Selection */}
+          {/* Right icons - Search, Profile, and Selection */}
           <div className="flex items-center justify-end">
             <button
               className={`hidden md:flex items-center justify-center w-10 h-10 transition-colors duration-300 ${
@@ -147,6 +147,17 @@ export function Header() {
             >
               <Search className="w-5 h-5" strokeWidth={1.5} />
             </button>
+            
+            {/* Profile Icon */}
+            <Link
+              href="/login"
+              className={`flex items-center justify-center w-10 h-10 transition-colors duration-300 ${
+                showSolidHeader ? "text-primary-black hover:opacity-60" : "text-white hover:opacity-70"
+              }`}
+              aria-label="Account"
+            >
+              <User className="w-5 h-5" strokeWidth={1.5} />
+            </Link>
             
             {/* Selection Icon */}
             <button
@@ -434,6 +445,14 @@ export function Header() {
               
               {/* Bottom Links */}
               <div className="border-t border-light-grey p-4 mt-4">
+                <Link
+                  href="/login"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center gap-3 py-3 text-[13px]"
+                >
+                  <User className="w-4 h-4" />
+                  <span className="font-medium">Sign In / Register</span>
+                </Link>
                 <a
                   href="tel:+442033704057"
                   className="flex items-center gap-3 py-3 text-[13px]"
