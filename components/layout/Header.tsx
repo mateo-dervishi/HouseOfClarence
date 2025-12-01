@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { Search, ChevronRight, X, Menu, ClipboardList, User } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { navigationData, Category, Subcategory } from "@/lib/navigation";
@@ -49,9 +50,14 @@ export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
+  const pathname = usePathname();
 
   const { openSelection, getItemCount } = useSelectionStore();
   const selectionCount = getItemCount();
+
+  // Pages that have dark hero backgrounds (transparent header with white text)
+  const darkHeroPages = ["/"];
+  const hasDarkHero = darkHeroPages.includes(pathname) || pathname.startsWith("/bathroom") || pathname.startsWith("/kitchen") || pathname.startsWith("/furniture") || pathname.startsWith("/tiling") || pathname.startsWith("/lighting") || pathname.startsWith("/electrical");
 
   // Scroll detection
   useEffect(() => {
@@ -82,8 +88,8 @@ export function Header() {
     return () => document.removeEventListener("keydown", handleEscape);
   }, []);
 
-  // Only show solid header on scroll or when dropdown is open (not on hover)
-  const showSolidHeader = isScrolled || activeCategory;
+  // Show solid header (white bg, black text) when: scrolled, dropdown open, or on pages without dark hero
+  const showSolidHeader = isScrolled || activeCategory || !hasDarkHero;
 
   const closeDropdown = () => {
     setActiveCategory(null);
