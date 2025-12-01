@@ -87,8 +87,15 @@ export default function RegisterPage() {
       </div>
 
       {/* Right - Form */}
-      <div className="flex-1 flex flex-col justify-center px-6 py-12 lg:px-12 xl:px-20 bg-off-white overflow-y-auto pt-24 lg:pt-12">
+      <div className="flex-1 flex flex-col justify-center px-6 py-12 lg:px-12 xl:px-20 bg-off-white overflow-y-auto">
         <div className="w-full max-w-lg mx-auto">
+          {/* Logo */}
+          <Link href="/" className="block mb-8">
+            <h1 className="text-lg tracking-[0.3em] font-display uppercase text-center lg:text-left">
+              HOUSE OF CLARENCE
+            </h1>
+          </Link>
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
