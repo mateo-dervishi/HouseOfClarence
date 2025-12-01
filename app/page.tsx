@@ -121,9 +121,9 @@ export default function HomePage() {
           className="relative z-10 text-center text-white px-6"
         >
           <motion.h1 
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
+            transition={{ duration: 0.8, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
             className="text-4xl md:text-6xl lg:text-7xl font-display tracking-[0.3em] mb-6"
           >
             REFINED FINISHING
@@ -131,19 +131,17 @@ export default function HomePage() {
           <motion.p
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.8, ease: "easeOut" }}
+            transition={{ duration: 0.8, delay: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
             className="text-lg md:text-xl mb-8 max-w-2xl mx-auto font-light"
           >
             For discerning spaces
           </motion.p>
-          {showButton && (
-            <Link 
-              href="/bathroom"
-              className="inline-block px-8 py-4 border border-white text-white text-[13px] tracking-[0.15em] uppercase bg-white/10 backdrop-blur-sm hover:bg-white/20 hover:scale-105 transition-all duration-300"
-            >
-              EXPLORE COLLECTIONS
-            </Link>
-          )}
+          <Link 
+            href="/bathroom"
+            className={`inline-block px-8 py-4 border border-white text-white text-[13px] tracking-[0.15em] uppercase bg-white/10 backdrop-blur-sm hover:bg-white/20 hover:scale-105 transition-all duration-300 ${showButton ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+          >
+            EXPLORE COLLECTIONS
+          </Link>
         </div>
 
         <motion.div
