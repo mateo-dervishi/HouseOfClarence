@@ -133,16 +133,9 @@ export default function HomePage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 1.2 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center"
           >
             <Button variant="outline" className="bg-white/10 backdrop-blur-sm border-white text-white hover:bg-white hover:text-primary-black" asChild>
               <Link href="/bathroom">EXPLORE COLLECTIONS</Link>
-            </Button>
-            <Button variant="outline" className="bg-transparent border-white/50 text-white hover:bg-white/10" asChild>
-              <a href="tel:+442033704057">
-                <Phone className="w-4 h-4 mr-2" />
-                REQUEST QUOTE
-              </a>
             </Button>
           </motion.div>
         </motion.div>
