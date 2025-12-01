@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 interface CategoryPageProps {
   params: {
@@ -45,26 +46,43 @@ export default function CategoryPage({ params }: CategoryPageProps) {
   });
 
   return (
-    <main className="pt-14">
+    <main>
       {/* Hero Banner */}
-      <section className="relative h-[40vh] min-h-[300px] bg-[#f5f5f5] overflow-hidden">
-        <Image
-          src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1920&h=600&fit=crop"
-          alt={category.name}
-          fill
-          className="object-cover"
-          priority
+      <section className="relative h-[50vh] min-h-[400px] bg-black overflow-hidden">
+        <motion.div
+          initial={{ opacity: 0, scale: 1.1 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.5, ease: "easeOut" }}
+          className="absolute inset-0"
+        >
+          <Image
+            src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1920&h=600&fit=crop"
+            alt={category.name}
+            fill
+            className="object-cover"
+            priority
+          />
+        </motion.div>
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 0.3 }}
+          className="absolute inset-0 bg-black/30" 
         />
-        <div className="absolute inset-0 bg-black/30" />
         <div className="absolute inset-0 flex items-center justify-center">
-          <h1 className="text-white text-3xl md:text-5xl tracking-[0.2em] font-light uppercase">
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
+            className="text-white text-3xl md:text-5xl tracking-[0.3em] font-light uppercase"
+          >
             {category.name}
-          </h1>
+          </motion.h1>
         </div>
       </section>
 
       {/* Breadcrumb */}
-      <nav className="max-w-[1600px] mx-auto px-6 py-6">
+      <nav className="max-w-[1600px] mx-auto px-6 pt-8 pb-6">
         <ol className="flex items-center gap-2 text-[12px] tracking-[0.05em] text-warm-grey">
           <li>
             <a href="/" className="hover:text-primary-black transition-colors">

@@ -116,20 +116,22 @@ export default function HomePage() {
           className="absolute inset-0 bg-black z-[1]"
         />
         
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
-          style={{ y: textY, opacity: textOpacity }}
+        <div 
+          style={{ opacity: textOpacity as unknown as number }}
           className="relative z-10 text-center text-white px-6"
         >
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-display tracking-[0.3em] mb-6">
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
+            className="text-4xl md:text-6xl lg:text-7xl font-display tracking-[0.3em] mb-6"
+          >
             REFINED FINISHING
-          </h1>
+          </motion.h1>
           <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 1 }}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.8, ease: "easeOut" }}
             className="text-lg md:text-xl mb-8 max-w-2xl mx-auto font-light"
           >
             For discerning spaces
@@ -142,7 +144,7 @@ export default function HomePage() {
               EXPLORE COLLECTIONS
             </Link>
           )}
-        </motion.div>
+        </div>
 
         <motion.div
           className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
