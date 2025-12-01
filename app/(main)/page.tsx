@@ -145,14 +145,14 @@ export default function HomePage() {
           </motion.p>
           <motion.div
             variants={{
-              hidden: { opacity: 0, y: 10 },
-              visible: { opacity: 1, y: 0 },
+              hidden: { y: 15, scale: 0.98 },
+              visible: { y: 0, scale: 1 },
             }}
-            transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
+            transition={{ duration: 0.7, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
           >
             <Link 
               href="/bathroom"
-              className="inline-block px-8 py-4 border border-white/80 text-white text-[13px] tracking-[0.15em] uppercase bg-black/20 hover:bg-black/30 hover:scale-105 transition-all duration-300"
+              className="inline-block px-8 py-4 border border-white text-white text-[13px] tracking-[0.15em] uppercase bg-white/10 backdrop-blur-sm hover:bg-white/20 hover:scale-105 transition-all duration-300"
             >
               EXPLORE COLLECTIONS
             </Link>
