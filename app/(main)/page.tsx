@@ -117,8 +117,8 @@ export default function HomePage() {
             hidden: {},
             visible: {
               transition: {
-                staggerChildren: 0.25,
-                delayChildren: 0.4,
+                staggerChildren: 0.35,
+                delayChildren: 0.5,
               },
             },
           }}
@@ -128,7 +128,7 @@ export default function HomePage() {
               hidden: { opacity: 0, y: 20 },
               visible: { opacity: 1, y: 0 },
             }}
-            transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+            transition={{ duration: 1, ease: [0.25, 0.1, 0.25, 1] }}
             className="text-4xl md:text-6xl lg:text-7xl font-display tracking-[0.3em] mb-6"
           >
             REFINED FINISHING
@@ -138,7 +138,7 @@ export default function HomePage() {
               hidden: { opacity: 0, y: 15 },
               visible: { opacity: 1, y: 0 },
             }}
-            transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+            transition={{ duration: 1, ease: [0.25, 0.1, 0.25, 1] }}
             className="text-[13px] md:text-[15px] tracking-[0.2em] mb-8 max-w-2xl mx-auto font-light"
           >
             FOR DISCERNING SPACES
@@ -146,12 +146,12 @@ export default function HomePage() {
           <motion.div
             initial={{ visibility: "hidden" }}
             animate={{ visibility: "visible" }}
-            transition={{ delay: 0.9 }}
+            transition={{ delay: 1.2 }}
           >
             <motion.div
               initial={{ y: 15, scale: 0.98 }}
               animate={{ y: 0, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.9, ease: [0.25, 0.1, 0.25, 1] }}
+              transition={{ duration: 0.8, delay: 1.2, ease: [0.25, 0.1, 0.25, 1] }}
             >
               <Link 
                 href="/bathroom"
