@@ -1,6 +1,40 @@
 import { Product } from "@/types/product";
 
-// Helper to create product
+// Gallery image URLs for different product types
+const galleryImages = {
+  bathroom: [
+    "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=1200&h=1500&fit=crop",
+    "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&h=1500&fit=crop",
+    "https://images.unsplash.com/photo-1600607687644-c7171b42498b?w=1200&h=1500&fit=crop",
+    "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=1200&h=1500&fit=crop",
+    "https://images.unsplash.com/photo-1600573472591-ee6b68d14c68?w=1200&h=1500&fit=crop",
+    "https://images.unsplash.com/photo-1600210491892-03d54c0aaf87?w=1200&h=1500&fit=crop",
+  ],
+  kitchen: [
+    "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200&h=1500&fit=crop",
+    "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=1200&h=1500&fit=crop",
+    "https://images.unsplash.com/photo-1556909172-54557c7e4fb7?w=1200&h=1500&fit=crop",
+    "https://images.unsplash.com/photo-1564540583246-934409427776?w=1200&h=1500&fit=crop",
+  ],
+  tiling: [
+    "https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=1200&h=1500&fit=crop",
+    "https://images.unsplash.com/photo-1600210491892-03d54c0aaf87?w=1200&h=1500&fit=crop",
+    "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&h=1500&fit=crop",
+  ],
+  lighting: [
+    "https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?w=1200&h=1500&fit=crop",
+    "https://images.unsplash.com/photo-1524484485831-a92ffc0de03f?w=1200&h=1500&fit=crop",
+    "https://images.unsplash.com/photo-1540932239986-30128078f3c5?w=1200&h=1500&fit=crop",
+    "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=1200&h=1500&fit=crop",
+  ],
+  electrical: [
+    "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&h=1500&fit=crop",
+    "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&h=1500&fit=crop",
+    "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=1200&h=1500&fit=crop",
+  ],
+};
+
+// Helper to create product with multiple gallery images
 const createProduct = (
   id: string,
   slug: string,
@@ -12,25 +46,38 @@ const createProduct = (
   imageUrl: string,
   specs: { material: string; colour: string; finish: string; dimensions: { width: number; height: number; depth: number } },
   options?: { isNew?: boolean; isFeatured?: boolean; variants?: any[] }
-): Product => ({
-  id,
-  slug,
-  name,
-  sku: `HOC-${id.toUpperCase()}`,
-  category,
-  subcategory,
-  description,
-  specifications: { ...specs, weight: 10 },
-  pricing: { price, priceExVat: price / 1.2 },
-  variants: options?.variants || [],
-  images: [{ id: `${id}-1`, url: imageUrl, alt: name, width: 800, height: 1000 }],
-  relatedProducts: [],
-  tags: [category.slug, subcategory],
-  stock: 10,
-  isNew: options?.isNew || false,
-  isFeatured: options?.isFeatured || false,
-  deliveryInfo: "Delivery within 7-14 working days",
-});
+): Product => {
+  // Get category-specific gallery images
+  const categoryImages = galleryImages[category.slug as keyof typeof galleryImages] || galleryImages.bathroom;
+  
+  // Create multiple images for the gallery (main + 3-4 additional views)
+  const productImages = [
+    { id: `${id}-1`, url: imageUrl, alt: `${name} - Main View`, width: 1200, height: 1500 },
+    { id: `${id}-2`, url: categoryImages[Math.floor(Math.random() * categoryImages.length)], alt: `${name} - Lifestyle`, width: 1200, height: 1500 },
+    { id: `${id}-3`, url: categoryImages[Math.floor(Math.random() * categoryImages.length)], alt: `${name} - Detail`, width: 1200, height: 1500 },
+    { id: `${id}-4`, url: categoryImages[Math.floor(Math.random() * categoryImages.length)], alt: `${name} - Alternative View`, width: 1200, height: 1500 },
+  ];
+
+  return {
+    id,
+    slug,
+    name,
+    sku: `HOC-${id.toUpperCase()}`,
+    category,
+    subcategory,
+    description,
+    specifications: { ...specs, weight: 10 },
+    pricing: { price, priceExVat: price / 1.2 },
+    variants: options?.variants || [],
+    images: productImages,
+    relatedProducts: [],
+    tags: [category.slug, subcategory],
+    stock: 10,
+    isNew: options?.isNew || false,
+    isFeatured: options?.isFeatured || false,
+    deliveryInfo: "Delivery within 7-14 working days",
+  };
+};
 
 const bathroomCat = { id: "bathroom", name: "Bathroom", slug: "bathroom" };
 const kitchenCat = { id: "kitchen", name: "Kitchen", slug: "kitchen" };

@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown, Phone, Plus, Check, Ruler, X, Mail, MessageCircle } from "lucide-react";
+import Image from "next/image";
+import { ChevronDown, Phone, Plus, Check, Ruler, X, Mail, MessageCircle, Square } from "lucide-react";
 import { EnquiryPanel } from "./EnquiryPanel";
 import { useSelectionStore } from "@/stores/selectionStore";
 import { motion, AnimatePresence } from "framer-motion";
@@ -32,6 +33,12 @@ interface Props {
     material?: string;
     finish?: string;
   };
+  essentials?: {
+    id: string;
+    name: string;
+    image: string;
+    category: string;
+  }[];
 }
 
 // Preset dimension options (multipliers for base dimensions)
@@ -47,6 +54,35 @@ const COLOR_OPTIONS = [
   { id: "black", name: "Matt Black", hex: "#1A1A1A" },
   { id: "brass", name: "Brushed Brass", hex: "#C9A962" },
 ];
+
+// Essential/complementary products by category
+const ESSENTIALS_BY_CATEGORY: Record<string, { id: string; name: string; image: string; description: string }[]> = {
+  bathroom: [
+    { id: "ess-1", name: "Matt Black Pop Up Bath Waste", image: "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=200&h=200&fit=crop", description: "Premium bath waste with overflow" },
+    { id: "ess-2", name: "Stone Cleaning Solution 400ml", image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=200&h=200&fit=crop", description: "Specialist care product" },
+    { id: "ess-3", name: "Luxury Bath Headrest Pillow", image: "https://images.unsplash.com/photo-1600573472591-ee6b68d14c68?w=200&h=200&fit=crop", description: "Soft comfort accessory" },
+  ],
+  kitchen: [
+    { id: "ess-4", name: "Sink Waste Kit Brushed Brass", image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=200&h=200&fit=crop", description: "Premium waste kit" },
+    { id: "ess-5", name: "Sink Protector Grid", image: "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=200&h=200&fit=crop", description: "Stainless steel protection" },
+    { id: "ess-6", name: "Surface Cleaning Kit", image: "https://images.unsplash.com/photo-1556909172-54557c7e4fb7?w=200&h=200&fit=crop", description: "Complete care set" },
+  ],
+  tiling: [
+    { id: "ess-7", name: "Tile Adhesive Premium 20kg", image: "https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=200&h=200&fit=crop", description: "Professional grade adhesive" },
+    { id: "ess-8", name: "Grout Colour Matched 5kg", image: "https://images.unsplash.com/photo-1600210491892-03d54c0aaf87?w=200&h=200&fit=crop", description: "Premium flexible grout" },
+    { id: "ess-9", name: "Tile Sealer 1L", image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=200&h=200&fit=crop", description: "Protective sealant" },
+  ],
+  lighting: [
+    { id: "ess-10", name: "LED Bulb Warm White E27", image: "https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?w=200&h=200&fit=crop", description: "Dimmable 8W bulb" },
+    { id: "ess-11", name: "Ceiling Rose Brushed Brass", image: "https://images.unsplash.com/photo-1524484485831-a92ffc0de03f?w=200&h=200&fit=crop", description: "Premium ceiling mount" },
+    { id: "ess-12", name: "Dimmer Module", image: "https://images.unsplash.com/photo-1540932239986-30128078f3c5?w=200&h=200&fit=crop", description: "Smart dimming control" },
+  ],
+  electrical: [
+    { id: "ess-13", name: "Matching Socket Brushed Brass", image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=200&h=200&fit=crop", description: "Coordinating socket" },
+    { id: "ess-14", name: "Back Box 35mm", image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=200&h=200&fit=crop", description: "Deep mounting box" },
+    { id: "ess-15", name: "Screwless Plate Kit", image: "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=200&h=200&fit=crop", description: "Clean finish kit" },
+  ],
+};
 
 export function ProductInfo({ product }: Props) {
   const [openSection, setOpenSection] = useState<string | null>("description");
@@ -325,6 +361,64 @@ export function ProductInfo({ product }: Props) {
             Enquire About This Product
           </motion.button>
         </div>
+
+        {/* ════════════════════════════════════════════════════════════ */}
+        {/* ADD ESSENTIALS (Lusso-style) */}
+        {/* ════════════════════════════════════════════════════════════ */}
+        {ESSENTIALS_BY_CATEGORY[product.category] && (
+          <div className="mb-10">
+            <h3 className="text-[11px] tracking-[0.2em] uppercase mb-4">
+              Add Essential
+            </h3>
+            <div className="space-y-3">
+              {ESSENTIALS_BY_CATEGORY[product.category].map((essential) => (
+                <label
+                  key={essential.id}
+                  className="flex items-center gap-4 p-3 bg-[#FAFAFA] hover:bg-[#F5F5F5] transition-colors cursor-pointer group"
+                >
+                  <input
+                    type="checkbox"
+                    className="sr-only peer"
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        addItem({
+                          id: essential.id,
+                          slug: essential.id,
+                          name: essential.name,
+                          price: 0,
+                          priceExVat: 0,
+                          image: essential.image,
+                          category: product.category,
+                        });
+                      }
+                    }}
+                  />
+                  <div className="w-5 h-5 border border-light-grey flex items-center justify-center peer-checked:bg-primary-black peer-checked:border-primary-black transition-all">
+                    <Check className="w-3 h-3 text-white opacity-0 peer-checked:opacity-100" />
+                  </div>
+                  <div className="w-14 h-14 relative bg-white flex-shrink-0 overflow-hidden">
+                    <Image
+                      src={essential.image}
+                      alt={essential.name}
+                      fill
+                      className="object-cover"
+                      sizes="56px"
+                    />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-[12px] tracking-wide font-medium truncate group-hover:text-charcoal transition-colors">
+                      {essential.name}
+                    </h4>
+                    <p className="text-[11px] text-warm-grey">
+                      {essential.description}
+                    </p>
+                  </div>
+                  <Plus className="w-4 h-4 text-warm-grey group-hover:text-primary-black transition-colors flex-shrink-0" />
+                </label>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* ════════════════════════════════════════════════════════════ */}
         {/* GET IN TOUCH BOX */}
