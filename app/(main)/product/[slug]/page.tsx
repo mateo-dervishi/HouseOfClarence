@@ -278,7 +278,7 @@ export default function ProductPage({ params }: ProductPageProps) {
             </h2>
             <p className="text-[15px] text-white/70 max-w-xl mx-auto mb-8 leading-relaxed">
               Our team can help create bespoke solutions tailored to your exact specifications. 
-              From custom dimensions to unique finishes, we're here to bring your vision to life.
+              From custom dimensions to unique finishes, we&apos;re here to bring your vision to life.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
