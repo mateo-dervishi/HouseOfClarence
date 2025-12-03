@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { Heart, ZoomIn, ChevronLeft, ChevronRight, X, Expand } from "lucide-react";
+import { Heart, ChevronLeft, ChevronRight, X, Expand } from "lucide-react";
 
 interface ProductImage {
   id: string;
@@ -24,11 +24,8 @@ const imageLabels = ["Main", "Lifestyle", "Detail", "View"];
 
 export function ProductGallery({ images, name, collection }: Props) {
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [isZoomed, setIsZoomed] = useState(false);
-  const [zoomPosition, setZoomPosition] = useState({ x: 50, y: 50 });
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
-  const imageRef = useRef<HTMLDivElement>(null);
 
   // Keyboard navigation
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
@@ -72,14 +69,6 @@ export function ProductGallery({ images, name, collection }: Props) {
       </div>
     );
   }
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!imageRef.current || !isZoomed) return;
-    const rect = imageRef.current.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
-    setZoomPosition({ x, y });
-  };
 
   const nextImage = () => {
     setSelectedIndex((prev) => (prev + 1) % images.length);
@@ -129,13 +118,7 @@ export function ProductGallery({ images, name, collection }: Props) {
 
         {/* Main Image Container */}
         <div className="order-1 lg:order-2 flex-1">
-          <div
-            ref={imageRef}
-            className="aspect-[4/5] relative bg-[#FAFAFA] overflow-hidden cursor-zoom-in group"
-            onMouseEnter={() => setIsZoomed(true)}
-            onMouseLeave={() => setIsZoomed(false)}
-            onMouseMove={handleMouseMove}
-          >
+          <div className="aspect-[4/5] relative bg-[#FAFAFA] overflow-hidden group">
             {/* Collection Badge */}
             {collection && (
               <div className="absolute top-6 left-6 z-10">
@@ -145,7 +128,7 @@ export function ProductGallery({ images, name, collection }: Props) {
               </div>
             )}
 
-            {/* Main Image with Zoom Effect */}
+            {/* Main Image */}
             <AnimatePresence mode="wait">
               <motion.div
                 key={selectedIndex}
@@ -159,11 +142,7 @@ export function ProductGallery({ images, name, collection }: Props) {
                   src={images[selectedIndex]?.url || images[0].url}
                   alt={images[selectedIndex]?.alt || name}
                   fill
-                  className="object-cover transition-transform duration-500 ease-out"
-                  style={{
-                    transform: isZoomed ? "scale(1.8)" : "scale(1)",
-                    transformOrigin: `${zoomPosition.x}% ${zoomPosition.y}%`,
-                  }}
+                  className="object-cover"
                   priority
                   sizes="(max-width: 1024px) 100vw, 60vw"
                 />
@@ -196,14 +175,6 @@ export function ProductGallery({ images, name, collection }: Props) {
                   }`}
                 />
               </motion.button>
-            </div>
-
-            {/* Zoom Indicator */}
-            <div className="absolute bottom-6 left-6 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-              <div className="flex items-center gap-2 px-3 py-2 bg-white/95 backdrop-blur-sm text-[10px] tracking-[0.15em] uppercase shadow-sm">
-                <ZoomIn className="w-3.5 h-3.5" />
-                <span>Hover to zoom</span>
-              </div>
             </div>
 
             {/* Navigation Arrows */}

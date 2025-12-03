@@ -34,6 +34,17 @@ const galleryImages = {
   ],
 };
 
+// Simple hash function to get deterministic index from string
+const hashString = (str: string): number => {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash;
+  }
+  return Math.abs(hash);
+};
+
 // Helper to create product with multiple gallery images
 const createProduct = (
   id: string,
@@ -50,12 +61,15 @@ const createProduct = (
   // Get category-specific gallery images
   const categoryImages = galleryImages[category.slug as keyof typeof galleryImages] || galleryImages.bathroom;
   
-  // Create multiple images for the gallery (main + 3-4 additional views)
+  // Use deterministic selection based on product ID (no Math.random for SSR compatibility)
+  const hash = hashString(id);
+  
+  // Create multiple images for the gallery (main + 3 additional views)
   const productImages = [
     { id: `${id}-1`, url: imageUrl, alt: `${name} - Main View`, width: 1200, height: 1500 },
-    { id: `${id}-2`, url: categoryImages[Math.floor(Math.random() * categoryImages.length)], alt: `${name} - Lifestyle`, width: 1200, height: 1500 },
-    { id: `${id}-3`, url: categoryImages[Math.floor(Math.random() * categoryImages.length)], alt: `${name} - Detail`, width: 1200, height: 1500 },
-    { id: `${id}-4`, url: categoryImages[Math.floor(Math.random() * categoryImages.length)], alt: `${name} - Alternative View`, width: 1200, height: 1500 },
+    { id: `${id}-2`, url: categoryImages[(hash + 1) % categoryImages.length], alt: `${name} - Lifestyle`, width: 1200, height: 1500 },
+    { id: `${id}-3`, url: categoryImages[(hash + 2) % categoryImages.length], alt: `${name} - Detail`, width: 1200, height: 1500 },
+    { id: `${id}-4`, url: categoryImages[(hash + 3) % categoryImages.length], alt: `${name} - Alternative View`, width: 1200, height: 1500 },
   ];
 
   return {
