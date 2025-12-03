@@ -7,6 +7,7 @@ import { mockProducts } from "@/lib/mockData";
 import { ProductCard } from "@/components/product/ProductCard";
 import { ProductGallery } from "@/components/product/ProductGallery";
 import { ProductInfo } from "@/components/product/ProductInfo";
+import { ProductAccordion } from "@/components/product/ProductAccordion";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { ChevronRight, Truck, Shield, Phone } from "lucide-react";
@@ -119,7 +120,7 @@ export default function ProductPage({ params }: ProductPageProps) {
       {/* Main Product Section */}
       <section className="max-w-[1800px] mx-auto px-6 lg:px-12 pb-20">
         <div className="grid lg:grid-cols-[1fr,480px] gap-12 lg:gap-20">
-          {/* LEFT: Image Gallery */}
+          {/* LEFT: Image Gallery + Accordion */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -129,6 +130,11 @@ export default function ProductPage({ params }: ProductPageProps) {
               images={product.images} 
               name={product.name}
               collection="House of Clarence"
+            />
+            {/* Accordion sections below gallery */}
+            <ProductAccordion 
+              description={product.description}
+              specifications={productInfoData.specifications}
             />
           </motion.div>
 
