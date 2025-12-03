@@ -120,7 +120,7 @@ export default function ProductPage({ params }: ProductPageProps) {
       {/* Main Product Section */}
       <section className="max-w-[1800px] mx-auto px-6 lg:px-12 pb-20">
         <div className="grid lg:grid-cols-[1fr,480px] gap-12 lg:gap-20">
-          {/* LEFT: Image Gallery + Accordion */}
+          {/* LEFT: Image Gallery + About + Accordion */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -131,7 +131,29 @@ export default function ProductPage({ params }: ProductPageProps) {
               name={product.name}
               collection="House of Clarence"
             />
-            {/* Accordion sections below gallery */}
+            
+            {/* About This Product - below gallery */}
+            <div className="mt-10">
+              <span className="inline-block text-[10px] tracking-[0.25em] uppercase text-warm-grey mb-4">
+                About This Product
+              </span>
+              <h2 className="text-2xl lg:text-3xl font-light tracking-wide mb-6">
+                {product.name}
+              </h2>
+              <div className="text-warm-grey">
+                <p className="text-[15px] leading-[1.9]">
+                  {product.description}
+                </p>
+                <p className="text-[15px] leading-[1.9] mt-4">
+                  Part of our carefully curated {product.category.name.toLowerCase()} collection, 
+                  this piece exemplifies the House of Clarence commitment to refined finishing 
+                  for discerning spaces. Each product is selected for its exceptional quality, 
+                  timeless design, and superior craftsmanship.
+                </p>
+              </div>
+            </div>
+
+            {/* Accordion sections below About */}
             <ProductAccordion 
               description={product.description}
               specifications={productInfoData.specifications}
@@ -181,36 +203,6 @@ export default function ProductPage({ params }: ProductPageProps) {
               </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Full Description Section (for SEO and detailed info) */}
-      <section className="max-w-[1800px] mx-auto px-6 lg:px-12 py-20">
-        <div className="max-w-3xl">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <span className="inline-block text-[10px] tracking-[0.25em] uppercase text-warm-grey mb-4">
-              About This Product
-            </span>
-            <h2 className="text-2xl lg:text-3xl font-light tracking-wide mb-6">
-              {product.name}
-            </h2>
-            <div className="prose prose-lg text-warm-grey">
-              <p className="text-[15px] leading-[1.9]">
-                {product.description}
-              </p>
-              <p className="text-[15px] leading-[1.9] mt-4">
-                Part of our carefully curated {product.category.name.toLowerCase()} collection, 
-                this piece exemplifies the House of Clarence commitment to refined finishing 
-                for discerning spaces. Each product is selected for its exceptional quality, 
-                timeless design, and superior craftsmanship.
-              </p>
-            </div>
-          </motion.div>
         </div>
       </section>
 
