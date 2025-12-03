@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
-import { ChevronDown, Phone, Plus, Check, Ruler, Palette, X } from "lucide-react";
+import { ChevronDown, Phone, Plus, Check, Ruler, X, Mail, MessageCircle } from "lucide-react";
 import { EnquiryPanel } from "./EnquiryPanel";
 import { useSelectionStore } from "@/stores/selectionStore";
 import { motion, AnimatePresence } from "framer-motion";
@@ -30,6 +29,8 @@ interface Props {
       height: number;
       depth: number;
     };
+    material?: string;
+    finish?: string;
   };
 }
 
@@ -63,8 +64,7 @@ export function ProductInfo({ product }: Props) {
     depth: "",
   });
   
-  const { addItem, isInSelection } = useSelectionStore();
-  const isSelected = isInSelection(product.id);
+  const { addItem } = useSelectionStore();
 
   // Extract base dimensions from specifications
   const baseDimensions = product.dimensions || { width: 600, height: 400, depth: 300 };
@@ -80,7 +80,7 @@ export function ProductInfo({ product }: Props) {
 
   const getSelectedDimensionLabel = () => {
     if (bespokeMode) {
-      return `${bespokeDimensions.width || "—"} × ${bespokeDimensions.height || "—"} × ${bespokeDimensions.depth || "—"}mm (Bespoke)`;
+      return `${bespokeDimensions.width || "—"} × ${bespokeDimensions.height || "—"} × ${bespokeDimensions.depth || "—"}mm`;
     }
     const dim = DIMENSION_OPTIONS.find(d => d.id === selectedDimension);
     if (!dim) return "";
@@ -127,69 +127,84 @@ export function ProductInfo({ product }: Props) {
 
   return (
     <>
-      <div className="lg:sticky lg:top-24 lg:self-start">
-        {/* Breadcrumb mini */}
-        <nav className="mb-4">
-          <ol className="flex items-center gap-2 text-[11px] tracking-[0.05em] text-warm-grey">
-            <li>
-              <a href={`/${product.category}`} className="hover:text-primary-black capitalize transition-colors">
-                {product.category}
-              </a>
-            </li>
-            <li>/</li>
-            <li>
-              <a href={`/${product.category}/${product.subcategory}`} className="hover:text-primary-black capitalize transition-colors">
-                {product.subcategory}
-              </a>
-            </li>
-          </ol>
-        </nav>
+      <div className="lg:sticky lg:top-28 lg:self-start">
+        {/* Product Header */}
+        <div className="mb-8">
+          {/* Collection Label */}
+          <div className="mb-4">
+            <span className="inline-block text-[10px] tracking-[0.25em] uppercase text-warm-grey border-b border-warm-grey pb-1">
+              House of Clarence
+            </span>
+          </div>
 
-        {/* Product Name */}
-        <h1 className="text-2xl lg:text-3xl tracking-[0.05em] font-light mb-4">
-          {product.name}
-        </h1>
+          {/* Product Name */}
+          <h1 className="text-3xl lg:text-4xl tracking-[0.02em] font-light mb-3 leading-tight">
+            {product.name}
+          </h1>
 
-        {/* SKU */}
-        <p className="text-[12px] text-warm-grey tracking-[0.05em] mb-8">
-          SKU: {product.sku}
+          {/* SKU & Quick Specs */}
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[12px] text-warm-grey tracking-wide">
+            <span>SKU: {product.sku}</span>
+            {product.material && (
+              <>
+                <span className="text-light-grey">|</span>
+                <span>{product.material}</span>
+              </>
+            )}
+          </div>
+        </div>
+
+        {/* Divider */}
+        <div className="w-12 h-px bg-primary-black mb-8" />
+
+        {/* Short Description */}
+        <p className="text-[14px] leading-[1.8] text-warm-grey mb-8">
+          {product.description.substring(0, 150)}
+          {product.description.length > 150 ? "..." : ""}
         </p>
 
         {/* ════════════════════════════════════════════════════════════ */}
         {/* COLOR SELECTOR */}
         {/* ════════════════════════════════════════════════════════════ */}
-        <div className="mb-6">
-          <div className="flex items-center gap-2 mb-3">
-            <Palette className="w-4 h-4 text-warm-grey" />
-            <p className="text-[12px] tracking-[0.1em] uppercase text-warm-grey">
-              Colour: <span className="text-primary-black">{getSelectedColorName()}</span>
-            </p>
+        <div className="mb-8">
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-[11px] tracking-[0.15em] uppercase">
+              Colour
+            </span>
+            <span className="text-[12px] text-warm-grey">
+              {getSelectedColorName()}
+            </span>
           </div>
-          <div className="flex gap-3">
+          <div className="flex gap-4">
             {COLOR_OPTIONS.map((color) => (
               <button
                 key={color.id}
                 onClick={() => setSelectedColor(color.id)}
-                className={`relative w-12 h-12 rounded-full transition-all duration-200 ${
-                  selectedColor === color.id
-                    ? "ring-2 ring-primary-black ring-offset-2"
-                    : "hover:ring-2 hover:ring-warm-grey hover:ring-offset-2"
-                }`}
-                style={{ 
-                  backgroundColor: color.hex,
-                  border: color.id === "white" ? "1px solid #E5E5E5" : "none"
-                }}
+                className="group relative"
                 title={color.name}
               >
+                <div
+                  className={`w-14 h-14 rounded-full transition-all duration-300 ${
+                    selectedColor === color.id
+                      ? "ring-2 ring-offset-4 ring-primary-black"
+                      : "ring-1 ring-light-grey hover:ring-warm-grey"
+                  }`}
+                  style={{ 
+                    backgroundColor: color.hex,
+                  }}
+                />
                 {selectedColor === color.id && (
                   <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
                     className="absolute inset-0 flex items-center justify-center"
                   >
                     <Check className={`w-5 h-5 ${color.id === "white" ? "text-primary-black" : "text-white"}`} />
                   </motion.div>
                 )}
+                <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[10px] text-warm-grey opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                  {color.name}
+                </span>
               </button>
             ))}
           </div>
@@ -198,16 +213,18 @@ export function ProductInfo({ product }: Props) {
         {/* ════════════════════════════════════════════════════════════ */}
         {/* DIMENSION SELECTOR */}
         {/* ════════════════════════════════════════════════════════════ */}
-        <div className="mb-6">
-          <div className="flex items-center gap-2 mb-3">
-            <Ruler className="w-4 h-4 text-warm-grey" />
-            <p className="text-[12px] tracking-[0.1em] uppercase text-warm-grey">
-              Dimensions: <span className="text-primary-black">{getSelectedDimensionLabel()}</span>
-            </p>
+        <div className="mb-8">
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-[11px] tracking-[0.15em] uppercase">
+              Size
+            </span>
+            <span className="text-[12px] text-warm-grey">
+              {getSelectedDimensionLabel()}
+            </span>
           </div>
           
           {/* Preset Dimensions */}
-          <div className="grid grid-cols-3 gap-2 mb-3">
+          <div className="space-y-2 mb-4">
             {DIMENSION_OPTIONS.map((dim) => {
               const w = Math.round(baseDimensions.width * dim.multiplier);
               const h = Math.round(baseDimensions.height * dim.multiplier);
@@ -221,17 +238,17 @@ export function ProductInfo({ product }: Props) {
                     setSelectedDimension(dim.id);
                     setBespokeMode(false);
                   }}
-                  className={`p-3 border text-center transition-all duration-200 ${
+                  className={`w-full p-4 flex items-center justify-between transition-all duration-300 ${
                     isActive
-                      ? "border-primary-black bg-primary-black text-white"
-                      : "border-light-grey hover:border-primary-black"
+                      ? "bg-primary-black text-white"
+                      : "bg-[#FAFAFA] hover:bg-[#F0F0F0]"
                   }`}
                 >
-                  <span className="block text-[12px] tracking-[0.1em] uppercase font-medium mb-1">
+                  <span className="text-[12px] tracking-[0.1em] uppercase font-medium">
                     {dim.label}
                   </span>
-                  <span className={`block text-[10px] ${isActive ? "text-white/80" : "text-warm-grey"}`}>
-                    {w}×{h}×{d}mm
+                  <span className={`text-[12px] ${isActive ? "text-white/70" : "text-warm-grey"}`}>
+                    {w} × {h} × {d}mm
                   </span>
                 </button>
               );
@@ -240,16 +257,16 @@ export function ProductInfo({ product }: Props) {
 
           {/* Bespoke Button */}
           {bespokeMode ? (
-            <div className="flex items-center justify-between p-3 border border-primary-black bg-off-white">
+            <div className="flex items-center justify-between p-4 bg-off-white border-l-2 border-primary-black">
               <div>
                 <span className="text-[12px] tracking-[0.1em] uppercase font-medium">Bespoke</span>
-                <span className="block text-[10px] text-warm-grey mt-1">
-                  {bespokeDimensions.width}×{bespokeDimensions.height}×{bespokeDimensions.depth}mm
+                <span className="block text-[11px] text-warm-grey mt-1">
+                  {bespokeDimensions.width} × {bespokeDimensions.height} × {bespokeDimensions.depth}mm
                 </span>
               </div>
               <button 
                 onClick={clearBespoke}
-                className="p-1 hover:bg-light-grey rounded transition-colors"
+                className="p-2 hover:bg-light-grey/50 rounded transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -257,126 +274,28 @@ export function ProductInfo({ product }: Props) {
           ) : (
             <button
               onClick={() => setIsBespokeOpen(true)}
-              className="w-full p-3 border border-dashed border-warm-grey text-center hover:border-primary-black transition-all duration-200 group"
+              className="w-full p-4 border-2 border-dashed border-light-grey text-center hover:border-primary-black transition-all duration-300 group"
             >
-              <span className="text-[12px] tracking-[0.1em] uppercase text-warm-grey group-hover:text-primary-black">
-                + Create Bespoke Measurement
-              </span>
+              <div className="flex items-center justify-center gap-2">
+                <Ruler className="w-4 h-4 text-warm-grey group-hover:text-primary-black transition-colors" />
+                <span className="text-[12px] tracking-[0.1em] uppercase text-warm-grey group-hover:text-primary-black transition-colors">
+                  Create Bespoke Size
+                </span>
+              </div>
             </button>
           )}
         </div>
 
         {/* ════════════════════════════════════════════════════════════ */}
-        {/* BESPOKE MEASUREMENT MODAL */}
-        {/* ════════════════════════════════════════════════════════════ */}
-        <AnimatePresence>
-          {isBespokeOpen && (
-            <>
-              {/* Backdrop */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                onClick={() => setIsBespokeOpen(false)}
-                className="fixed inset-0 bg-black/50 z-50"
-              />
-              {/* Modal */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                transition={{ duration: 0.2 }}
-                className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-white z-50 p-8 shadow-2xl"
-              >
-                <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-lg tracking-[0.1em] uppercase">Bespoke Measurements</h3>
-                  <button 
-                    onClick={() => setIsBespokeOpen(false)}
-                    className="p-1 hover:bg-light-grey rounded transition-colors"
-                  >
-                    <X className="w-5 h-5" />
-                  </button>
-                </div>
-                
-                <p className="text-[13px] text-warm-grey mb-6 leading-relaxed">
-                  Enter your custom dimensions in millimetres. Our team will review your specifications and provide a tailored quote.
-                </p>
-
-                <div className="space-y-4 mb-8">
-                  <div>
-                    <label className="block text-[11px] tracking-[0.1em] uppercase text-warm-grey mb-2">
-                      Width (mm)
-                    </label>
-                    <input
-                      type="number"
-                      value={bespokeDimensions.width}
-                      onChange={(e) => setBespokeDimensions(prev => ({ ...prev, width: e.target.value }))}
-                      placeholder={`e.g. ${baseDimensions.width}`}
-                      className="w-full px-4 py-3 border border-light-grey focus:border-primary-black outline-none transition-colors text-[14px]"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[11px] tracking-[0.1em] uppercase text-warm-grey mb-2">
-                      Height (mm)
-                    </label>
-                    <input
-                      type="number"
-                      value={bespokeDimensions.height}
-                      onChange={(e) => setBespokeDimensions(prev => ({ ...prev, height: e.target.value }))}
-                      placeholder={`e.g. ${baseDimensions.height}`}
-                      className="w-full px-4 py-3 border border-light-grey focus:border-primary-black outline-none transition-colors text-[14px]"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[11px] tracking-[0.1em] uppercase text-warm-grey mb-2">
-                      Depth (mm)
-                    </label>
-                    <input
-                      type="number"
-                      value={bespokeDimensions.depth}
-                      onChange={(e) => setBespokeDimensions(prev => ({ ...prev, depth: e.target.value }))}
-                      placeholder={`e.g. ${baseDimensions.depth}`}
-                      className="w-full px-4 py-3 border border-light-grey focus:border-primary-black outline-none transition-colors text-[14px]"
-                    />
-                  </div>
-                </div>
-
-                <div className="flex gap-3">
-                  <button
-                    onClick={() => setIsBespokeOpen(false)}
-                    className="flex-1 py-3 border border-light-grey text-[12px] tracking-[0.1em] uppercase hover:border-primary-black transition-colors"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    onClick={handleBespokeSave}
-                    disabled={!bespokeDimensions.width || !bespokeDimensions.height || !bespokeDimensions.depth}
-                    className="flex-1 py-3 bg-primary-black text-white text-[12px] tracking-[0.1em] uppercase hover:bg-charcoal transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    Apply
-                  </button>
-                </div>
-              </motion.div>
-            </>
-          )}
-        </AnimatePresence>
-
-        {/* Pricing Note */}
-        <div className="mb-8 p-4 bg-off-white border border-light-grey">
-          <p className="text-[13px] text-warm-grey leading-relaxed">
-            <span className="font-medium text-primary-black">Pricing on Request</span>
-            <br />
-            Add to your selection and submit an enquiry to receive a personalised quote. 
-            Prices vary based on quantity and project requirements.
-          </p>
-        </div>
-
         {/* ACTION BUTTONS */}
+        {/* ════════════════════════════════════════════════════════════ */}
         <div className="space-y-3 mb-10">
           {/* Add to Selection Button */}
-          <button
+          <motion.button
             onClick={handleAddToSelection}
-            className={`flex items-center justify-center gap-2 w-full py-4 text-[13px] tracking-[0.15em] uppercase transition-all ${
+            whileHover={{ scale: 1.01 }}
+            whileTap={{ scale: 0.99 }}
+            className={`flex items-center justify-center gap-3 w-full py-5 text-[12px] tracking-[0.2em] uppercase font-medium transition-all duration-300 ${
               justAdded
                 ? "bg-green-600 text-white"
                 : "bg-primary-black text-white hover:bg-charcoal"
@@ -393,48 +312,87 @@ export function ProductInfo({ product }: Props) {
                 Add to Selection
               </>
             )}
-          </button>
+          </motion.button>
           
           {/* Enquire Button */}
-          <button
+          <motion.button
             onClick={() => setIsEnquiryOpen(true)}
-            className="block w-full py-4 border border-primary-black text-center text-[13px] tracking-[0.15em] uppercase hover:bg-primary-black hover:text-white transition-colors"
+            whileHover={{ scale: 1.01 }}
+            whileTap={{ scale: 0.99 }}
+            className="flex items-center justify-center gap-3 w-full py-5 border-2 border-primary-black text-[12px] tracking-[0.2em] uppercase font-medium hover:bg-primary-black hover:text-white transition-all duration-300"
           >
+            <MessageCircle className="w-4 h-4" />
             Enquire About This Product
-          </button>
-          
-          {/* Call Button */}
-          <a
-            href="tel:+442033704057"
-            className="flex items-center justify-center gap-2 w-full py-4 border border-light-grey text-warm-grey text-[13px] tracking-[0.15em] uppercase hover:border-primary-black hover:text-primary-black transition-colors"
-          >
-            <Phone className="w-4 h-4" />
-            Call: 020 3370 4057
-          </a>
+          </motion.button>
         </div>
 
-        {/* Collapsible Sections */}
+        {/* ════════════════════════════════════════════════════════════ */}
+        {/* GET IN TOUCH BOX */}
+        {/* ════════════════════════════════════════════════════════════ */}
+        <div className="bg-[#FAFAFA] p-6 mb-10">
+          <h3 className="text-[11px] tracking-[0.2em] uppercase mb-4">
+            Need Assistance?
+          </h3>
+          <p className="text-[13px] text-warm-grey leading-relaxed mb-5">
+            Our team is here to help with product enquiries, bespoke requirements, and trade pricing.
+          </p>
+          <div className="space-y-3">
+            <a
+              href="tel:+442033704057"
+              className="flex items-center gap-3 text-[13px] text-primary-black hover:text-charcoal transition-colors group"
+            >
+              <div className="w-8 h-8 bg-white flex items-center justify-center group-hover:bg-primary-black group-hover:text-white transition-all">
+                <Phone className="w-3.5 h-3.5" />
+              </div>
+              <span>020 3370 4057</span>
+            </a>
+            <a
+              href="mailto:sales@houseofclarence.com"
+              className="flex items-center gap-3 text-[13px] text-primary-black hover:text-charcoal transition-colors group"
+            >
+              <div className="w-8 h-8 bg-white flex items-center justify-center group-hover:bg-primary-black group-hover:text-white transition-all">
+                <Mail className="w-3.5 h-3.5" />
+              </div>
+              <span>sales@houseofclarence.com</span>
+            </a>
+          </div>
+        </div>
+
+        {/* ════════════════════════════════════════════════════════════ */}
+        {/* COLLAPSIBLE SECTIONS */}
+        {/* ════════════════════════════════════════════════════════════ */}
         <div className="border-t border-light-grey">
           {/* Description */}
           <div className="border-b border-light-grey">
             <button
               onClick={() => toggleSection("description")}
-              className="w-full flex items-center justify-between py-5 text-left"
+              className="w-full flex items-center justify-between py-5 text-left group"
             >
-              <span className="text-[13px] tracking-[0.1em] uppercase">
-                Description
+              <span className="text-[12px] tracking-[0.15em] uppercase group-hover:text-charcoal transition-colors">
+                Full Description
               </span>
-              <ChevronDown
-                className={`w-4 h-4 transition-transform ${
-                  openSection === "description" ? "rotate-180" : ""
-                }`}
-              />
+              <motion.div
+                animate={{ rotate: openSection === "description" ? 180 : 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                <ChevronDown className="w-4 h-4 text-warm-grey" />
+              </motion.div>
             </button>
-            {openSection === "description" && (
-              <div className="pb-6 text-[14px] leading-relaxed text-warm-grey">
-                <p>{product.description}</p>
-              </div>
-            )}
+            <AnimatePresence>
+              {openSection === "description" && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="overflow-hidden"
+                >
+                  <div className="pb-6 text-[14px] leading-[1.8] text-warm-grey">
+                    <p>{product.description}</p>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
           {/* Specification */}
@@ -442,29 +400,42 @@ export function ProductInfo({ product }: Props) {
             <div className="border-b border-light-grey">
               <button
                 onClick={() => toggleSection("specification")}
-                className="w-full flex items-center justify-between py-5 text-left"
+                className="w-full flex items-center justify-between py-5 text-left group"
               >
-                <span className="text-[13px] tracking-[0.1em] uppercase">
-                  Specification
+                <span className="text-[12px] tracking-[0.15em] uppercase group-hover:text-charcoal transition-colors">
+                  Specifications
                 </span>
-                <ChevronDown
-                  className={`w-4 h-4 transition-transform ${
-                    openSection === "specification" ? "rotate-180" : ""
-                  }`}
-                />
+                <motion.div
+                  animate={{ rotate: openSection === "specification" ? 180 : 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <ChevronDown className="w-4 h-4 text-warm-grey" />
+                </motion.div>
               </button>
-              {openSection === "specification" && (
-                <div className="pb-6 text-[14px] text-warm-grey">
-                  <ul className="space-y-2">
-                    {product.specifications.map((spec, index) => (
-                      <li key={index} className="flex">
-                        <span className="w-40 text-warm-grey">{spec.label}</span>
-                        <span className="text-primary-black">{spec.value}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+              <AnimatePresence>
+                {openSection === "specification" && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="overflow-hidden"
+                  >
+                    <div className="pb-6">
+                      <table className="w-full text-[13px]">
+                        <tbody>
+                          {product.specifications.map((spec, index) => (
+                            <tr key={index} className="border-b border-light-grey/50 last:border-0">
+                              <td className="py-3 text-warm-grey w-2/5">{spec.label}</td>
+                              <td className="py-3 text-primary-black">{spec.value}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           )}
 
@@ -472,40 +443,202 @@ export function ProductInfo({ product }: Props) {
           <div className="border-b border-light-grey">
             <button
               onClick={() => toggleSection("shipping")}
-              className="w-full flex items-center justify-between py-5 text-left"
+              className="w-full flex items-center justify-between py-5 text-left group"
             >
-              <span className="text-[13px] tracking-[0.1em] uppercase">
-                Shipping & Returns
+              <span className="text-[12px] tracking-[0.15em] uppercase group-hover:text-charcoal transition-colors">
+                Delivery & Returns
               </span>
-              <ChevronDown
-                className={`w-4 h-4 transition-transform ${
-                  openSection === "shipping" ? "rotate-180" : ""
-                }`}
-              />
+              <motion.div
+                animate={{ rotate: openSection === "shipping" ? 180 : 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                <ChevronDown className="w-4 h-4 text-warm-grey" />
+              </motion.div>
             </button>
-            {openSection === "shipping" && (
-              <div className="pb-6 text-[14px] leading-relaxed text-warm-grey space-y-4">
-                <div>
-                  <p className="font-medium text-primary-black mb-2">
-                    Delivery
-                  </p>
-                  <p>
-                    Delivery costs and timelines will be provided with your personalised quote.
-                    We offer nationwide delivery across the UK.
-                  </p>
-                </div>
-                <div>
-                  <p className="font-medium text-primary-black mb-2">Returns</p>
-                  <p>
-                    You have 14 days from the date of receiving your order to
-                    initiate a return. Please contact us to arrange.
-                  </p>
-                </div>
-              </div>
-            )}
+            <AnimatePresence>
+              {openSection === "shipping" && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="overflow-hidden"
+                >
+                  <div className="pb-6 text-[14px] leading-[1.8] text-warm-grey space-y-4">
+                    <div>
+                      <p className="font-medium text-primary-black mb-2">
+                        Delivery
+                      </p>
+                      <p>
+                        Delivery costs and timelines will be provided with your personalised quote.
+                        We offer nationwide delivery across the UK with white-glove service available.
+                      </p>
+                    </div>
+                    <div>
+                      <p className="font-medium text-primary-black mb-2">Returns</p>
+                      <p>
+                        You have 14 days from the date of receiving your order to
+                        initiate a return. Items must be unused and in original packaging.
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* Guarantee */}
+          <div>
+            <button
+              onClick={() => toggleSection("guarantee")}
+              className="w-full flex items-center justify-between py-5 text-left group"
+            >
+              <span className="text-[12px] tracking-[0.15em] uppercase group-hover:text-charcoal transition-colors">
+                Guarantee
+              </span>
+              <motion.div
+                animate={{ rotate: openSection === "guarantee" ? 180 : 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                <ChevronDown className="w-4 h-4 text-warm-grey" />
+              </motion.div>
+            </button>
+            <AnimatePresence>
+              {openSection === "guarantee" && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="overflow-hidden"
+                >
+                  <div className="pb-6 text-[14px] leading-[1.8] text-warm-grey">
+                    <p>
+                      All House of Clarence products come with a comprehensive guarantee 
+                      covering manufacturing defects. Our premium materials are crafted 
+                      to the highest standards for lasting quality.
+                    </p>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </div>
       </div>
+
+      {/* ════════════════════════════════════════════════════════════ */}
+      {/* BESPOKE MEASUREMENT MODAL */}
+      {/* ════════════════════════════════════════════════════════════ */}
+      <AnimatePresence>
+        {isBespokeOpen && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsBespokeOpen(false)}
+              className="fixed inset-0 bg-black/60 z-50"
+            />
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg bg-white z-50 shadow-2xl"
+            >
+              <div className="p-8">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-[10px] tracking-[0.25em] uppercase text-warm-grey">
+                    Bespoke Service
+                  </span>
+                  <button 
+                    onClick={() => setIsBespokeOpen(false)}
+                    className="p-1 hover:bg-light-grey/50 rounded transition-colors"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+                <h3 className="text-2xl tracking-wide font-light mb-6">Custom Dimensions</h3>
+                
+                <p className="text-[13px] text-warm-grey mb-8 leading-relaxed">
+                  Enter your custom dimensions in millimetres. Our team will review your 
+                  specifications and provide a tailored quote within 24 hours.
+                </p>
+
+                <div className="grid grid-cols-3 gap-4 mb-8">
+                  <div>
+                    <label className="block text-[10px] tracking-[0.15em] uppercase text-warm-grey mb-2">
+                      Width
+                    </label>
+                    <div className="relative">
+                      <input
+                        type="number"
+                        value={bespokeDimensions.width}
+                        onChange={(e) => setBespokeDimensions(prev => ({ ...prev, width: e.target.value }))}
+                        placeholder={String(baseDimensions.width)}
+                        className="w-full px-4 py-3 pr-12 border border-light-grey focus:border-primary-black outline-none transition-colors text-[14px]"
+                      />
+                      <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[11px] text-warm-grey">
+                        mm
+                      </span>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-[10px] tracking-[0.15em] uppercase text-warm-grey mb-2">
+                      Height
+                    </label>
+                    <div className="relative">
+                      <input
+                        type="number"
+                        value={bespokeDimensions.height}
+                        onChange={(e) => setBespokeDimensions(prev => ({ ...prev, height: e.target.value }))}
+                        placeholder={String(baseDimensions.height)}
+                        className="w-full px-4 py-3 pr-12 border border-light-grey focus:border-primary-black outline-none transition-colors text-[14px]"
+                      />
+                      <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[11px] text-warm-grey">
+                        mm
+                      </span>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-[10px] tracking-[0.15em] uppercase text-warm-grey mb-2">
+                      Depth
+                    </label>
+                    <div className="relative">
+                      <input
+                        type="number"
+                        value={bespokeDimensions.depth}
+                        onChange={(e) => setBespokeDimensions(prev => ({ ...prev, depth: e.target.value }))}
+                        placeholder={String(baseDimensions.depth)}
+                        className="w-full px-4 py-3 pr-12 border border-light-grey focus:border-primary-black outline-none transition-colors text-[14px]"
+                      />
+                      <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[11px] text-warm-grey">
+                        mm
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => setIsBespokeOpen(false)}
+                    className="flex-1 py-4 border border-light-grey text-[11px] tracking-[0.15em] uppercase hover:border-primary-black transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleBespokeSave}
+                    disabled={!bespokeDimensions.width || !bespokeDimensions.height || !bespokeDimensions.depth}
+                    className="flex-1 py-4 bg-primary-black text-white text-[11px] tracking-[0.15em] uppercase hover:bg-charcoal transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                  >
+                    Apply Dimensions
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
 
       {/* Enquiry Slide-out Panel */}
       <EnquiryPanel
