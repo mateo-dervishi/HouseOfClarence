@@ -61,6 +61,11 @@ export default function ProductPage({ params }: ProductPageProps) {
     ],
     category: product.category.slug,
     subcategory: product.subcategory,
+    dimensions: {
+      width: product.specifications.dimensions.width,
+      height: product.specifications.dimensions.height,
+      depth: product.specifications.dimensions.depth,
+    },
   };
 
   const relatedProducts = mockProducts

@@ -21,6 +21,10 @@ export interface SelectionItem {
   quantity: number;
   labelId?: string; // Which room/area this item belongs to
   notes?: string; // Optional notes for the item
+  customOptions?: {
+    color?: string;
+    dimensions?: string;
+  };
 }
 
 // Preset colors for labels
