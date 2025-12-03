@@ -137,9 +137,6 @@ export default function ProductPage({ params }: ProductPageProps) {
               <span className="inline-block text-[10px] tracking-[0.25em] uppercase text-warm-grey mb-4">
                 About This Product
               </span>
-              <h2 className="text-2xl lg:text-3xl font-light tracking-wide mb-6">
-                {product.name}
-              </h2>
               <div className="text-warm-grey">
                 <p className="text-[15px] leading-[1.9]">
                   {product.description}

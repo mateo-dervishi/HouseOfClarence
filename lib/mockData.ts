@@ -45,6 +45,15 @@ const hashString = (str: string): number => {
   return Math.abs(hash);
 };
 
+// Remove measurements from product names (e.g., "1700mm", "600x600mm", "1.5 bowl")
+const cleanProductName = (name: string): string => {
+  return name
+    .replace(/\s*\d+(\.\d+)?\s*x\s*\d+(\.\d+)?\s*mm/gi, '') // Remove "600x600mm" patterns
+    .replace(/\s*\d+(\.\d+)?\s*mm/gi, '') // Remove "1700mm" patterns
+    .replace(/\s+/g, ' ') // Clean up multiple spaces
+    .trim();
+};
+
 // Helper to create product with multiple gallery images
 const createProduct = (
   id: string,
@@ -75,7 +84,7 @@ const createProduct = (
   return {
     id,
     slug,
-    name,
+    name: cleanProductName(name),
     sku: `HOC-${id.toUpperCase()}`,
     category,
     subcategory,
