@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 50">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300&amp;display=swap');
+  </style>
+  <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" 
+        font-family="Inter, system-ui, sans-serif" 
+        font-weight="300" 
+        font-size="36" 
+        letter-spacing="0.15em" 
+        fill="#0A0A0A">HOC</text>
+</svg>
+

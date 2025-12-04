@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HOC Logo Export - High Quality</title>
+  <title>HOC Logo Export - Inter (Your Website Font)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@100;200;300&family=Montserrat:wght@300&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -44,7 +44,6 @@
       text-align: center;
     }
     
-    /* Export containers - clean white background for easy export */
     .export-box {
       background: white;
       display: flex;
@@ -57,73 +56,29 @@
       background: #0A0A0A;
     }
     
-    /* Large versions for high-res export */
-    .logo-xl {
-      padding: 80px 120px;
-    }
+    .logo-xl { padding: 80px 120px; }
+    .logo-lg { padding: 60px 100px; }
+    .logo-md { padding: 40px 70px; }
+    .logo-sm { padding: 20px 40px; }
     
-    .logo-lg {
-      padding: 60px 100px;
-    }
-    
-    .logo-md {
-      padding: 40px 70px;
-    }
-    
-    .logo-sm {
-      padding: 20px 40px;
-    }
-    
-    /* Montserrat Light */
-    .montserrat-light {
-      font-family: 'Montserrat', sans-serif;
+    /* INTER LIGHT - Your exact website font */
+    .inter {
+      font-family: 'Inter', system-ui, sans-serif;
       font-weight: 300;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
       color: #0A0A0A;
     }
     
-    .montserrat-light.white {
+    .inter.white {
       color: white;
     }
     
-    .montserrat-light.xl { font-size: 200px; }
-    .montserrat-light.lg { font-size: 120px; }
-    .montserrat-light.md { font-size: 72px; }
-    .montserrat-light.sm { font-size: 36px; }
-    
-    /* Josefin Sans Thin (Ultra Minimal) */
-    .josefin-thin {
-      font-family: 'Josefin Sans', sans-serif;
-      font-weight: 100;
-      letter-spacing: 0.08em;
-      color: #0A0A0A;
-    }
-    
-    .josefin-thin.white {
-      color: white;
-    }
-    
-    .josefin-thin.xl { font-size: 200px; }
-    .josefin-thin.lg { font-size: 120px; }
-    .josefin-thin.md { font-size: 72px; }
-    .josefin-thin.sm { font-size: 36px; }
-    
-    /* Josefin Sans Light */
-    .josefin-light {
-      font-family: 'Josefin Sans', sans-serif;
-      font-weight: 200;
-      letter-spacing: 0.06em;
-      color: #0A0A0A;
-    }
-    
-    .josefin-light.white {
-      color: white;
-    }
-    
-    .josefin-light.xl { font-size: 200px; }
-    .josefin-light.lg { font-size: 120px; }
-    .josefin-light.md { font-size: 72px; }
-    .josefin-light.sm { font-size: 36px; }
+    .inter.xl { font-size: 200px; }
+    .inter.lg { font-size: 120px; }
+    .inter.md { font-size: 72px; }
+    .inter.sm { font-size: 36px; }
+    .inter.xs { font-size: 24px; }
     
     .size-label {
       text-align: center;
@@ -157,119 +112,75 @@
   </style>
 </head>
 <body>
-  <h1>HOC Logo Export — High Quality</h1>
+  <h1>HOC Logo — Inter Light (Your Website Font)</h1>
   
   <div class="tip">
-    <strong>Export tip:</strong> Right-click each logo box → "Take Screenshot" (Firefox) or use your OS screenshot tool. For vector export, copy the text and paste into Figma/Illustrator with the same font settings.
+    <strong>Font specs (exact match to your header):</strong><br>
+    Font: Inter<br>
+    Weight: 300 (Light)<br>
+    Letter-spacing: 0.15em<br>
+    Transform: Uppercase<br>
+    Color: #0A0A0A / #FFFFFF
   </div>
 
-  <!-- MONTSERRAT LIGHT -->
   <div class="export-section">
-    <h2>Montserrat Light</h2>
+    <h2>Black on White</h2>
     
     <div class="export-box logo-xl">
-      <span class="montserrat-light xl">HOC</span>
+      <span class="inter xl">HOC</span>
     </div>
-    <p class="size-label">200px — Black on White</p>
-    
-    <div class="export-box logo-xl dark">
-      <span class="montserrat-light xl white">HOC</span>
-    </div>
-    <p class="size-label">200px — White on Black</p>
+    <p class="size-label">200px</p>
     
     <div class="export-box logo-lg">
-      <span class="montserrat-light lg">HOC</span>
+      <span class="inter lg">HOC</span>
     </div>
-    <p class="size-label">120px — Black on White</p>
-    
-    <div class="export-box logo-lg dark">
-      <span class="montserrat-light lg white">HOC</span>
-    </div>
-    <p class="size-label">120px — White on Black</p>
+    <p class="size-label">120px</p>
     
     <div class="export-box logo-md">
-      <span class="montserrat-light md">HOC</span>
+      <span class="inter md">HOC</span>
     </div>
-    <p class="size-label">72px — Black on White</p>
+    <p class="size-label">72px</p>
     
     <div class="export-box logo-sm">
-      <span class="montserrat-light sm">HOC</span>
+      <span class="inter sm">HOC</span>
     </div>
-    <p class="size-label">36px — Black on White</p>
+    <p class="size-label">36px</p>
+    
+    <div class="export-box logo-sm">
+      <span class="inter xs">HOC</span>
+    </div>
+    <p class="size-label">24px</p>
   </div>
   
   <div class="divider"></div>
   
-  <!-- JOSEFIN SANS THIN (Ultra Minimal) -->
   <div class="export-section">
-    <h2>Josefin Sans Thin (Ultra Minimal)</h2>
-    
-    <div class="export-box logo-xl">
-      <span class="josefin-thin xl">HOC</span>
-    </div>
-    <p class="size-label">200px — Black on White</p>
+    <h2>White on Black</h2>
     
     <div class="export-box logo-xl dark">
-      <span class="josefin-thin xl white">HOC</span>
+      <span class="inter xl white">HOC</span>
     </div>
-    <p class="size-label">200px — White on Black</p>
-    
-    <div class="export-box logo-lg">
-      <span class="josefin-thin lg">HOC</span>
-    </div>
-    <p class="size-label">120px — Black on White</p>
+    <p class="size-label">200px</p>
     
     <div class="export-box logo-lg dark">
-      <span class="josefin-thin lg white">HOC</span>
+      <span class="inter lg white">HOC</span>
     </div>
-    <p class="size-label">120px — White on Black</p>
+    <p class="size-label">120px</p>
     
-    <div class="export-box logo-md">
-      <span class="josefin-thin md">HOC</span>
+    <div class="export-box logo-md dark">
+      <span class="inter md white">HOC</span>
     </div>
-    <p class="size-label">72px — Black on White</p>
+    <p class="size-label">72px</p>
     
-    <div class="export-box logo-sm">
-      <span class="josefin-thin sm">HOC</span>
+    <div class="export-box logo-sm dark">
+      <span class="inter sm white">HOC</span>
     </div>
-    <p class="size-label">36px — Black on White</p>
-  </div>
-  
-  <div class="divider"></div>
-  
-  <!-- JOSEFIN SANS EXTRA-LIGHT (Slightly heavier option) -->
-  <div class="export-section">
-    <h2>Josefin Sans Extra-Light (Alternative)</h2>
+    <p class="size-label">36px</p>
     
-    <div class="export-box logo-xl">
-      <span class="josefin-light xl">HOC</span>
+    <div class="export-box logo-sm dark">
+      <span class="inter xs white">HOC</span>
     </div>
-    <p class="size-label">200px — Black on White</p>
-    
-    <div class="export-box logo-xl dark">
-      <span class="josefin-light xl white">HOC</span>
-    </div>
-    <p class="size-label">200px — White on Black</p>
-    
-    <div class="export-box logo-lg">
-      <span class="josefin-light lg">HOC</span>
-    </div>
-    <p class="size-label">120px — Black on White</p>
-    
-    <div class="export-box logo-md">
-      <span class="josefin-light md">HOC</span>
-    </div>
-    <p class="size-label">72px — Black on White</p>
-  </div>
-  
-  <div class="tip" style="margin-top: 60px;">
-    <strong>Font specs for design tools:</strong><br><br>
-    <strong>Montserrat Light:</strong> Weight 300, Letter-spacing 0.06em<br>
-    <strong>Josefin Sans Thin:</strong> Weight 100, Letter-spacing 0.08em<br>
-    <strong>Josefin Sans Extra-Light:</strong> Weight 200, Letter-spacing 0.06em<br><br>
-    Color Black: #0A0A0A<br>
-    Color White: #FFFFFF
+    <p class="size-label">24px</p>
   </div>
 </body>
 </html>
-

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Download HOC Logos as PNG</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: system-ui, sans-serif;
+      background: #F8F7F5;
+      padding: 40px;
+      min-height: 100vh;
+    }
+    
+    h1 {
+      text-align: center;
+      font-size: 14px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-weight: 400;
+      color: #8A8A8A;
+      margin-bottom: 20px;
+    }
+    
+    .tip {
+      max-width: 600px;
+      margin: 0 auto 40px;
+      padding: 20px;
+      background: white;
+      border: 1px solid #E8E8E8;
+      font-size: 13px;
+      line-height: 1.7;
+      color: #8A8A8A;
+      text-align: center;
+    }
+    
+    .tip strong {
+      color: #0A0A0A;
+    }
+    
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      max-width: 800px;
+      margin: 0 auto 40px;
+    }
+    
+    button {
+      background: #0A0A0A;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    
+    button:hover {
+      opacity: 0.8;
+    }
+    
+    button.download-all {
+      background: #C9A962;
+      padding: 16px 32px;
+      font-size: 13px;
+    }
+    
+    .preview {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    
+    .preview-card {
+      background: white;
+      padding: 20px;
+      border: 1px solid #E8E8E8;
+      text-align: center;
+    }
+    
+    .preview-card.dark {
+      background: #1a1a1a;
+    }
+    
+    .preview-card canvas {
+      max-width: 100%;
+      height: auto;
+    }
+    
+    .preview-card p {
+      margin-top: 10px;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #8A8A8A;
+    }
+    
+    .status {
+      text-align: center;
+      margin: 20px 0;
+      font-size: 12px;
+      color: #8A8A8A;
+    }
+    
+    #hidden-canvases {
+      position: absolute;
+      left: -9999px;
+      top: -9999px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Download HOC Logos as PNG</h1>
+  
+  <div class="tip">
+    <strong>Click "Download All" to get all PNG files.</strong><br>
+    Or click individual buttons to download specific sizes.<br>
+    All PNGs have transparent backgrounds at 2x resolution for high quality.
+  </div>
+  
+  <div class="buttons">
+    <button class="download-all" onclick="downloadAll()">Download All PNGs</button>
+  </div>
+  
+  <div class="buttons">
+    <button onclick="downloadPNG('black', 200)">Black 200px</button>
+    <button onclick="downloadPNG('black', 120)">Black 120px</button>
+    <button onclick="downloadPNG('black', 72)">Black 72px</button>
+    <button onclick="downloadPNG('black', 36)">Black 36px</button>
+    <button onclick="downloadPNG('black', 24)">Black 24px</button>
+  </div>
+  
+  <div class="buttons">
+    <button onclick="downloadPNG('white', 200)">White 200px</button>
+    <button onclick="downloadPNG('white', 120)">White 120px</button>
+    <button onclick="downloadPNG('white', 72)">White 72px</button>
+    <button onclick="downloadPNG('white', 36)">White 36px</button>
+    <button onclick="downloadPNG('white', 24)">White 24px</button>
+  </div>
+  
+  <p class="status" id="status">Ready to download</p>
+  
+  <div id="hidden-canvases"></div>
+  
+  <script>
+    // Wait for font to load
+    document.fonts.ready.then(() => {
+      console.log('Fonts loaded');
+    });
+    
+    const sizes = [
+      { size: 200, width: 800, height: 240 },
+      { size: 120, width: 500, height: 160 },
+      { size: 72, width: 320, height: 100 },
+      { size: 36, width: 180, height: 60 },
+      { size: 24, width: 130, height: 44 }
+    ];
+    
+    function createCanvas(color, sizeObj) {
+      const scale = 2; // 2x for high quality / retina
+      const canvas = document.createElement('canvas');
+      canvas.width = sizeObj.width * scale;
+      canvas.height = sizeObj.height * scale;
+      
+      const ctx = canvas.getContext('2d');
+      ctx.scale(scale, scale);
+      
+      // Transparent background (don't fill)
+      
+      // Set text properties
+      ctx.font = `300 ${sizeObj.size}px Inter, system-ui, sans-serif`;
+      ctx.fillStyle = color === 'black' ? '#0A0A0A' : '#FFFFFF';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.letterSpacing = `${sizeObj.size * 0.15}px`;
+      
+      // Draw text
+      ctx.fillText('HOC', sizeObj.width / 2, sizeObj.height / 2);
+      
+      return canvas;
+    }
+    
+    function downloadPNG(color, size) {
+      const sizeObj = sizes.find(s => s.size === size);
+      if (!sizeObj) return;
+      
+      const canvas = createCanvas(color, sizeObj);
+      
+      // Download
+      const link = document.createElement('a');
+      link.download = `HOC-${color}-${size}px.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      
+      document.getElementById('status').textContent = `Downloaded HOC-${color}-${size}px.png`;
+    }
+    
+    async function downloadAll() {
+      const status = document.getElementById('status');
+      status.textContent = 'Downloading...';
+      
+      const colors = ['black', 'white'];
+      let count = 0;
+      
+      for (const color of colors) {
+        for (const sizeObj of sizes) {
+          await new Promise(resolve => setTimeout(resolve, 300)); // Small delay between downloads
+          
+          const canvas = createCanvas(color, sizeObj);
+          const link = document.createElement('a');
+          link.download = `HOC-${color}-${sizeObj.size}px.png`;
+          link.href = canvas.toDataURL('image/png');
+          link.click();
+          
+          count++;
+          status.textContent = `Downloaded ${count} of 10...`;
+        }
+      }
+      
+      status.textContent = 'All 10 PNGs downloaded!';
+    }
+  </script>
+</body>
+</html>
+
