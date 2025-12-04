@@ -30,8 +30,8 @@ def create_favicon(size, text_color, bg_color, filename):
     img = Image.new('RGBA', (size * scale, size * scale), bg_color)
     draw = ImageDraw.Draw(img)
     
-    # Larger font size - 55% of icon size for better visibility
-    font_size = int(size * scale * 0.50)
+    # Font size - 38% of icon size to fit all letters
+    font_size = int(size * scale * 0.38)
     font = get_font(font_size)
     
     # Tighter letter spacing
