@@ -25,16 +25,17 @@ def get_font(size):
     return ImageFont.load_default()
 
 def create_favicon(size, text_color, bg_color, filename):
-    # Create image
-    img = Image.new('RGBA', (size, size), bg_color)
+    # Create image at higher resolution for quality
+    scale = 4
+    img = Image.new('RGBA', (size * scale, size * scale), bg_color)
     draw = ImageDraw.Draw(img)
     
-    # Font size relative to icon size
-    font_size = int(size * 0.38)
+    # Larger font size - 55% of icon size for better visibility
+    font_size = int(size * scale * 0.50)
     font = get_font(font_size)
     
-    # Letter spacing
-    letter_spacing = font_size * 0.12
+    # Tighter letter spacing
+    letter_spacing = font_size * 0.08
     
     text = "HOC"
     letters = list(text)
@@ -49,16 +50,22 @@ def create_favicon(size, text_color, bg_color, filename):
         total_width += width
     total_width += letter_spacing * (len(letters) - 1)
     
+    # Calculate height for vertical centering
+    bbox = draw.textbbox((0, 0), "H", font=font)
+    text_height = bbox[3] - bbox[1]
+    
     # Starting position (centered)
-    x = (size - total_width) / 2
-    y = size / 2
+    x = (size * scale - total_width) / 2
+    # Center vertically with slight adjustment for optical balance
+    y = (size * scale - text_height) / 2 - (text_height * 0.1)
     
     # Draw each letter
     for i, letter in enumerate(letters):
-        bbox = draw.textbbox((0, 0), letter, font=font)
-        letter_height = bbox[3] - bbox[1]
-        draw.text((x, y - letter_height/2), letter, font=font, fill=text_color)
+        draw.text((x, y), letter, font=font, fill=text_color)
         x += letter_widths[i] + letter_spacing
+    
+    # Resize down to target size with high-quality resampling
+    img = img.resize((size, size), Image.Resampling.LANCZOS)
     
     # Save
     filepath = os.path.join(public_dir, filename)
@@ -82,4 +89,3 @@ create_favicon(180, (10, 10, 10, 255), (248, 247, 245, 255), "apple-touch-icon-l
 
 print("-" * 40)
 print("Done! Favicons saved to public folder")
-
