@@ -75,13 +75,13 @@ def create_favicon(size, text_color, bg_color, filename):
 print("Generating favicons...")
 print("-" * 40)
 
-# Dark mode favicon (white text, transparent bg)
+# Dark mode favicon (white text on black background)
 for size in sizes:
-    create_favicon(size, (255, 255, 255, 255), (0, 0, 0, 0), f"favicon-white-{size}.png")
+    create_favicon(size, (255, 255, 255, 255), (10, 10, 10, 255), f"favicon-white-{size}.png")
 
-# Light mode favicon (black text, transparent bg)
+# Light mode favicon (black text on white background)
 for size in sizes:
-    create_favicon(size, (10, 10, 10, 255), (0, 0, 0, 0), f"favicon-black-{size}.png")
+    create_favicon(size, (10, 10, 10, 255), (255, 255, 255, 255), f"favicon-black-{size}.png")
 
 # Apple touch icons (need solid background)
 create_favicon(180, (255, 255, 255, 255), (10, 10, 10, 255), "apple-touch-icon-dark.png")

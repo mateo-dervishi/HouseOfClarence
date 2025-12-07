@@ -15,6 +15,16 @@ interface CategoryPageProps {
   };
 }
 
+// Category-specific hero images
+const categoryHeroImages: Record<string, string> = {
+  bathroom: "/bathroom-hero.jpg",
+  kitchen: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1920&h=800&fit=crop",
+  furniture: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1920&h=800&fit=crop",
+  tiling: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1920&h=800&fit=crop",
+  lighting: "https://images.unsplash.com/photo-1524484485831-a92ffc0de03f?w=1920&h=800&fit=crop",
+  electrical: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1920&h=800&fit=crop",
+};
+
 export default function CategoryPage({ params }: CategoryPageProps) {
   const router = useRouter();
   const [sortBy, setSortBy] = useState("featured");
@@ -25,6 +35,8 @@ export default function CategoryPage({ params }: CategoryPageProps) {
     router.push("/404");
     return null;
   }
+  
+  const heroImage = categoryHeroImages[params.category] || "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1920&h=800&fit=crop";
 
   // Filter products by category
   const categoryProducts = mockProducts.filter(
@@ -56,7 +68,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
           className="absolute inset-0"
         >
           <Image
-            src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1920&h=600&fit=crop"
+            src={heroImage}
             alt={category.name}
             fill
             className="object-cover"
