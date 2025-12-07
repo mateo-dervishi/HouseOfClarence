@@ -18,7 +18,7 @@ interface CategoryPageProps {
 // Category-specific hero images
 const categoryHeroImages: Record<string, string> = {
   bathroom: "/bathroom-hero.png",
-  kitchen: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1920&h=800&fit=crop",
+  kitchen: "/kitchen-hero.png",
   furniture: "/furniture-hero.png",
   tiling: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1920&h=800&fit=crop",
   lighting: "https://images.unsplash.com/photo-1524484485831-a92ffc0de03f?w=1920&h=800&fit=crop",
