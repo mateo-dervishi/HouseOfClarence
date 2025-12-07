@@ -60,7 +60,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
   return (
     <main>
       {/* Hero Banner */}
-      <section className="relative h-[50vh] min-h-[400px] max-h-[550px] bg-black overflow-hidden">
+      <section className="relative h-[70vh] min-h-[500px] bg-black overflow-hidden">
         <motion.div
           initial={{ opacity: 0, scale: 1.1 }}
           animate={{ opacity: 1, scale: 1 }}
