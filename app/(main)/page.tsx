@@ -25,12 +25,12 @@ const stagger = {
 
 // Category hero images - luxury lifestyle shots
 const categoryHeroImages = {
-  bathroom: "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=1200&h=800&fit=crop",
-  kitchen: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200&h=800&fit=crop",
-  furniture: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1200&h=800&fit=crop",
-  tiling: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&h=800&fit=crop",
-  lighting: "https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?w=1200&h=800&fit=crop",
-  electrical: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&h=800&fit=crop",
+  bathroom: "/bathroom-hero.png",
+  kitchen: "/kitchen-hero.png",
+  furniture: "/furniture-hero.png",
+  tiling: "/tiling-hero.png",
+  lighting: "/lighting-hero.png",
+  electrical: "/electrical-hero.png",
 };
 
 // Collections data
