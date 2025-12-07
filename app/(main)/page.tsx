@@ -585,10 +585,10 @@ export default function HomePage() {
             className="relative aspect-[4/5] order-1 lg:order-2"
           >
             <Image
-              src="https://images.unsplash.com/photo-1600573472592-401b489a3cdc?w=800&h=1000&fit=crop"
+              src="/electrical-hero.png"
               alt="House of Clarence Craftsmanship"
               fill
-              className="object-cover"
+              className="object-cover object-[center_45%]"
               sizes="(max-width: 1024px) 100vw, 50vw"
             />
           </motion.div>
