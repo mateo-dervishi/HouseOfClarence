@@ -22,7 +22,7 @@ const categoryHeroImages: Record<string, string> = {
   furniture: "/furniture-hero.png",
   tiling: "/tiling-hero.png",
   lighting: "/lighting-hero.png",
-  electrical: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1920&h=800&fit=crop",
+  electrical: "/electrical-hero.png",
 };
 
 // Category-specific image positions (to show the best part of each image)
@@ -32,7 +32,7 @@ const categoryImagePositions: Record<string, string> = {
   furniture: "object-[center_65%]",
   tiling: "object-[center_65%]",
   lighting: "object-[center_25%]", // Show chandelier at top
-  electrical: "object-center",
+  electrical: "object-[center_45%]", // Show wall lights
 };
 
 export default function CategoryPage({ params }: CategoryPageProps) {
