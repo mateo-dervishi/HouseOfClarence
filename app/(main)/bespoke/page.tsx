@@ -150,10 +150,10 @@ export default function BespokePage() {
       {/* Hero Section */}
       <section className="relative h-[50vh] min-h-[400px] flex items-center justify-center overflow-hidden">
         <Image
-          src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1920&h=1080&fit=crop"
+          src="/bespoke-hero.png"
           alt="Bespoke luxury interior"
           fill
-          className="object-cover"
+          className="object-cover object-[center_40%]"
           priority
         />
         <div className="absolute inset-0 bg-black/50" />
