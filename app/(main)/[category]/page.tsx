@@ -19,7 +19,7 @@ interface CategoryPageProps {
 const categoryHeroImages: Record<string, string> = {
   bathroom: "/bathroom-hero.png",
   kitchen: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1920&h=800&fit=crop",
-  furniture: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1920&h=800&fit=crop",
+  furniture: "/furniture-hero.png",
   tiling: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1920&h=800&fit=crop",
   lighting: "https://images.unsplash.com/photo-1524484485831-a92ffc0de03f?w=1920&h=800&fit=crop",
   electrical: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1920&h=800&fit=crop",
