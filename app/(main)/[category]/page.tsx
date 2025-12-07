@@ -17,7 +17,7 @@ interface CategoryPageProps {
 
 // Category-specific hero images
 const categoryHeroImages: Record<string, string> = {
-  bathroom: "/bathroom-hero.jpg",
+  bathroom: "/bathroom-hero.png",
   kitchen: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1920&h=800&fit=crop",
   furniture: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1920&h=800&fit=crop",
   tiling: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1920&h=800&fit=crop",
@@ -60,7 +60,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
   return (
     <main>
       {/* Hero Banner */}
-      <section className="relative h-[45vh] min-h-[350px] max-h-[500px] bg-black overflow-hidden">
+      <section className="relative h-[50vh] min-h-[400px] max-h-[550px] bg-black overflow-hidden">
         <motion.div
           initial={{ opacity: 0, scale: 1.1 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -71,7 +71,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
             src={heroImage}
             alt={category.name}
             fill
-            className="object-cover object-center"
+            className="object-cover object-[center_65%]"
             priority
           />
         </motion.div>
