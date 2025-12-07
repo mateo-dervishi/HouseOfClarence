@@ -21,8 +21,18 @@ const categoryHeroImages: Record<string, string> = {
   kitchen: "/kitchen-hero.png",
   furniture: "/furniture-hero.png",
   tiling: "/tiling-hero.png",
-  lighting: "https://images.unsplash.com/photo-1524484485831-a92ffc0de03f?w=1920&h=800&fit=crop",
+  lighting: "/lighting-hero.png",
   electrical: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1920&h=800&fit=crop",
+};
+
+// Category-specific image positions (to show the best part of each image)
+const categoryImagePositions: Record<string, string> = {
+  bathroom: "object-[center_65%]",
+  kitchen: "object-[center_65%]",
+  furniture: "object-[center_65%]",
+  tiling: "object-[center_65%]",
+  lighting: "object-[center_25%]", // Show chandelier at top
+  electrical: "object-center",
 };
 
 export default function CategoryPage({ params }: CategoryPageProps) {
@@ -37,6 +47,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
   }
   
   const heroImage = categoryHeroImages[params.category] || "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1920&h=800&fit=crop";
+  const imagePosition = categoryImagePositions[params.category] || "object-center";
 
   // Filter products by category
   const categoryProducts = mockProducts.filter(
@@ -71,7 +82,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
             src={heroImage}
             alt={category.name}
             fill
-            className="object-cover object-[center_65%]"
+            className={`object-cover ${imagePosition}`}
             priority
           />
         </motion.div>
