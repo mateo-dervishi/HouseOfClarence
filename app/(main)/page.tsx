@@ -588,7 +588,7 @@ export default function HomePage() {
               src="/electrical-hero.png"
               alt="House of Clarence Craftsmanship"
               fill
-              className="object-cover object-[center_45%]"
+              className="object-cover object-[35%_40%]"
               sizes="(max-width: 1024px) 100vw, 50vw"
             />
           </motion.div>

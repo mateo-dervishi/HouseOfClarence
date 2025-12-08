@@ -32,7 +32,7 @@ const categoryImagePositions: Record<string, string> = {
   furniture: "object-[center_65%]",
   tiling: "object-[center_65%]",
   lighting: "object-[center_25%]", // Show chandelier at top
-  electrical: "object-[center_45%]", // Show wall lights
+  electrical: "object-[35%_40%]", // Show wall lights on left
 };
 
 export default function CategoryPage({ params }: CategoryPageProps) {
