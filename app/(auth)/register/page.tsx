@@ -50,7 +50,7 @@ export default function RegisterPage() {
       {/* Left - Image */}
       <div className="hidden lg:block lg:w-2/5 relative">
         <Image
-          src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&h=1600&fit=crop"
+          src="/signin-hero.png"
           alt="Luxury interior"
           fill
           className="object-cover"

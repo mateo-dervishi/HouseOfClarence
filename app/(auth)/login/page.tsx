@@ -27,7 +27,7 @@ export default function LoginPage() {
       {/* Left - Image */}
       <div className="hidden lg:block lg:w-1/2 relative">
         <Image
-          src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1200&h=1600&fit=crop"
+          src="/signin-hero.png"
           alt="Luxury interior"
           fill
           className="object-cover"
