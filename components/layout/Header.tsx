@@ -57,7 +57,7 @@ export function Header() {
 
   // Pages that have dark hero backgrounds (transparent header with white text)
   const darkHeroPages = ["/"];
-  const hasDarkHero = darkHeroPages.includes(pathname) || pathname.startsWith("/bathroom") || pathname.startsWith("/kitchen") || pathname.startsWith("/furniture") || pathname.startsWith("/tiling") || pathname.startsWith("/lighting") || pathname.startsWith("/electrical");
+  const hasDarkHero = darkHeroPages.includes(pathname) || pathname.startsWith("/bathroom") || pathname.startsWith("/kitchen") || pathname.startsWith("/furniture") || pathname.startsWith("/tiling") || pathname.startsWith("/lighting") || pathname.startsWith("/electrical") || pathname.startsWith("/bespoke");
 
   // Scroll detection
   useEffect(() => {
