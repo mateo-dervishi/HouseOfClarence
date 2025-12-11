@@ -21,7 +21,7 @@ import {
   Send,
   FolderPlus,
   FileSpreadsheet,
-  Download,
+  Upload,
 } from "lucide-react";
 import { useSelectionStore, SelectionLabel, SelectionItem } from "@/stores/selectionStore";
 
@@ -53,7 +53,7 @@ export default function SelectionPage() {
 
   const itemCount = getItemCount();
 
-  // Submit selection and generate Excel
+  // Submit selection to SharePoint
   const handleSubmitSelection = async () => {
     setIsSubmitting(true);
     setSubmitSuccess(false);
@@ -65,30 +65,17 @@ export default function SelectionPage() {
         body: JSON.stringify({ items, labels }),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        const error = await response.json();
-        alert(error.error || "Failed to submit selection. Please log in first.");
+        alert(data.error || "Failed to submit selection. Please log in first.");
         setIsSubmitting(false);
         return;
       }
 
-      // Download the Excel file
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      
-      // Get filename from Content-Disposition header
-      const contentDisposition = response.headers.get("Content-Disposition");
-      const filenameMatch = contentDisposition?.match(/filename="(.+)"/);
-      a.download = filenameMatch ? filenameMatch[1] : "HOC_Selection.xlsx";
-      
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      window.URL.revokeObjectURL(url);
-
+      // Success!
       setSubmitSuccess(true);
+      alert("Your selection has been submitted successfully! Our team will review it shortly.");
       setTimeout(() => setSubmitSuccess(false), 5000);
     } catch (error) {
       console.error("Submit error:", error);
@@ -461,9 +448,9 @@ export default function SelectionPage() {
               ) : submitSuccess ? (
                 <Check className="w-4 h-4" />
               ) : (
-                <Download className="w-4 h-4" />
+                <Upload className="w-4 h-4" />
               )}
-              {isSubmitting ? "..." : submitSuccess ? "Done" : "Submit"}
+              {isSubmitting ? "..." : submitSuccess ? "Sent!" : "Submit"}
             </button>
             <button
               onClick={() => setShowEnquiryForm(true)}
