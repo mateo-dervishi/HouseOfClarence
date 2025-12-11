@@ -161,6 +161,9 @@ export async function POST(request: Request) {
       itemsByLabel.get(labelId)!.push(item);
     });
 
+    // Add Summary sheet FIRST (so it appears at the beginning)
+    const summarySheet = workbook.addWorksheet('Summary');
+
     // Create a sheet for each label/room
     labels.forEach(label => {
       const labelItems = itemsByLabel.get(label.id);
@@ -178,9 +181,7 @@ export async function POST(request: Request) {
       addItemsToSheet(worksheet, unassignedItems);
     }
 
-    // Add Summary sheet at the beginning
-    const summarySheet = workbook.addWorksheet('Summary');
-    workbook.moveWorksheet('Summary', 0);
+    // Now populate the Summary sheet
 
     summarySheet.columns = [
       { header: 'Field', key: 'field', width: 25 },
