@@ -55,8 +55,9 @@ export default function SelectionPage() {
 
   // Submit selection to SharePoint
   const handleSubmitSelection = async () => {
+    if (submitSuccess) return; // Already submitted
+    
     setIsSubmitting(true);
-    setSubmitSuccess(false);
 
     try {
       const response = await fetch("/api/selection/submit", {
@@ -68,21 +69,19 @@ export default function SelectionPage() {
       const data = await response.json();
 
       if (!response.ok) {
-        alert(data.error || "Failed to submit selection. Please log in first.");
         setIsSubmitting(false);
+        // Show error inline instead of alert
+        console.error(data.error || "Failed to submit selection");
         return;
       }
 
-      // Success!
+      // Success - keep button in submitted state permanently
       setSubmitSuccess(true);
-      alert("Your selection has been submitted successfully! Our team will review it shortly.");
-      setTimeout(() => setSubmitSuccess(false), 5000);
+      setIsSubmitting(false);
     } catch (error) {
       console.error("Submit error:", error);
-      alert("Failed to submit selection. Please try again.");
+      setIsSubmitting(false);
     }
-
-    setIsSubmitting(false);
   };
 
   // Group items by label
@@ -165,18 +164,22 @@ export default function SelectionPage() {
               </button>
               <button
                 onClick={handleSubmitSelection}
-                disabled={isSubmitting}
-                className="hidden md:flex items-center gap-2 px-4 py-2 md:px-5 md:py-3 border border-primary-black text-primary-black text-[11px] md:text-[12px] tracking-[0.1em] uppercase hover:bg-primary-black hover:text-white transition-colors disabled:opacity-50"
+                disabled={isSubmitting || submitSuccess}
+                className={`hidden md:flex items-center gap-2 px-4 py-2 md:px-5 md:py-3 border text-[11px] md:text-[12px] tracking-[0.1em] uppercase transition-colors ${
+                  submitSuccess 
+                    ? "border-green-600 bg-green-600 text-white cursor-default" 
+                    : "border-primary-black text-primary-black hover:bg-primary-black hover:text-white disabled:opacity-50"
+                }`}
               >
                 {isSubmitting ? (
                   <>
                     <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
-                    Generating...
+                    Submitting...
                   </>
                 ) : submitSuccess ? (
                   <>
                     <Check className="w-4 h-4" />
-                    Downloaded!
+                    Submitted
                   </>
                 ) : (
                   <>
@@ -440,8 +443,12 @@ export default function SelectionPage() {
           <div className="flex gap-2">
             <button
               onClick={handleSubmitSelection}
-              disabled={isSubmitting}
-              className="flex-1 py-3 border border-primary-black text-primary-black text-[12px] tracking-[0.1em] uppercase hover:bg-primary-black hover:text-white transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+              disabled={isSubmitting || submitSuccess}
+              className={`flex-1 py-3 border text-[12px] tracking-[0.1em] uppercase transition-colors flex items-center justify-center gap-2 ${
+                submitSuccess 
+                  ? "border-green-600 bg-green-600 text-white cursor-default" 
+                  : "border-primary-black text-primary-black hover:bg-primary-black hover:text-white disabled:opacity-50"
+              }`}
             >
               {isSubmitting ? (
                 <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
@@ -450,7 +457,7 @@ export default function SelectionPage() {
               ) : (
                 <Upload className="w-4 h-4" />
               )}
-              {isSubmitting ? "..." : submitSuccess ? "Sent!" : "Submit"}
+              {isSubmitting ? "..." : submitSuccess ? "Submitted" : "Submit"}
             </button>
             <button
               onClick={() => setShowEnquiryForm(true)}
