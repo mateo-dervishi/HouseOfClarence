@@ -96,8 +96,8 @@ export default function RegisterPage() {
 
   return (
     <main className="min-h-screen flex">
-      {/* Left - Image */}
-      <div className="hidden lg:block lg:w-2/5 relative">
+      {/* Left - Image (Fixed) */}
+      <div className="hidden lg:block lg:w-2/5 fixed top-0 left-0 h-screen">
         <Image
           src="/signin-hero.png"
           alt="Luxury interior"
@@ -136,7 +136,7 @@ export default function RegisterPage() {
       </div>
 
       {/* Right - Form */}
-      <div className="flex-1 flex flex-col px-6 py-12 lg:px-12 xl:px-20 bg-off-white overflow-y-auto relative">
+      <div className="flex-1 flex flex-col px-6 py-12 lg:px-12 xl:px-20 bg-off-white overflow-y-auto relative lg:ml-[40%]">
         {/* Back to Home */}
         <Link 
           href="/" 
@@ -322,22 +322,20 @@ export default function RegisterPage() {
                     )}
                   </button>
                 </div>
-                {/* Password Requirements */}
-                {formData.password && (
-                  <div className="mt-3 space-y-1">
-                    {passwordRequirements.map((req, i) => (
-                      <div
-                        key={i}
-                        className={`flex items-center gap-2 text-[12px] ${
-                          req.met ? "text-green-600" : "text-warm-grey"
-                        }`}
-                      >
-                        <Check className={`w-3.5 h-3.5 ${req.met ? "opacity-100" : "opacity-30"}`} />
-                        {req.text}
-                      </div>
-                    ))}
-                  </div>
-                )}
+                {/* Password Requirements - always rendered to prevent layout shift */}
+                <div className={`mt-3 space-y-1 transition-opacity duration-200 ${formData.password ? "opacity-100" : "opacity-0"}`}>
+                  {passwordRequirements.map((req, i) => (
+                    <div
+                      key={i}
+                      className={`flex items-center gap-2 text-[12px] ${
+                        req.met ? "text-green-600" : "text-warm-grey"
+                      }`}
+                    >
+                      <Check className={`w-3.5 h-3.5 ${req.met ? "opacity-100" : "opacity-30"}`} />
+                      {req.text}
+                    </div>
+                  ))}
+                </div>
               </div>
 
               {/* Confirm Password */}
