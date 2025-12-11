@@ -267,7 +267,7 @@ export default function AccountPage() {
                 <div className="text-center py-12">
                   <ClipboardList className="w-12 h-12 text-light-grey mx-auto mb-4" />
                   <p className="text-warm-grey text-[14px] mb-4">
-                    You haven't added any items to your selection yet.
+                    You have not added any items to your selection yet.
                   </p>
                   <Link
                     href="/bathroom"
@@ -293,7 +293,7 @@ export default function AccountPage() {
                       Ready to Submit?
                     </h2>
                     <p className="text-white/70 text-[14px]">
-                      Once you're happy with your selection, submit it for review and we'll prepare your quote.
+                      Once you are happy with your selection, submit it for review and we will prepare your quote.
                     </p>
                   </div>
                   <Link
