@@ -20,6 +20,8 @@ import {
   Phone,
   Send,
   FolderPlus,
+  FileSpreadsheet,
+  Download,
 } from "lucide-react";
 import { useSelectionStore, SelectionLabel, SelectionItem } from "@/stores/selectionStore";
 
@@ -46,8 +48,55 @@ export default function SelectionPage() {
   const [assigningItemId, setAssigningItemId] = useState<string | null>(null);
   const [expandedNotes, setExpandedNotes] = useState<string | null>(null);
   const [showMobileSidebar, setShowMobileSidebar] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
 
   const itemCount = getItemCount();
+
+  // Submit selection and generate Excel
+  const handleSubmitSelection = async () => {
+    setIsSubmitting(true);
+    setSubmitSuccess(false);
+
+    try {
+      const response = await fetch("/api/selection/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ items, labels }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        alert(error.error || "Failed to submit selection. Please log in first.");
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Download the Excel file
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      
+      // Get filename from Content-Disposition header
+      const contentDisposition = response.headers.get("Content-Disposition");
+      const filenameMatch = contentDisposition?.match(/filename="(.+)"/);
+      a.download = filenameMatch ? filenameMatch[1] : "HOC_Selection.xlsx";
+      
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+
+      setSubmitSuccess(true);
+      setTimeout(() => setSubmitSuccess(false), 5000);
+    } catch (error) {
+      console.error("Submit error:", error);
+      alert("Failed to submit selection. Please try again.");
+    }
+
+    setIsSubmitting(false);
+  };
 
   // Group items by label
   const groupedItems = labels.map((label) => ({
@@ -126,6 +175,28 @@ export default function SelectionPage() {
                 className="px-3 py-2 text-[11px] md:text-[12px] tracking-[0.1em] uppercase text-warm-grey border border-light-grey hover:border-primary-black hover:text-primary-black transition-colors"
               >
                 Clear
+              </button>
+              <button
+                onClick={handleSubmitSelection}
+                disabled={isSubmitting}
+                className="hidden md:flex items-center gap-2 px-4 py-2 md:px-5 md:py-3 border border-primary-black text-primary-black text-[11px] md:text-[12px] tracking-[0.1em] uppercase hover:bg-primary-black hover:text-white transition-colors disabled:opacity-50"
+              >
+                {isSubmitting ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                    Generating...
+                  </>
+                ) : submitSuccess ? (
+                  <>
+                    <Check className="w-4 h-4" />
+                    Downloaded!
+                  </>
+                ) : (
+                  <>
+                    <FileSpreadsheet className="w-4 h-4" />
+                    Submit Selection
+                  </>
+                )}
               </button>
               <button
                 onClick={() => setShowEnquiryForm(true)}
@@ -379,12 +450,28 @@ export default function SelectionPage() {
             <span className="text-sm text-warm-grey">{itemCount} {itemCount === 1 ? "item" : "items"}</span>
             <span className="text-sm text-warm-grey">Pricing on request</span>
           </div>
-          <button
-            onClick={() => setShowEnquiryForm(true)}
-            className="w-full py-3 bg-primary-black text-white text-[12px] tracking-[0.1em] uppercase hover:bg-charcoal transition-colors"
-          >
-            Request Quote
-          </button>
+          <div className="flex gap-2">
+            <button
+              onClick={handleSubmitSelection}
+              disabled={isSubmitting}
+              className="flex-1 py-3 border border-primary-black text-primary-black text-[12px] tracking-[0.1em] uppercase hover:bg-primary-black hover:text-white transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+            >
+              {isSubmitting ? (
+                <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+              ) : submitSuccess ? (
+                <Check className="w-4 h-4" />
+              ) : (
+                <Download className="w-4 h-4" />
+              )}
+              {isSubmitting ? "..." : submitSuccess ? "Done" : "Submit"}
+            </button>
+            <button
+              onClick={() => setShowEnquiryForm(true)}
+              className="flex-1 py-3 bg-primary-black text-white text-[12px] tracking-[0.1em] uppercase hover:bg-charcoal transition-colors"
+            >
+              Request Quote
+            </button>
+          </div>
         </div>
 
         {/* Add padding at bottom for mobile fixed bar */}
