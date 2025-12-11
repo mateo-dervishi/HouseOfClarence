@@ -34,9 +34,16 @@ export default function AccountPage() {
   const [loading, setLoading] = useState(true);
   const { items, labels } = useSelectionStore();
   
-  // Get unique labels (rooms/categories)
-  const uniqueLabels = [...new Set(items.map(item => item.label || "Unassigned"))];
+  // Get unique label IDs from items
+  const uniqueLabelIds = [...new Set(items.map(item => item.labelId))];
   const totalItems = items.length;
+  
+  // Helper to get label name from labelId
+  const getLabelName = (labelId: string | undefined) => {
+    if (!labelId) return "Unassigned";
+    const label = labels.find(l => l.id === labelId);
+    return label?.name || "Unassigned";
+  };
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -192,7 +199,7 @@ export default function AccountPage() {
               {[
                 { label: "Account Number", value: user.account_number, icon: UserIcon },
                 { label: "Items Selected", value: totalItems.toString(), icon: ClipboardList },
-                { label: "Rooms/Categories", value: uniqueLabels.length.toString(), icon: Home },
+                { label: "Rooms/Categories", value: uniqueLabelIds.length.toString(), icon: Home },
               ].map((stat, i) => (
                 <motion.div
                   key={stat.label}
@@ -233,12 +240,13 @@ export default function AccountPage() {
               {totalItems > 0 ? (
                 <div className="space-y-4">
                   {/* Selection Summary by Room/Category */}
-                  {uniqueLabels.map((label) => {
-                    const labelItems = items.filter(item => (item.label || "Unassigned") === label);
-                    const labelInfo = labels.find(l => l.name === label);
+                  {uniqueLabelIds.map((labelId) => {
+                    const labelItems = items.filter(item => item.labelId === labelId);
+                    const labelInfo = labels.find(l => l.id === labelId);
+                    const labelName = getLabelName(labelId);
                     return (
                       <div
-                        key={label}
+                        key={labelId || "unassigned"}
                         className="flex items-center justify-between py-4 border-b border-light-grey last:border-0"
                       >
                         <div className="flex items-center gap-4">
@@ -249,7 +257,7 @@ export default function AccountPage() {
                             />
                           )}
                           <div>
-                            <h3 className="font-medium text-[14px]">{label}</h3>
+                            <h3 className="font-medium text-[14px]">{labelName}</h3>
                             <p className="text-[12px] text-warm-grey">{labelItems.length} items</p>
                           </div>
                         </div>
