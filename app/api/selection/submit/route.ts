@@ -228,8 +228,37 @@ export async function POST(request: Request) {
     const sanitizedName = `${profile.first_name}_${profile.last_name}`.replace(/[^a-zA-Z0-9]/g, '_');
     const filename = `${profile.account_number}_${sanitizedName}_Selection.xlsx`;
 
-    // For now, return the file as a download
-    // Later we'll integrate with Power Automate to upload to SharePoint
+    // Upload to SharePoint via Power Automate
+    const powerAutomateUrl = process.env.POWER_AUTOMATE_SHAREPOINT_URL;
+    
+    if (powerAutomateUrl) {
+      try {
+        // Convert buffer to base64
+        const base64Content = Buffer.from(buffer as ArrayBuffer).toString('base64');
+        
+        const uploadResponse = await fetch(powerAutomateUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            filename,
+            fileContent: base64Content,
+          }),
+        });
+
+        if (!uploadResponse.ok) {
+          console.error('Power Automate upload failed:', await uploadResponse.text());
+        } else {
+          console.log('File uploaded to SharePoint successfully');
+        }
+      } catch (uploadError) {
+        console.error('SharePoint upload error:', uploadError);
+        // Continue even if upload fails - still return the file to user
+      }
+    }
+
+    // Return the file as a download to the user
     return new NextResponse(buffer, {
       status: 200,
       headers: {
