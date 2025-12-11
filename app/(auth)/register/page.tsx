@@ -29,14 +29,58 @@ export default function RegisterPage() {
     }));
   };
 
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [accountNumber, setAccountNumber] = useState("");
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError("");
+    setSuccess("");
+
+    // Validate passwords match
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    // Validate password requirements
+    if (formData.password.length < 8 || !/\d/.test(formData.password) || !/[A-Z]/.test(formData.password)) {
+      setError("Password does not meet requirements");
+      return;
+    }
+
     setIsLoading(true);
-    // TODO: Implement actual registration
-    setTimeout(() => {
-      setIsLoading(false);
-      // Redirect to account
-    }, 1500);
+
+    try {
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          phone: formData.phone,
+          accountType: formData.accountType,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.error || "Registration failed");
+        setIsLoading(false);
+        return;
+      }
+
+      setAccountNumber(data.accountNumber);
+      setSuccess(`Account created! Your account number is ${data.accountNumber}. Please check your email to verify your account.`);
+    } catch (err) {
+      setError("An error occurred. Please try again.");
+    }
+
+    setIsLoading(false);
   };
 
   const passwordRequirements = [
@@ -109,6 +153,19 @@ export default function RegisterPage() {
             <p className="text-warm-grey text-[14px] mb-8">
               Start building your dream space with House of Clarence
             </p>
+
+            {error && (
+              <div className="p-4 bg-red-50 border border-red-200 text-red-700 text-[14px] mb-4">
+                {error}
+              </div>
+            )}
+
+            {success && (
+              <div className="p-4 bg-green-50 border border-green-200 text-green-700 text-[14px] mb-4">
+                {success}
+                <p className="mt-2 font-medium">Your Account Number: {accountNumber}</p>
+              </div>
+            )}
 
             <form onSubmit={handleSubmit} className="space-y-5">
               {/* Name Row */}

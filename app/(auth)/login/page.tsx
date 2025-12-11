@@ -12,14 +12,34 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  const [error, setError] = useState("");
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError("");
     setIsLoading(true);
-    // TODO: Implement actual authentication
-    setTimeout(() => {
+
+    try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.error || "Login failed");
+        setIsLoading(false);
+        return;
+      }
+
+      // Redirect to account page on success
+      window.location.href = "/account";
+    } catch (err) {
+      setError("An error occurred. Please try again.");
       setIsLoading(false);
-      // Redirect to account or home
-    }, 1500);
+    }
   };
 
   return (
@@ -77,6 +97,12 @@ export default function LoginPage() {
             <p className="text-warm-grey text-[14px] mb-6">
               Access your account to manage your selections and projects
             </p>
+
+            {error && (
+              <div className="p-4 bg-red-50 border border-red-200 text-red-700 text-[14px] mb-4">
+                {error}
+              </div>
+            )}
 
             <form onSubmit={handleSubmit} className="space-y-5">
               {/* Email */}
