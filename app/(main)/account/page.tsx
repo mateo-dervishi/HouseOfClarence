@@ -103,7 +103,7 @@ export default function AccountPage() {
   ];
 
   return (
-    <main className="min-h-screen bg-off-white pt-24 pb-16">
+    <main className="min-h-screen bg-off-white pt-32 pb-16">
       <div className="max-w-[1400px] mx-auto px-6">
         {/* Breadcrumb */}
         <nav className="mb-8">

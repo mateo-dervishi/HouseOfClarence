@@ -161,7 +161,7 @@ export default function SettingsPage() {
   }
 
   return (
-    <main className="min-h-screen bg-off-white pt-24 pb-16">
+    <main className="min-h-screen bg-off-white pt-32 pb-16">
       <div className="max-w-[800px] mx-auto px-6">
         {/* Back Link */}
         <Link 
