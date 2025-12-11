@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { navigationData, Category, Subcategory } from "@/lib/navigation";
 import { useSelectionStore } from "@/stores/selectionStore";
 import { SelectionDrawer } from "@/components/selection/SelectionDrawer";
+import { createClient } from "@/lib/supabase/client";
 
 // Featured images for each category dropdown
 const categoryFeaturedImages: Record<string, { image: string; category: string; title: string; href: string }[]> = {
@@ -49,11 +50,29 @@ export function Header() {
   const [hoveredSubcategory, setHoveredSubcategory] = useState<Subcategory | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
   const pathname = usePathname();
 
   const { openSelection, getItemCount } = useSelectionStore();
   const selectionCount = getItemCount();
+
+  // Check auth status
+  useEffect(() => {
+    const supabase = createClient();
+    
+    // Check initial auth state
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setIsLoggedIn(!!session);
+    });
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsLoggedIn(!!session);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   // Pages that have dark hero backgrounds (transparent header with white text)
   const darkHeroPages = ["/"];
@@ -156,7 +175,7 @@ export function Header() {
             
             {/* Profile Icon */}
             <Link
-              href="/login"
+              href={isLoggedIn ? "/account" : "/login"}
               className={`flex items-center justify-center w-10 h-10 transition-colors duration-300 ${
                 showSolidHeader ? "text-primary-black hover:opacity-60" : "text-white hover:opacity-70"
               }`}
@@ -452,19 +471,19 @@ export function Header() {
               {/* Bottom Links */}
               <div className="border-t border-light-grey p-4 mt-4">
                 <Link
-                  href="/login"
+                  href={isLoggedIn ? "/account" : "/login"}
                   onClick={() => setMobileMenuOpen(false)}
                   className="flex items-center gap-3 py-3 text-[13px]"
                 >
                   <User className="w-4 h-4" />
-                  <span className="font-medium">Sign In / Register</span>
+                  <span className="font-medium">{isLoggedIn ? "My Account" : "Sign In / Register"}</span>
                 </Link>
                 <a
-                  href="tel:+442033704057"
+                  href="tel:+442037155892"
                   className="flex items-center gap-3 py-3 text-[13px]"
                 >
                   <span className="text-warm-grey">Call Us:</span>
-                  <span className="font-medium">020 3370 4057</span>
+                  <span className="font-medium">0203 715 5892</span>
                 </a>
               </div>
             </motion.div>
