@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Eye, EyeOff, ArrowRight, ArrowLeft, Check } from "lucide-react";
 
 export default function RegisterPage() {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     firstName: "",
@@ -31,7 +33,6 @@ export default function RegisterPage() {
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const [accountNumber, setAccountNumber] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -74,13 +75,17 @@ export default function RegisterPage() {
         return;
       }
 
-      setAccountNumber(data.accountNumber);
-      setSuccess(`Account created! Your account number is ${data.accountNumber}. Please check your email to verify your account.`);
+      // Show brief success message then redirect
+      setSuccess("Account created! Please check your email to verify your account.");
+      
+      // Redirect to home page after a short delay
+      setTimeout(() => {
+        router.push("/");
+      }, 2000);
     } catch (err) {
       setError("An error occurred. Please try again.");
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
   };
 
   const passwordRequirements = [
@@ -163,7 +168,6 @@ export default function RegisterPage() {
             {success && (
               <div className="p-4 bg-green-50 border border-green-200 text-green-700 text-[14px] mb-4">
                 {success}
-                <p className="mt-2 font-medium">Your Account Number: {accountNumber}</p>
               </div>
             )}
 

@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>House of Clarence - Unique Letterheads</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    :root {
+      --black: #0A0A0A;
+      --off-white: #F8F7F5;
+      --gold: #C9A962;
+      --grey: #8A8A8A;
+      --light-grey: #E8E8E8;
+    }
+    
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #D5D5D5;
+      padding: 40px;
+    }
+    
+    h1 {
+      text-align: center;
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      font-weight: 300;
+      color: var(--grey);
+      margin-bottom: 40px;
+    }
+    
+    .letterhead-container {
+      margin-bottom: 80px;
+    }
+    
+    .label {
+      text-align: center;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--grey);
+      margin-bottom: 20px;
+      font-weight: 400;
+    }
+    
+    .letterhead {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 0 auto;
+      background: white;
+      box-shadow: 0 2px 40px rgba(0,0,0,0.08);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    /* ===== STYLE 1: VERTICAL SIDE ===== */
+    .vertical-side {
+      display: flex;
+    }
+    
+    .vertical-side .sidebar {
+      width: 50px;
+      background: var(--black);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    
+    .vertical-side .sidebar-text {
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      transform: rotate(180deg);
+      font-weight: 300;
+      font-size: 10px;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: white;
+    }
+    
+    .vertical-side .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 297mm;
+    }
+    
+    .vertical-side .header {
+      padding: 50px 50px 0;
+      display: flex;
+      justify-content: flex-end;
+    }
+    
+    .vertical-side .contact {
+      text-align: right;
+      font-size: 8px;
+      color: var(--grey);
+      line-height: 1.9;
+    }
+    
+    .vertical-side .content {
+      flex: 1;
+      padding: 60px 50px;
+    }
+    
+    .vertical-side .footer {
+      padding: 30px 50px;
+      font-size: 7px;
+      color: var(--grey);
+      letter-spacing: 0.06em;
+      display: flex;
+      justify-content: space-between;
+    }
+    
+    /* ===== STYLE 2: WATERMARK ===== */
+    .watermark {
+      position: relative;
+    }
+    
+    .watermark .bg-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-weight: 200;
+      font-size: 140px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(0,0,0,0.03);
+      white-space: nowrap;
+      pointer-events: none;
+    }
+    
+    .watermark .header {
+      padding: 55px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .watermark .logo {
+      font-weight: 300;
+      font-size: 15px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--black);
+    }
+    
+    .watermark .contact {
+      text-align: right;
+      font-size: 8px;
+      color: var(--grey);
+      line-height: 1.9;
+    }
+    
+    .watermark .content {
+      padding: 40px 55px 80px;
+      min-height: 205mm;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .watermark .footer {
+      position: absolute;
+      bottom: 45px;
+      left: 55px;
+      right: 55px;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      font-size: 7px;
+      color: var(--grey);
+      letter-spacing: 0.06em;
+      z-index: 1;
+    }
+    
+    /* ===== STYLE 3: BOTTOM HEAVY ===== */
+    .bottom-heavy .content {
+      padding: 55px;
+      min-height: 220mm;
+    }
+    
+    .bottom-heavy .footer-section {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 45px 55px;
+      background: var(--off-white);
+    }
+    
+    .bottom-heavy .logo {
+      font-weight: 300;
+      font-size: 18px;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--black);
+      margin-bottom: 15px;
+    }
+    
+    .bottom-heavy .contact-row {
+      display: flex;
+      gap: 35px;
+      font-size: 8px;
+      color: var(--grey);
+      letter-spacing: 0.03em;
+    }
+    
+    /* ===== STYLE 4: FRAMED ===== */
+    .framed {
+      padding: 20px;
+    }
+    
+    .framed .inner {
+      border: 1px solid var(--light-grey);
+      min-height: calc(297mm - 40px);
+      position: relative;
+    }
+    
+    .framed .header {
+      padding: 45px 45px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    
+    .framed .logo {
+      font-weight: 300;
+      font-size: 15px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--black);
+    }
+    
+    .framed .contact {
+      text-align: right;
+      font-size: 8px;
+      color: var(--grey);
+      line-height: 1.9;
+    }
+    
+    .framed .content {
+      padding: 55px 45px;
+      min-height: 200mm;
+    }
+    
+    .framed .footer {
+      position: absolute;
+      bottom: 35px;
+      left: 45px;
+      right: 45px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 7px;
+      color: var(--grey);
+      letter-spacing: 0.06em;
+    }
+    
+    /* ===== STYLE 5: MONOGRAM LARGE ===== */
+    .monogram-large .header {
+      padding: 45px 55px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    
+    .monogram-large .logo-group {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .monogram-large .hoc {
+      font-weight: 200;
+      font-size: 55px;
+      letter-spacing: 0.08em;
+      color: var(--black);
+      line-height: 1;
+      margin-bottom: 5px;
+    }
+    
+    .monogram-large .full-name {
+      font-weight: 300;
+      font-size: 9px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--grey);
+    }
+    
+    .monogram-large .contact {
+      text-align: right;
+      font-size: 8px;
+      color: var(--grey);
+      line-height: 1.9;
+      padding-top: 15px;
+    }
+    
+    .monogram-large .content {
+      padding: 40px 55px 80px;
+      min-height: 200mm;
+    }
+    
+    .monogram-large .footer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 25px 55px;
+      border-top: 1px solid var(--light-grey);
+      display: flex;
+      justify-content: space-between;
+      font-size: 7px;
+      color: var(--grey);
+      letter-spacing: 0.06em;
+    }
+    
+    /* ===== STYLE 6: SPLIT DIAGONAL ===== */
+    .split-diagonal {
+      position: relative;
+    }
+    
+    .split-diagonal .diagonal-bg {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 200px;
+      height: 200px;
+      background: var(--off-white);
+      clip-path: polygon(100% 0, 0 0, 100% 100%);
+    }
+    
+    .split-diagonal .header {
+      padding: 55px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .split-diagonal .logo {
+      font-weight: 300;
+      font-size: 16px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--black);
+    }
+    
+    .split-diagonal .contact {
+      text-align: right;
+      font-size: 8px;
+      color: var(--grey);
+      line-height: 1.9;
+    }
+    
+    .split-diagonal .content {
+      padding: 40px 55px 80px;
+      min-height: 205mm;
+    }
+    
+    .split-diagonal .footer {
+      position: absolute;
+      bottom: 45px;
+      left: 55px;
+      right: 55px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 7px;
+      color: var(--grey);
+      letter-spacing: 0.06em;
+    }
+    
+    /* ===== STYLE 7: DARK GOLD ===== */
+    .dark-gold {
+      background: var(--black);
+    }
+    
+    .dark-gold .header {
+      padding: 55px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px solid var(--gold);
+    }
+    
+    .dark-gold .logo {
+      font-weight: 300;
+      font-size: 16px;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    
+    .dark-gold .contact {
+      text-align: right;
+      font-size: 8px;
+      color: #666;
+      line-height: 1.9;
+    }
+    
+    .dark-gold .content {
+      padding: 60px 55px 80px;
+      min-height: 205mm;
+    }
+    
+    .dark-gold .footer {
+      position: absolute;
+      bottom: 45px;
+      left: 55px;
+      right: 55px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 7px;
+      color: #555;
+      letter-spacing: 0.08em;
+    }
+    
+    .dark-gold .footer-left {
+      color: var(--gold);
+    }
+    
+    /* ===== STYLE 8: OUTLINE TEXT ===== */
+    .outline-text .header {
+      padding: 50px 55px;
+    }
+    
+    .outline-text .logo {
+      font-weight: 300;
+      font-size: 32px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: transparent;
+      -webkit-text-stroke: 1px var(--black);
+    }
+    
+    .outline-text .content {
+      padding: 40px 55px 80px;
+      min-height: 205mm;
+    }
+    
+    .outline-text .footer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 30px 55px;
+      background: var(--black);
+      display: flex;
+      justify-content: space-between;
+      font-size: 8px;
+      color: #888;
+      letter-spacing: 0.05em;
+    }
+    
+    /* ===== STYLE 9: HALF AND HALF ===== */
+    .half-half {
+      display: flex;
+      flex-direction: column;
+      min-height: 297mm;
+    }
+    
+    .half-half .header {
+      background: var(--black);
+      padding: 50px 55px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .half-half .logo {
+      font-weight: 300;
+      font-size: 15px;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: white;
+    }
+    
+    .half-half .contact {
+      text-align: right;
+      font-size: 8px;
+      color: #888;
+      line-height: 1.9;
+    }
+    
+    .half-half .content {
+      flex: 1;
+      padding: 60px 55px;
+    }
+    
+    .half-half .footer {
+      padding: 30px 55px;
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      font-size: 7px;
+      color: var(--grey);
+      letter-spacing: 0.06em;
+    }
+    
+    /* ===== STYLE 10: STACKED CENTER ===== */
+    .stacked-center .header {
+      padding: 60px 55px;
+      text-align: center;
+    }
+    
+    .stacked-center .hoc {
+      font-weight: 200;
+      font-size: 42px;
+      letter-spacing: 0.15em;
+      color: var(--black);
+      margin-bottom: 8px;
+    }
+    
+    .stacked-center .tagline {
+      font-weight: 300;
+      font-size: 8px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--grey);
+    }
+    
+    .stacked-center .content {
+      padding: 40px 65px 80px;
+      min-height: 200mm;
+    }
+    
+    .stacked-center .footer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 25px 55px;
+      border-top: 2px solid var(--black);
+      display: flex;
+      justify-content: space-between;
+      font-size: 8px;
+      color: var(--grey);
+      letter-spacing: 0.04em;
+    }
+    
+    .sample-content {
+      color: #DDD;
+      font-size: 10px;
+      font-weight: 300;
+    }
+    
+    .tip {
+      max-width: 500px;
+      margin: 0 auto 50px;
+      padding: 20px 30px;
+      background: white;
+      font-size: 11px;
+      line-height: 1.8;
+      color: var(--grey);
+      text-align: center;
+      font-weight: 300;
+    }
+  </style>
+</head>
+<body>
+  <h1>House of Clarence — Unique Letterheads</h1>
+  
+  <div class="tip">
+    <strong>Export:</strong> Print (Cmd+P) → Save as PDF
+  </div>
+  
+  <!-- STYLE 1: VERTICAL SIDE -->
+  <div class="letterhead-container">
+    <p class="label">Vertical Side</p>
+    <div class="letterhead vertical-side">
+      <div class="sidebar">
+        <span class="sidebar-text">House of Clarence</span>
+      </div>
+      <div class="main">
+        <div class="header">
+          <div class="contact">
+            020 3370 4057<br>
+            enquiries@houseofclarence.com<br>
+            houseofclarence.com
+          </div>
+        </div>
+        <div class="content">
+          <p class="sample-content">Content area</p>
+        </div>
+        <div class="footer">
+          <span>House of Clarence</span>
+          <span>London</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- STYLE 2: WATERMARK -->
+  <div class="letterhead-container">
+    <p class="label">Watermark</p>
+    <div class="letterhead watermark">
+      <div class="bg-text">HOC</div>
+      <div class="header">
+        <div class="logo">House of Clarence</div>
+        <div class="contact">
+          020 3370 4057<br>
+          enquiries@houseofclarence.com
+        </div>
+      </div>
+      <div class="content">
+        <p class="sample-content">Content area</p>
+      </div>
+      <div class="footer">
+        <span>House of Clarence</span>
+        <span>·</span>
+        <span>houseofclarence.com</span>
+      </div>
+    </div>
+  </div>
+  
+  <!-- STYLE 3: BOTTOM HEAVY -->
+  <div class="letterhead-container">
+    <p class="label">Bottom Heavy</p>
+    <div class="letterhead bottom-heavy">
+      <div class="content">
+        <p class="sample-content">Content area</p>
+      </div>
+      <div class="footer-section">
+        <div class="logo">House of Clarence</div>
+        <div class="contact-row">
+          <span>020 3370 4057</span>
+          <span>enquiries@houseofclarence.com</span>
+          <span>houseofclarence.com</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- STYLE 4: FRAMED -->
+  <div class="letterhead-container">
+    <p class="label">Framed</p>
+    <div class="letterhead framed">
+      <div class="inner">
+        <div class="header">
+          <div class="logo">House of Clarence</div>
+          <div class="contact">
+            020 3370 4057<br>
+            enquiries@houseofclarence.com
+          </div>
+        </div>
+        <div class="content">
+          <p class="sample-content">Content area</p>
+        </div>
+        <div class="footer">
+          <span>houseofclarence.com</span>
+          <span>London</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- STYLE 5: MONOGRAM LARGE -->
+  <div class="letterhead-container">
+    <p class="label">Monogram Large</p>
+    <div class="letterhead monogram-large">
+      <div class="header">
+        <div class="logo-group">
+          <div class="hoc">HOC</div>
+          <div class="full-name">House of Clarence</div>
+        </div>
+        <div class="contact">
+          020 3370 4057<br>
+          enquiries@houseofclarence.com<br>
+          houseofclarence.com
+        </div>
+      </div>
+      <div class="content">
+        <p class="sample-content">Content area</p>
+      </div>
+      <div class="footer">
+        <span>House of Clarence</span>
+        <span>Premium Second Fix & Finishing Materials</span>
+      </div>
+    </div>
+  </div>
+  
+  <!-- STYLE 6: SPLIT DIAGONAL -->
+  <div class="letterhead-container">
+    <p class="label">Split Diagonal</p>
+    <div class="letterhead split-diagonal">
+      <div class="diagonal-bg"></div>
+      <div class="header">
+        <div class="logo">House of Clarence</div>
+        <div class="contact">
+          020 3370 4057<br>
+          enquiries@houseofclarence.com
+        </div>
+      </div>
+      <div class="content">
+        <p class="sample-content">Content area</p>
+      </div>
+      <div class="footer">
+        <span>houseofclarence.com</span>
+        <span>London</span>
+      </div>
+    </div>
+  </div>
+  
+  <!-- STYLE 7: DARK GOLD -->
+  <div class="letterhead-container">
+    <p class="label">Dark Gold</p>
+    <div class="letterhead dark-gold">
+      <div class="header">
+        <div class="logo">House of Clarence</div>
+        <div class="contact">
+          020 3370 4057<br>
+          enquiries@houseofclarence.com
+        </div>
+      </div>
+      <div class="content">
+        <p class="sample-content" style="color: #333;">Content area</p>
+      </div>
+      <div class="footer">
+        <span class="footer-left">House of Clarence</span>
+        <span>houseofclarence.com</span>
+      </div>
+    </div>
+  </div>
+  
+  <!-- STYLE 8: OUTLINE TEXT -->
+  <div class="letterhead-container">
+    <p class="label">Outline Text</p>
+    <div class="letterhead outline-text">
+      <div class="header">
+        <div class="logo">House of Clarence</div>
+      </div>
+      <div class="content">
+        <p class="sample-content">Content area</p>
+      </div>
+      <div class="footer">
+        <span>020 3370 4057</span>
+        <span>enquiries@houseofclarence.com</span>
+        <span>houseofclarence.com</span>
+      </div>
+    </div>
+  </div>
+  
+  <!-- STYLE 9: HALF AND HALF -->
+  <div class="letterhead-container">
+    <p class="label">Half and Half</p>
+    <div class="letterhead half-half">
+      <div class="header">
+        <div class="logo">House of Clarence</div>
+        <div class="contact">
+          020 3370 4057<br>
+          enquiries@houseofclarence.com
+        </div>
+      </div>
+      <div class="content">
+        <p class="sample-content">Content area</p>
+      </div>
+      <div class="footer">
+        <span>House of Clarence</span>
+        <span>·</span>
+        <span>London</span>
+        <span>·</span>
+        <span>houseofclarence.com</span>
+      </div>
+    </div>
+  </div>
+  
+  <!-- STYLE 10: STACKED CENTER -->
+  <div class="letterhead-container">
+    <p class="label">Stacked Center</p>
+    <div class="letterhead stacked-center">
+      <div class="header">
+        <div class="hoc">HOC</div>
+        <div class="tagline">House of Clarence</div>
+      </div>
+      <div class="content">
+        <p class="sample-content">Content area</p>
+      </div>
+      <div class="footer">
+        <span>020 3370 4057 · enquiries@houseofclarence.com</span>
+        <span>houseofclarence.com</span>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
+
