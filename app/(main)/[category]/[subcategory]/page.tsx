@@ -30,25 +30,20 @@ export default function SubcategoryPage({ params }: SubcategoryPageProps) {
     (sub) => sub.slug === params.subcategory
   );
 
-  if (!category || !subcategory) {
-    router.push("/404");
-    return null;
-  }
-
   // Filter products by category and subcategory
-  // For now, filter by category since mock data may not have exact subcategory matches
-  const subcategoryProducts = mockProducts.filter(
-    (product) =>
-      product.category.slug === params.category &&
-      (product.subcategory.toLowerCase().includes(params.subcategory.replace(/-/g, " ")) ||
-        params.subcategory.includes(product.subcategory.toLowerCase().replace(/ /g, "-")))
-  );
-
-  // If no exact matches, show all products from the category
-  const displayProducts =
-    subcategoryProducts.length > 0
+  const displayProducts = useMemo(() => {
+    const subcategoryProducts = mockProducts.filter(
+      (product) =>
+        product.category.slug === params.category &&
+        (product.subcategory.toLowerCase().includes(params.subcategory.replace(/-/g, " ")) ||
+          params.subcategory.includes(product.subcategory.toLowerCase().replace(/ /g, "-")))
+    );
+    
+    // If no exact matches, show all products from the category
+    return subcategoryProducts.length > 0
       ? subcategoryProducts
       : mockProducts.filter((p) => p.category.slug === params.category);
+  }, [params.category, params.subcategory]);
 
   // Apply filters
   const filteredProducts = useMemo(() => {
@@ -74,6 +69,12 @@ export default function SubcategoryPage({ params }: SubcategoryPageProps) {
   const handleClearFilters = () => {
     setFilters(defaultFilters);
   };
+
+  // Early return after all hooks
+  if (!category || !subcategory) {
+    router.push("/404");
+    return null;
+  }
 
   return (
     <main className="pt-14">

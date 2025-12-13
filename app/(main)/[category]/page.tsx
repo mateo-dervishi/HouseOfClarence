@@ -43,19 +43,16 @@ export default function CategoryPage({ params }: CategoryPageProps) {
   const [gridCols, setGridCols] = useState<3 | 4>(4);
   
   const category = CATEGORIES.find((cat) => cat.slug === params.category);
-
-  if (!category) {
-    router.push("/404");
-    return null;
-  }
   
   const heroImage = categoryHeroImages[params.category] || "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1920&h=800&fit=crop";
   const imagePosition = categoryImagePositions[params.category] || "object-center";
 
   // Filter products by category
-  const categoryProducts = mockProducts.filter(
-    (product) => product.category.slug === params.category
-  );
+  const categoryProducts = useMemo(() => {
+    return mockProducts.filter(
+      (product) => product.category.slug === params.category
+    );
+  }, [params.category]);
 
   // Apply filters
   const filteredProducts = useMemo(() => {
@@ -81,6 +78,12 @@ export default function CategoryPage({ params }: CategoryPageProps) {
   const handleClearFilters = () => {
     setFilters(defaultFilters);
   };
+
+  // Early return after all hooks
+  if (!category) {
+    router.push("/404");
+    return null;
+  }
 
   return (
     <main>
