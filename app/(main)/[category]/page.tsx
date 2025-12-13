@@ -1,11 +1,12 @@
 "use client";
 
 import { ProductCard } from "@/components/product/ProductCard";
+import { ProductFilters, FilterState, applyFilters, defaultFilters } from "@/components/product/ProductFilters";
 import { mockProducts } from "@/lib/mockData";
 import { CATEGORIES } from "@/lib/constants";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { ChevronDown } from "lucide-react";
+import { useState, useMemo } from "react";
+import { ChevronDown, Grid, LayoutGrid } from "lucide-react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 
@@ -38,6 +39,8 @@ const categoryImagePositions: Record<string, string> = {
 export default function CategoryPage({ params }: CategoryPageProps) {
   const router = useRouter();
   const [sortBy, setSortBy] = useState("featured");
+  const [filters, setFilters] = useState<FilterState>(defaultFilters);
+  const [gridCols, setGridCols] = useState<3 | 4>(4);
   
   const category = CATEGORIES.find((cat) => cat.slug === params.category);
 
@@ -54,19 +57,34 @@ export default function CategoryPage({ params }: CategoryPageProps) {
     (product) => product.category.slug === params.category
   );
 
+  // Apply filters
+  const filteredProducts = useMemo(() => {
+    return applyFilters(categoryProducts, filters);
+  }, [categoryProducts, filters]);
+
   // Sort products
-  const sortedProducts = [...categoryProducts].sort((a, b) => {
-    switch (sortBy) {
-      case "price-low":
-        return (a.pricing.salePrice || a.pricing.price) - (b.pricing.salePrice || b.pricing.price);
-      case "price-high":
-        return (b.pricing.salePrice || b.pricing.price) - (a.pricing.salePrice || a.pricing.price);
-      case "newest":
-        return b.isNew ? 1 : -1;
-      default:
-        return 0;
-    }
-  });
+  const sortedProducts = useMemo(() => {
+    return [...filteredProducts].sort((a, b) => {
+      switch (sortBy) {
+        case "price-low":
+          return (a.pricing.salePrice || a.pricing.price) - (b.pricing.salePrice || b.pricing.price);
+        case "price-high":
+          return (b.pricing.salePrice || b.pricing.price) - (a.pricing.salePrice || a.pricing.price);
+        case "newest":
+          return b.isNew ? 1 : -1;
+        case "name-az":
+          return a.name.localeCompare(b.name);
+        case "name-za":
+          return b.name.localeCompare(a.name);
+        default:
+          return 0;
+      }
+    });
+  }, [filteredProducts, sortBy]);
+
+  const handleClearFilters = () => {
+    setFilters(defaultFilters);
+  };
 
   return (
     <main>
@@ -120,10 +138,42 @@ export default function CategoryPage({ params }: CategoryPageProps) {
       {/* Filter Bar */}
       <div className="border-y border-light-grey">
         <div className="max-w-[1600px] mx-auto px-6 py-4 flex items-center justify-between">
-          <p className="text-[13px] text-warm-grey">
-            {sortedProducts.length} {sortedProducts.length === 1 ? "Product" : "Products"}
-          </p>
           <div className="flex items-center gap-6">
+            {/* Mobile Filter Button */}
+            <ProductFilters
+              products={categoryProducts}
+              filters={filters}
+              onFiltersChange={setFilters}
+              onClearFilters={handleClearFilters}
+            />
+            
+            <p className="text-[13px] text-warm-grey hidden sm:block">
+              {sortedProducts.length} {sortedProducts.length === 1 ? "Product" : "Products"}
+              {categoryProducts.length !== sortedProducts.length && (
+                <span className="text-primary-black"> (filtered from {categoryProducts.length})</span>
+              )}
+            </p>
+          </div>
+          
+          <div className="flex items-center gap-4 md:gap-6">
+            {/* Grid Toggle - Desktop only */}
+            <div className="hidden md:flex items-center gap-2 border-r border-light-grey pr-4">
+              <button
+                onClick={() => setGridCols(3)}
+                className={`p-1.5 transition-colors ${gridCols === 3 ? "text-primary-black" : "text-warm-grey hover:text-primary-black"}`}
+                title="3 columns"
+              >
+                <Grid className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => setGridCols(4)}
+                className={`p-1.5 transition-colors ${gridCols === 4 ? "text-primary-black" : "text-warm-grey hover:text-primary-black"}`}
+                title="4 columns"
+              >
+                <LayoutGrid className="w-4 h-4" />
+              </button>
+            </div>
+            
             {/* Sort Dropdown */}
             <div className="relative">
               <select 
@@ -135,6 +185,8 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                 <option value="price-low">Price: Low to High</option>
                 <option value="price-high">Price: High to Low</option>
                 <option value="newest">Newest</option>
+                <option value="name-az">Name: A to Z</option>
+                <option value="name-za">Name: Z to A</option>
               </select>
               <ChevronDown className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none" />
             </div>
@@ -142,26 +194,120 @@ export default function CategoryPage({ params }: CategoryPageProps) {
         </div>
       </div>
 
-      {/* Product Grid */}
-      <section className="max-w-[1600px] mx-auto px-6 py-12">
-        {sortedProducts.length > 0 ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-12">
-            {sortedProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
+      {/* Active Filters Tags */}
+      {(filters.materials.length > 0 || 
+        filters.colours.length > 0 || 
+        filters.finishes.length > 0 || 
+        filters.priceRange || 
+        filters.isNew || 
+        filters.isFeatured) && (
+        <div className="max-w-[1600px] mx-auto px-6 py-4">
+          <div className="flex flex-wrap gap-2">
+            {filters.isNew && (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-off-white text-[12px] tracking-[0.05em]">
+                New Arrivals
+                <button onClick={() => setFilters({ ...filters, isNew: false })} className="hover:text-red-500">
+                  <span className="sr-only">Remove</span>×
+                </button>
+              </span>
+            )}
+            {filters.isFeatured && (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-off-white text-[12px] tracking-[0.05em]">
+                Featured
+                <button onClick={() => setFilters({ ...filters, isFeatured: false })} className="hover:text-red-500">
+                  <span className="sr-only">Remove</span>×
+                </button>
+              </span>
+            )}
+            {filters.materials.map((material) => (
+              <span key={material} className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-off-white text-[12px] tracking-[0.05em]">
+                {material}
+                <button 
+                  onClick={() => setFilters({ ...filters, materials: filters.materials.filter(m => m !== material) })}
+                  className="hover:text-red-500"
+                >
+                  <span className="sr-only">Remove</span>×
+                </button>
+              </span>
             ))}
-          </div>
-        ) : (
-          <div className="text-center py-24">
-            <p className="text-warm-grey mb-4">No products found in this category.</p>
-            <a
-              href="/"
-              className="text-[13px] tracking-[0.1em] uppercase underline hover:opacity-60 transition-opacity"
+            {filters.colours.map((colour) => (
+              <span key={colour} className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-off-white text-[12px] tracking-[0.05em]">
+                {colour}
+                <button 
+                  onClick={() => setFilters({ ...filters, colours: filters.colours.filter(c => c !== colour) })}
+                  className="hover:text-red-500"
+                >
+                  <span className="sr-only">Remove</span>×
+                </button>
+              </span>
+            ))}
+            {filters.finishes.map((finish) => (
+              <span key={finish} className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-off-white text-[12px] tracking-[0.05em]">
+                {finish}
+                <button 
+                  onClick={() => setFilters({ ...filters, finishes: filters.finishes.filter(f => f !== finish) })}
+                  className="hover:text-red-500"
+                >
+                  <span className="sr-only">Remove</span>×
+                </button>
+              </span>
+            ))}
+            {filters.priceRange && (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-off-white text-[12px] tracking-[0.05em]">
+                {filters.priceRange[1] === Infinity 
+                  ? `Over £${filters.priceRange[0].toLocaleString()}`
+                  : `£${filters.priceRange[0].toLocaleString()} - £${filters.priceRange[1].toLocaleString()}`
+                }
+                <button onClick={() => setFilters({ ...filters, priceRange: null })} className="hover:text-red-500">
+                  <span className="sr-only">Remove</span>×
+                </button>
+              </span>
+            )}
+            <button
+              onClick={handleClearFilters}
+              className="text-[12px] tracking-[0.05em] text-warm-grey hover:text-primary-black underline"
             >
-              Return to homepage
-            </a>
+              Clear all
+            </button>
           </div>
-        )}
-      </section>
+        </div>
+      )}
+
+      {/* Main Content */}
+      <div className="max-w-[1600px] mx-auto px-6 py-12">
+        <div className="flex gap-12">
+          {/* Desktop Sidebar Filters */}
+          <div className="hidden lg:block">
+            <ProductFilters
+              products={categoryProducts}
+              filters={filters}
+              onFiltersChange={setFilters}
+              onClearFilters={handleClearFilters}
+            />
+          </div>
+
+          {/* Product Grid */}
+          <div className="flex-1">
+            {sortedProducts.length > 0 ? (
+              <div className={`grid grid-cols-2 ${gridCols === 3 ? 'lg:grid-cols-3' : 'md:grid-cols-3 lg:grid-cols-4'} gap-x-6 gap-y-12`}>
+                {sortedProducts.map((product) => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-24">
+                <p className="text-warm-grey mb-4">No products match your filters.</p>
+                <button
+                  onClick={handleClearFilters}
+                  className="text-[13px] tracking-[0.1em] uppercase underline hover:opacity-60 transition-opacity"
+                >
+                  Clear all filters
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
     </main>
   );
 }

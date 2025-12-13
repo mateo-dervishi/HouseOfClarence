@@ -79,7 +79,7 @@ export default function RegisterPage() {
       setSuccess("Account created! Please check your email to verify your account.");
       
       // Redirect to home page after a short delay
-      setTimeout(() => {
+    setTimeout(() => {
         router.push("/");
       }, 2000);
     } catch (err) {
@@ -324,18 +324,18 @@ export default function RegisterPage() {
                 </div>
                 {/* Password Requirements - always rendered to prevent layout shift */}
                 <div className={`mt-3 space-y-1 transition-opacity duration-200 ${formData.password ? "opacity-100" : "opacity-0"}`}>
-                  {passwordRequirements.map((req, i) => (
-                    <div
-                      key={i}
-                      className={`flex items-center gap-2 text-[12px] ${
-                        req.met ? "text-green-600" : "text-warm-grey"
-                      }`}
-                    >
-                      <Check className={`w-3.5 h-3.5 ${req.met ? "opacity-100" : "opacity-30"}`} />
-                      {req.text}
-                    </div>
-                  ))}
-                </div>
+                    {passwordRequirements.map((req, i) => (
+                      <div
+                        key={i}
+                        className={`flex items-center gap-2 text-[12px] ${
+                          req.met ? "text-green-600" : "text-warm-grey"
+                        }`}
+                      >
+                        <Check className={`w-3.5 h-3.5 ${req.met ? "opacity-100" : "opacity-30"}`} />
+                        {req.text}
+                      </div>
+                    ))}
+                  </div>
               </div>
 
               {/* Confirm Password */}

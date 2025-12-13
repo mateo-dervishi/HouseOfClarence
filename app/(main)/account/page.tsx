@@ -33,7 +33,7 @@ export default function AccountPage() {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const { items, labels } = useSelectionStore();
-  
+
   // Get unique label IDs from items
   const uniqueLabelIds = [...new Set(items.map(item => item.labelId))];
   const totalItems = items.length;
@@ -97,10 +97,10 @@ export default function AccountPage() {
     return null;
   }
 
-  const menuItems = [
+const menuItems = [
     { icon: ClipboardList, label: "My Selection", href: "/selection", badge: `${totalItems} Items` },
-    { icon: Settings, label: "Account Settings", href: "/account/settings" },
-  ];
+  { icon: Settings, label: "Account Settings", href: "/account/settings" },
+];
 
   return (
     <main className="min-h-screen bg-off-white pt-32 pb-16">
@@ -260,7 +260,7 @@ export default function AccountPage() {
                             <h3 className="font-medium text-[14px]">{labelName}</h3>
                             <p className="text-[12px] text-warm-grey">{labelItems.length} items</p>
                           </div>
-                        </div>
+                    </div>
                         <Link
                           href="/selection"
                           className="text-[12px] tracking-[0.05em] uppercase text-warm-grey hover:text-primary-black transition-colors"
@@ -270,7 +270,7 @@ export default function AccountPage() {
                       </div>
                     );
                   })}
-                </div>
+                    </div>
               ) : (
                 <div className="text-center py-12">
                   <ClipboardList className="w-12 h-12 text-light-grey mx-auto mb-4" />
@@ -309,9 +309,9 @@ export default function AccountPage() {
                     className="flex-shrink-0 px-8 py-4 bg-white text-primary-black text-[12px] tracking-[0.1em] uppercase hover:bg-off-white transition-colors"
                   >
                     Review & Submit
-                  </Link>
-                </div>
-              </motion.div>
+                </Link>
+              </div>
+            </motion.div>
             )}
 
             {/* Account Details */}
@@ -324,7 +324,7 @@ export default function AccountPage() {
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-lg font-display tracking-[0.15em] uppercase">
                   Account Details
-                </h2>
+              </h2>
                 <Link
                   href="/account/settings"
                   className="text-[12px] tracking-[0.1em] uppercase text-warm-grey hover:text-primary-black transition-colors flex items-center gap-1"
@@ -350,7 +350,7 @@ export default function AccountPage() {
                 <div>
                   <p className="text-[11px] tracking-[0.1em] uppercase text-warm-grey mb-1">Account Type</p>
                   <p className="text-[14px] capitalize">{user.account_type}</p>
-                </div>
+                  </div>
               </div>
             </motion.div>
           </div>

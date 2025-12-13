@@ -459,12 +459,12 @@ export default function SelectionPage() {
               )}
               {isSubmitting ? "..." : submitSuccess ? "Submitted" : "Submit"}
             </button>
-            <button
-              onClick={() => setShowEnquiryForm(true)}
+          <button
+            onClick={() => setShowEnquiryForm(true)}
               className="flex-1 py-3 bg-primary-black text-white text-[12px] tracking-[0.1em] uppercase hover:bg-charcoal transition-colors"
-            >
-              Request Quote
-            </button>
+          >
+            Request Quote
+          </button>
           </div>
         </div>
 
