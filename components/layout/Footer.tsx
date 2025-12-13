@@ -26,11 +26,11 @@ export function Footer() {
                 020 3370 4057
               </a>
               <a 
-                href="mailto:enquiries@houseofclarence.com"
+                href="mailto:enquiries@houseofclarence.uk"
                 className="flex items-center gap-2 text-sm text-warm-grey hover:text-white transition-colors"
               >
                 <Mail className="w-4 h-4" />
-                enquiries@houseofclarence.com
+                enquiries@houseofclarence.uk
               </a>
             </div>
           </div>

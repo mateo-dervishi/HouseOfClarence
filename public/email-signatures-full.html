@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>House of Clarence - Full Email Signatures</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #B5B5B5; padding: 40px; }
+    h1 { text-align: center; font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; font-weight: 300; color: #888; margin-bottom: 40px; }
+    .sig-container { margin-bottom: 60px; }
+    .label { text-align: center; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #888; margin-bottom: 15px; }
+    .signature { max-width: 600px; margin: 0 auto; background: white; box-shadow: 0 2px 20px rgba(0,0,0,0.1); }
+    .icon { width: 16px; height: 16px; display: inline-block; vertical-align: middle; margin-right: 8px; }
+    .social-icon { width: 24px; height: 24px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; margin-right: 6px; font-size: 11px; text-decoration: none; }
+    .notice { font-size: 8px; color: #999; line-height: 1.6; border-top: 1px solid #eee; padding: 12px 20px; background: #fafafa; }
+    .notice strong { color: #666; }
+
+    /* Style 1: Classic Split */
+    .s1 .main { display: flex; padding: 25px; }
+    .s1 .left { padding-right: 25px; border-right: 2px solid #0a0a0a; }
+    .s1 .hoc { font-weight: 200; font-size: 32px; letter-spacing: 0.06em; color: #0a0a0a; }
+    .s1 .company { font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: #0a0a0a; margin-top: 5px; }
+    .s1 .tagline { font-size: 7px; letter-spacing: 0.08em; text-transform: uppercase; color: #888; margin-top: 8px; }
+    .s1 .socials { margin-top: 12px; display: flex; gap: 5px; }
+    .s1 .social-icon { background: #0a0a0a; color: white; }
+    .s1 .right { padding-left: 25px; flex: 1; }
+    .s1 .person { font-size: 14px; font-weight: 500; color: #0a0a0a; }
+    .s1 .role { font-size: 10px; color: #888; margin-top: 3px; margin-bottom: 15px; padding-bottom: 12px; border-bottom: 1px solid #eee; }
+    .s1 .contact-row { display: flex; align-items: flex-start; margin-bottom: 8px; font-size: 10px; color: #333; }
+    .s1 .contact-row svg { flex-shrink: 0; margin-right: 10px; margin-top: 2px; }
+
+    /* Style 2: Header Bar */
+    .s2 .header { background: #0a0a0a; padding: 18px 25px; display: flex; justify-content: space-between; align-items: center; }
+    .s2 .hoc { font-weight: 200; font-size: 26px; letter-spacing: 0.06em; color: white; }
+    .s2 .person-area { text-align: right; }
+    .s2 .person { font-size: 12px; font-weight: 400; color: white; }
+    .s2 .role { font-size: 9px; color: #888; margin-top: 2px; }
+    .s2 .body { padding: 20px 25px; display: flex; justify-content: space-between; }
+    .s2 .left { }
+    .s2 .company { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: #0a0a0a; margin-bottom: 5px; }
+    .s2 .tagline { font-size: 8px; color: #888; margin-bottom: 12px; }
+    .s2 .socials { display: flex; gap: 5px; }
+    .s2 .social-icon { background: #0a0a0a; color: white; }
+    .s2 .right { text-align: right; }
+    .s2 .contact-row { display: flex; align-items: center; justify-content: flex-end; margin-bottom: 6px; font-size: 9px; color: #333; }
+    .s2 .contact-row svg { margin-left: 8px; }
+
+    /* Style 3: Centered Elegant */
+    .s3 .main { padding: 25px; text-align: center; }
+    .s3 .hoc { font-weight: 200; font-size: 36px; letter-spacing: 0.08em; color: #0a0a0a; }
+    .s3 .company { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #0a0a0a; margin-top: 5px; }
+    .s3 .divider { width: 60px; height: 2px; background: #0a0a0a; margin: 15px auto; }
+    .s3 .person { font-size: 13px; font-weight: 500; color: #0a0a0a; }
+    .s3 .role { font-size: 9px; color: #888; margin-top: 3px; margin-bottom: 15px; }
+    .s3 .contact-row { display: inline-flex; align-items: center; margin: 0 12px 8px; font-size: 9px; color: #333; }
+    .s3 .contact-row svg { margin-right: 6px; }
+    .s3 .socials { margin-top: 12px; display: flex; justify-content: center; gap: 8px; }
+    .s3 .social-icon { background: #0a0a0a; color: white; }
+
+    /* Style 4: Left Logo Block */
+    .s4 .main { display: flex; }
+    .s4 .left { width: 120px; background: #0a0a0a; padding: 25px 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .s4 .hoc { font-weight: 200; font-size: 28px; letter-spacing: 0.06em; color: white; }
+    .s4 .tagline { font-size: 6px; letter-spacing: 0.1em; text-transform: uppercase; color: #666; margin-top: 8px; text-align: center; line-height: 1.5; }
+    .s4 .socials { margin-top: 12px; display: flex; gap: 4px; }
+    .s4 .social-icon { background: #333; color: white; width: 20px; height: 20px; font-size: 9px; }
+    .s4 .right { flex: 1; padding: 20px 25px; }
+    .s4 .person { font-size: 14px; font-weight: 500; color: #0a0a0a; }
+    .s4 .role { font-size: 9px; color: #888; margin-top: 2px; }
+    .s4 .company { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: #0a0a0a; margin-top: 10px; padding-top: 10px; border-top: 1px solid #eee; margin-bottom: 12px; }
+    .s4 .contact-row { display: flex; align-items: flex-start; margin-bottom: 6px; font-size: 9px; color: #333; }
+    .s4 .contact-row svg { flex-shrink: 0; margin-right: 8px; margin-top: 1px; }
+
+    /* Style 5: Two Column Grid */
+    .s5 .header { padding: 20px 25px; border-bottom: 3px solid #0a0a0a; display: flex; justify-content: space-between; align-items: flex-end; }
+    .s5 .logo-area { }
+    .s5 .hoc { font-weight: 200; font-size: 30px; letter-spacing: 0.06em; color: #0a0a0a; }
+    .s5 .company { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: #0a0a0a; margin-top: 3px; }
+    .s5 .person-area { text-align: right; }
+    .s5 .person { font-size: 13px; font-weight: 500; color: #0a0a0a; }
+    .s5 .role { font-size: 9px; color: #888; margin-top: 2px; }
+    .s5 .body { padding: 18px 25px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .s5 .contact-row { display: flex; align-items: flex-start; margin-bottom: 8px; font-size: 9px; color: #333; }
+    .s5 .contact-row svg { flex-shrink: 0; margin-right: 8px; margin-top: 1px; }
+    .s5 .col-right { display: flex; flex-direction: column; align-items: flex-end; }
+    .s5 .tagline { font-size: 8px; color: #888; text-align: right; margin-bottom: 10px; }
+    .s5 .socials { display: flex; gap: 5px; }
+    .s5 .social-icon { background: #0a0a0a; color: white; }
+
+    /* Style 6: Minimal Lines */
+    .s6 .main { padding: 25px; }
+    .s6 .top { display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 15px; border-bottom: 1px solid #ddd; margin-bottom: 15px; }
+    .s6 .logo-area { display: flex; align-items: center; gap: 15px; }
+    .s6 .hoc { font-weight: 200; font-size: 28px; letter-spacing: 0.06em; color: #0a0a0a; }
+    .s6 .text-area { border-left: 2px solid #888; padding-left: 12px; }
+    .s6 .company { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: #0a0a0a; }
+    .s6 .tagline { font-size: 7px; color: #888; margin-top: 3px; }
+    .s6 .person-area { text-align: right; }
+    .s6 .person { font-size: 12px; font-weight: 500; color: #0a0a0a; }
+    .s6 .role { font-size: 9px; color: #888; margin-top: 2px; }
+    .s6 .bottom { display: flex; justify-content: space-between; align-items: flex-end; }
+    .s6 .contacts { }
+    .s6 .contact-row { display: flex; align-items: center; margin-bottom: 5px; font-size: 9px; color: #333; }
+    .s6 .contact-row svg { margin-right: 8px; }
+    .s6 .socials { display: flex; gap: 5px; }
+    .s6 .social-icon { background: #0a0a0a; color: white; }
+
+    /* Style 7: Dark Footer */
+    .s7 .main { padding: 22px 25px; }
+    .s7 .top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; }
+    .s7 .logo-area { }
+    .s7 .hoc { font-weight: 200; font-size: 28px; letter-spacing: 0.06em; color: #0a0a0a; }
+    .s7 .company { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: #0a0a0a; margin-top: 3px; }
+    .s7 .person-area { text-align: right; }
+    .s7 .person { font-size: 12px; font-weight: 500; color: #0a0a0a; }
+    .s7 .role { font-size: 9px; color: #888; margin-top: 2px; }
+    .s7 .contacts { display: flex; gap: 20px; flex-wrap: wrap; }
+    .s7 .contact-row { display: flex; align-items: center; font-size: 9px; color: #333; }
+    .s7 .contact-row svg { margin-right: 6px; }
+    .s7 .footer { background: #0a0a0a; padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; }
+    .s7 .tagline { font-size: 8px; color: #888; }
+    .s7 .socials { display: flex; gap: 5px; }
+    .s7 .social-icon { background: #333; color: white; border: 1px solid #444; }
+
+    /* Style 8: Boxed Modern */
+    .s8 .top { display: flex; }
+    .s8 .logo-box { background: #0a0a0a; padding: 25px; display: flex; flex-direction: column; justify-content: center; }
+    .s8 .hoc { font-weight: 200; font-size: 26px; letter-spacing: 0.06em; color: white; }
+    .s8 .tagline { font-size: 7px; color: #666; margin-top: 5px; text-transform: uppercase; letter-spacing: 0.08em; }
+    .s8 .info-box { flex: 1; padding: 20px 25px; background: #f8f7f5; }
+    .s8 .person { font-size: 13px; font-weight: 500; color: #0a0a0a; }
+    .s8 .role { font-size: 9px; color: #888; margin-top: 2px; }
+    .s8 .company { font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #0a0a0a; margin-top: 10px; padding-top: 8px; border-top: 1px solid #ddd; }
+    .s8 .body { padding: 18px 25px; display: flex; justify-content: space-between; align-items: flex-end; }
+    .s8 .contacts { }
+    .s8 .contact-row { display: flex; align-items: center; margin-bottom: 5px; font-size: 9px; color: #333; }
+    .s8 .contact-row svg { margin-right: 8px; }
+    .s8 .socials { display: flex; gap: 5px; }
+    .s8 .social-icon { background: #0a0a0a; color: white; }
+
+    /* Style 9: Full Width Header */
+    .s9 .header { background: #0a0a0a; padding: 22px 25px; }
+    .s9 .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid #333; }
+    .s9 .hoc { font-weight: 200; font-size: 30px; letter-spacing: 0.06em; color: white; }
+    .s9 .company { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: #888; }
+    .s9 .header-bottom { display: flex; justify-content: space-between; align-items: center; }
+    .s9 .person { font-size: 11px; font-weight: 400; color: white; }
+    .s9 .role { font-size: 9px; color: #666; }
+    .s9 .tagline { font-size: 8px; color: #666; }
+    .s9 .body { padding: 18px 25px; display: flex; justify-content: space-between; align-items: flex-end; }
+    .s9 .contacts { }
+    .s9 .contact-row { display: flex; align-items: center; margin-bottom: 5px; font-size: 9px; color: #333; }
+    .s9 .contact-row svg { margin-right: 8px; }
+    .s9 .socials { display: flex; gap: 5px; }
+    .s9 .social-icon { background: #0a0a0a; color: white; }
+
+    /* Style 10: Premium Complete */
+    .s10 .stripe { height: 6px; background: #0a0a0a; }
+    .s10 .main { padding: 22px 25px; background: #f8f7f5; }
+    .s10 .top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 2px solid #0a0a0a; }
+    .s10 .logo-area { display: flex; align-items: center; gap: 15px; }
+    .s10 .hoc { font-weight: 200; font-size: 30px; letter-spacing: 0.06em; color: #0a0a0a; }
+    .s10 .text-area { border-left: 2px solid #2d2d2d; padding-left: 12px; }
+    .s10 .company { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: #0a0a0a; }
+    .s10 .tagline { font-size: 7px; color: #888; margin-top: 3px; }
+    .s10 .person-area { text-align: right; }
+    .s10 .person { font-size: 13px; font-weight: 500; color: #0a0a0a; }
+    .s10 .role { font-size: 9px; color: #888; margin-top: 2px; }
+    .s10 .bottom { display: flex; justify-content: space-between; align-items: flex-end; }
+    .s10 .contacts { }
+    .s10 .contact-row { display: flex; align-items: center; margin-bottom: 6px; font-size: 9px; color: #333; }
+    .s10 .contact-row svg { margin-right: 8px; }
+    .s10 .socials { display: flex; gap: 5px; }
+    .s10 .social-icon { background: #0a0a0a; color: white; }
+    .s10 .stripe2 { height: 4px; background: #888; }
+  </style>
+</head>
+<body>
+  <h1>House of Clarence — Full Email Signatures with Socials & Notice</h1>
+
+  <!-- Style 1 -->
+  <div class="sig-container"><p class="label">1. Classic Split</p><div class="signature s1"><div class="main"><div class="left"><div class="hoc">HOC</div><div class="company">House of Clarence</div><div class="tagline">Refined Finishing for<br>Discerning Spaces</div><div class="socials"><a href="#" class="social-icon">in</a><a href="#" class="social-icon">f</a><a href="#" class="social-icon">X</a><a href="#" class="social-icon">◎</a></div></div><div class="right"><div class="person">John Smith</div><div class="role">Managing Director</div><div class="contact-row"><svg width="14" height="14" fill="none" stroke="#888" stroke-width="1.5"><path d="M2 4l5 3.5L12 4"/><rect x="1" y="3" width="12" height="8" rx="1"/></svg>john@houseofclarence.com</div><div class="contact-row"><svg width="14" height="14" fill="none" stroke="#888" stroke-width="1.5"><circle cx="7" cy="7" r="5"/><path d="M9 9l2.5 2.5"/></svg>houseofclarence.com</div><div class="contact-row"><svg width="14" height="14" fill="none" stroke="#888" stroke-width="1.5"><path d="M3 5.5C3 3.5 5 2 7 2s4 1.5 4 3.5C11 8 7 12 7 12S3 8 3 5.5z"/><circle cx="7" cy="5.5" r="1.5"/></svg>London, United Kingdom</div><div class="contact-row"><svg width="14" height="14" fill="none" stroke="#888" stroke-width="1.5"><path d="M2 4l3 3-3 3"/><path d="M7 10h5"/></svg>020 3370 4057</div></div></div><div class="notice"><strong>CONFIDENTIALITY NOTICE:</strong> This email and any attachments are confidential and intended solely for the addressee. If you are not the intended recipient, please notify us immediately and delete this message. Any unauthorized use, disclosure, or copying is strictly prohibited. House of Clarence Ltd.</div></div></div>
+
+  <!-- Style 2 -->
+  <div class="sig-container"><p class="label">2. Header Bar</p><div class="signature s2"><div class="header"><div class="hoc">HOC</div><div class="person-area"><div class="person">John Smith</div><div class="role">Managing Director</div></div></div><div class="body"><div class="left"><div class="company">House of Clarence</div><div class="tagline">Refined Finishing for Discerning Spaces</div><div class="socials"><a href="#" class="social-icon">in</a><a href="#" class="social-icon">f</a><a href="#" class="social-icon">X</a><a href="#" class="social-icon">◎</a></div></div><div class="right"><div class="contact-row">john@houseofclarence.com<svg width="12" height="12" fill="none" stroke="#888" stroke-width="1.5"><path d="M1.5 3l4.5 3 4.5-3"/><rect x="1" y="2.5" width="10" height="7" rx="1"/></svg></div><div class="contact-row">houseofclarence.com<svg width="12" height="12" fill="none" stroke="#888" stroke-width="1.5"><circle cx="6" cy="6" r="4.5"/><path d="M8 8l2 2"/></svg></div><div class="contact-row">020 3370 4057<svg width="12" height="12" fill="none" stroke="#888" stroke-width="1.5"><path d="M1.5 3l2.5 2.5-2.5 2.5"/><path d="M6 8h4"/></svg></div><div class="contact-row">London, UK<svg width="12" height="12" fill="none" stroke="#888" stroke-width="1.5"><path d="M2.5 4.5C2.5 3 4 1.5 6 1.5s3.5 1.5 3.5 3C9.5 6.5 6 10.5 6 10.5S2.5 6.5 2.5 4.5z"/></svg></div></div></div><div class="notice"><strong>CONFIDENTIALITY NOTICE:</strong> This email and any attachments are confidential and intended solely for the addressee. If you are not the intended recipient, please notify us immediately and delete this message. House of Clarence Ltd.</div></div></div>
+
+  <!-- Style 3 -->
+  <div class="sig-container"><p class="label">3. Centered Elegant</p><div class="signature s3"><div class="main"><div class="hoc">HOC</div><div class="company">House of Clarence</div><div class="divider"></div><div class="person">John Smith</div><div class="role">Managing Director</div><div><div class="contact-row"><svg width="12" height="12" fill="none" stroke="#888" stroke-width="1.5"><path d="M1.5 3l4.5 3 4.5-3"/><rect x="1" y="2.5" width="10" height="7" rx="1"/></svg>john@houseofclarence.com</div><div class="contact-row"><svg width="12" height="12" fill="none" stroke="#888" stroke-width="1.5"><path d="M1.5 3l2.5 2.5-2.5 2.5"/><path d="M6 8h4"/></svg>020 3370 4057</div><div class="contact-row"><svg width="12" height="12" fill="none" stroke="#888" stroke-width="1.5"><circle cx="6" cy="6" r="4.5"/><path d="M8 8l2 2"/></svg>houseofclarence.com</div></div><div class="socials"><a href="#" class="social-icon">in</a><a href="#" class="social-icon">f</a><a href="#" class="social-icon">X</a><a href="#" class="social-icon">◎</a></div></div><div class="notice"><strong>CONFIDENTIALITY NOTICE:</strong> This email and any attachments are confidential and intended solely for the addressee. Unauthorized use is prohibited. House of Clarence Ltd.</div></div></div>
+
+  <!-- Style 4 -->
+  <div class="sig-container"><p class="label">4. Left Logo Block</p><div class="signature s4"><div class="main"><div class="left"><div class="hoc">HOC</div><div class="tagline">Refined Finishing<br>for Discerning<br>Spaces</div><div class="socials"><a href="#" class="social-icon">in</a><a href="#" class="social-icon">f</a><a href="#" class="social-icon">X</a></div></div><div class="right"><div class="person">John Smith</div><div class="role">Managing Director</div><div class="company">House of Clarence</div><div class="contact-row"><svg width="12" height="12" fill="none" stroke="#888" stroke-width="1.5"><path d="M1.5 3l4.5 3 4.5-3"/><rect x="1" y="2.5" width="10" height="7" rx="1"/></svg>john@houseofclarence.com</div><div class="contact-row"><svg width="12" height="12" fill="none" stroke="#888" stroke-width="1.5"><circle cx="6" cy="6" r="4.5"/><path d="M8 8l2 2"/></svg>houseofclarence.com</div><div class="contact-row"><svg width="12" height="12" fill="none" stroke="#888" stroke-width="1.5"><path d="M1.5 3l2.5 2.5-2.5 2.5"/><path d="M6 8h4"/></svg>020 3370 4057</div><div class="contact-row"><svg width="12" height="12" fill="none" stroke="#888" stroke-width="1.5"><path d="M2.5 4.5C2.5 3 4 1.5 6 1.5s3.5 1.5 3.5 3C9.5 6.5 6 10.5 6 10.5S2.5 6.5 2.5 4.5z"/></svg>London, United Kingdom</div></div></div><div class="notice"><strong>CONFIDENTIALITY:</strong> This email is confidential. If received in error, please delete immediately. House of Clarence Ltd.</div></div></div>
+
+  <!-- Style 5 -->
+  <div class="sig-container"><p class="label">5. Two Column Grid</p><div class="signature s5"><div class="header"><div class="logo-area"><div class="hoc">HOC</div><div class="company">House of Clarence</div></div><div class="person-area"><div class="person">John Smith</div><div class="role">Managing Director</div></div></div><div class="body"><div class="col-left"><div class="contact-row"><svg width="12" height="12" fill="none" stroke="#888" stroke-width="1.5"><path d="M1.5 3l4.5 3 4.5-3"/><rect x="1" y="2.5" width="10" height="7" rx="1"/></svg>john@houseofclarence.com</div><div class="contact-row"><svg width="12" height="12" fill="none" stroke="#888" stroke-width="1.5"><path d="M1.5 3l2.5 2.5-2.5 2.5"/><path d="M6 8h4"/></svg>020 3370 4057</div><div class="contact-row"><svg width="12" height="12" fill="none" stroke="#888" stroke-width="1.5"><circle cx="6" cy="6" r="4.5"/><path d="M8 8l2 2"/></svg>houseofclarence.com</div><div class="contact-row"><svg width="12" height="12" fill="none" stroke="#888" stroke-width="1.5"><path d="M2.5 4.5C2.5 3 4 1.5 6 1.5s3.5 1.5 3.5 3C9.5 6.5 6 10.5 6 10.5S2.5 6.5 2.5 4.5z"/></svg>London, United Kingdom</div></div><div class="col-right"><div class="tagline">Refined Finishing for Discerning Spaces</div><div class="socials"><a href="#" class="social-icon">in</a><a href="#" class="social-icon">f</a><a href="#" class="social-icon">X</a><a href="#" class="social-icon">◎</a></div></div></div><div class="notice"><strong>PRIVILEGED & CONFIDENTIAL:</strong> This email transmission may contain confidential information. If you are not the intended recipient, any disclosure or use is prohibited. House of Clarence Ltd.</div></div></div>
+
+  <!-- Style 6 -->
+  <div class="sig-container"><p class="label">6. Minimal Lines</p><div class="signature s6"><div class="main"><div class="top"><div class="logo-area"><div class="hoc">HOC</div><div class="text-area"><div class="company">House of Clarence</div><div class="tagline">Refined Finishing for Discerning Spaces</div></div></div><div class="person-area"><div class="person">John Smith</div><div class="role">Managing Director</div></div></div><div class="bottom"><div class="contacts"><div class="contact-row"><svg width="12" height="12" fill="none" stroke="#888" stroke-width="1.5"><path d="M1.5 3l4.5 3 4.5-3"/><rect x="1" y="2.5" width="10" height="7" rx="1"/></svg>john@houseofclarence.com</div><div class="contact-row"><svg width="12" height="12" fill="none" stroke="#888" stroke-width="1.5"><path d="M1.5 3l2.5 2.5-2.5 2.5"/><path d="M6 8h4"/></svg>020 3370 4057</div><div class="contact-row"><svg width="12" height="12" fill="none" stroke="#888" stroke-width="1.5"><circle cx="6" cy="6" r="4.5"/></svg>houseofclarence.com</div></div><div class="socials"><a href="#" class="social-icon">in</a><a href="#" class="social-icon">f</a><a href="#" class="social-icon">X</a><a href="#" class="social-icon">◎</a></div></div></div><div class="notice"><strong>CONFIDENTIALITY NOTICE:</strong> This email is confidential. If you are not the intended recipient, please notify us and delete this message. House of Clarence Ltd.</div></div></div>
+
+  <!-- Style 7 -->
+  <div class="sig-container"><p class="label">7. Dark Footer</p><div class="signature s7"><div class="main"><div class="top"><div class="logo-area"><div class="hoc">HOC</div><div class="company">House of Clarence</div></div><div class="person-area"><div class="person">John Smith</div><div class="role">Managing Director</div></div></div><div class="contacts"><div class="contact-row"><svg width="12" height="12" fill="none" stroke="#888" stroke-width="1.5"><path d="M1.5 3l4.5 3 4.5-3"/><rect x="1" y="2.5" width="10" height="7" rx="1"/></svg>john@houseofclarence.com</div><div class="contact-row"><svg width="12" height="12" fill="none" stroke="#888" stroke-width="1.5"><path d="M1.5 3l2.5 2.5-2.5 2.5"/><path d="M6 8h4"/></svg>020 3370 4057</div><div class="contact-row"><svg width="12" height="12" fill="none" stroke="#888" stroke-width="1.5"><circle cx="6" cy="6" r="4.5"/></svg>houseofclarence.com</div><div class="contact-row"><svg width="12" height="12" fill="none" stroke="#888" stroke-width="1.5"><path d="M2.5 4.5C2.5 3 4 1.5 6 1.5s3.5 1.5 3.5 3C9.5 6.5 6 10.5 6 10.5S2.5 6.5 2.5 4.5z"/></svg>London, UK</div></div></div><div class="footer"><div class="tagline">Refined Finishing for Discerning Spaces</div><div class="socials"><a href="#" class="social-icon">in</a><a href="#" class="social-icon">f</a><a href="#" class="social-icon">X</a><a href="#" class="social-icon">◎</a></div></div><div class="notice"><strong>CONFIDENTIALITY:</strong> This email is confidential and intended solely for the addressee. Unauthorized disclosure is prohibited. House of Clarence Ltd.</div></div></div>
+
+  <!-- Style 8 -->
+  <div class="sig-container"><p class="label">8. Boxed Modern</p><div class="signature s8"><div class="top"><div class="logo-box"><div class="hoc">HOC</div><div class="tagline">Refined Finishing</div></div><div class="info-box"><div class="person">John Smith</div><div class="role">Managing Director</div><div class="company">House of Clarence</div></div></div><div class="body"><div class="contacts"><div class="contact-row"><svg width="12" height="12" fill="none" stroke="#888" stroke-width="1.5"><path d="M1.5 3l4.5 3 4.5-3"/><rect x="1" y="2.5" width="10" height="7" rx="1"/></svg>john@houseofclarence.com</div><div class="contact-row"><svg width="12" height="12" fill="none" stroke="#888" stroke-width="1.5"><path d="M1.5 3l2.5 2.5-2.5 2.5"/><path d="M6 8h4"/></svg>020 3370 4057</div><div class="contact-row"><svg width="12" height="12" fill="none" stroke="#888" stroke-width="1.5"><circle cx="6" cy="6" r="4.5"/></svg>houseofclarence.com</div></div><div class="socials"><a href="#" class="social-icon">in</a><a href="#" class="social-icon">f</a><a href="#" class="social-icon">X</a><a href="#" class="social-icon">◎</a></div></div><div class="notice"><strong>CONFIDENTIALITY:</strong> This email is confidential. Unauthorized use is prohibited. House of Clarence Ltd.</div></div></div>
+
+  <!-- Style 9 -->
+  <div class="sig-container"><p class="label">9. Full Width Header</p><div class="signature s9"><div class="header"><div class="header-top"><div class="hoc">HOC</div><div class="company">House of Clarence</div></div><div class="header-bottom"><div><span class="person">John Smith</span> · <span class="role">Managing Director</span></div><div class="tagline">Refined Finishing for Discerning Spaces</div></div></div><div class="body"><div class="contacts"><div class="contact-row"><svg width="12" height="12" fill="none" stroke="#888" stroke-width="1.5"><path d="M1.5 3l4.5 3 4.5-3"/><rect x="1" y="2.5" width="10" height="7" rx="1"/></svg>john@houseofclarence.com</div><div class="contact-row"><svg width="12" height="12" fill="none" stroke="#888" stroke-width="1.5"><path d="M1.5 3l2.5 2.5-2.5 2.5"/><path d="M6 8h4"/></svg>020 3370 4057</div><div class="contact-row"><svg width="12" height="12" fill="none" stroke="#888" stroke-width="1.5"><circle cx="6" cy="6" r="4.5"/></svg>houseofclarence.com</div><div class="contact-row"><svg width="12" height="12" fill="none" stroke="#888" stroke-width="1.5"><path d="M2.5 4.5C2.5 3 4 1.5 6 1.5s3.5 1.5 3.5 3C9.5 6.5 6 10.5 6 10.5S2.5 6.5 2.5 4.5z"/></svg>London, United Kingdom</div></div><div class="socials"><a href="#" class="social-icon">in</a><a href="#" class="social-icon">f</a><a href="#" class="social-icon">X</a><a href="#" class="social-icon">◎</a></div></div><div class="notice"><strong>PRIVILEGED AND CONFIDENTIAL:</strong> This email transmission and any attachments are confidential. If you are not the intended recipient, please notify us immediately. House of Clarence Ltd.</div></div></div>
+
+  <!-- Style 10 -->
+  <div class="sig-container"><p class="label">10. Premium Complete</p><div class="signature s10"><div class="stripe"></div><div class="main"><div class="top"><div class="logo-area"><div class="hoc">HOC</div><div class="text-area"><div class="company">House of Clarence</div><div class="tagline">Refined Finishing for Discerning Spaces</div></div></div><div class="person-area"><div class="person">John Smith</div><div class="role">Managing Director</div></div></div><div class="bottom"><div class="contacts"><div class="contact-row"><svg width="12" height="12" fill="none" stroke="#888" stroke-width="1.5"><path d="M1.5 3l4.5 3 4.5-3"/><rect x="1" y="2.5" width="10" height="7" rx="1"/></svg>john@houseofclarence.com</div><div class="contact-row"><svg width="12" height="12" fill="none" stroke="#888" stroke-width="1.5"><path d="M1.5 3l2.5 2.5-2.5 2.5"/><path d="M6 8h4"/></svg>020 3370 4057</div><div class="contact-row"><svg width="12" height="12" fill="none" stroke="#888" stroke-width="1.5"><circle cx="6" cy="6" r="4.5"/></svg>houseofclarence.com</div><div class="contact-row"><svg width="12" height="12" fill="none" stroke="#888" stroke-width="1.5"><path d="M2.5 4.5C2.5 3 4 1.5 6 1.5s3.5 1.5 3.5 3C9.5 6.5 6 10.5 6 10.5S2.5 6.5 2.5 4.5z"/></svg>London, United Kingdom</div></div><div class="socials"><a href="#" class="social-icon">in</a><a href="#" class="social-icon">f</a><a href="#" class="social-icon">X</a><a href="#" class="social-icon">◎</a></div></div></div><div class="stripe2"></div><div class="notice"><strong>PRIVILEGED AND CONFIDENTIAL NOTICE:</strong> This email transmission, and any documents, files or previous email messages attached to it, may contain confidential information. If you are not the intended recipient, or a person responsible for delivering it to the intended recipient, you are hereby notified that any disclosure, copying, distribution or use of any of the information contained in or attached to this transmission is STRICTLY PROHIBITED. House of Clarence Ltd.</div></div></div>
+
+</body>
+</html>
+
+

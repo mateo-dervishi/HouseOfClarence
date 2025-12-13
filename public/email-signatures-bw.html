@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>House of Clarence - Black & White Email Signatures</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --black: #0A0A0A;
+      --dark: #1a1a1a;
+      --charcoal: #2d2d2d;
+      --grey: #8A8A8A;
+      --light-grey: #E8E8E8;
+      --off-white: #F8F7F5;
+      --white: #ffffff;
+    }
+    body { font-family: 'Inter', system-ui, sans-serif; background: #B5B5B5; padding: 40px; }
+    h1 { text-align: center; font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; font-weight: 300; color: var(--grey); margin-bottom: 40px; }
+    .sig-container { margin-bottom: 60px; }
+    .label { text-align: center; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--grey); margin-bottom: 15px; font-weight: 400; }
+    .signature { max-width: 500px; margin: 0 auto; background: white; padding: 25px; box-shadow: 0 2px 20px rgba(0,0,0,0.1); }
+    .tip { max-width: 600px; margin: 0 auto 50px; padding: 20px 30px; background: white; font-size: 11px; line-height: 1.8; color: var(--grey); text-align: center; }
+    
+    /* ===== 1: GRAND HEADER ===== */
+    .s1 { background: var(--black); padding: 0; }
+    .s1 .top { padding: 20px 25px; border-bottom: 1px solid #333; }
+    .s1 .top-row { display: flex; justify-content: space-between; align-items: center; }
+    .s1 .hoc { font-weight: 200; font-size: 28px; letter-spacing: 0.08em; color: white; }
+    .s1 .name-title { text-align: right; }
+    .s1 .person { font-size: 11px; font-weight: 400; color: white; letter-spacing: 0.05em; }
+    .s1 .role { font-size: 9px; color: #666; letter-spacing: 0.05em; margin-top: 2px; }
+    .s1 .bottom { padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; }
+    .s1 .company { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 300; color: #888; }
+    .s1 .contact { font-size: 8px; color: #666; display: flex; gap: 15px; }
+    
+    /* ===== 2: SPLIT SIDEBAR ===== */
+    .s2 { padding: 0; display: flex; }
+    .s2 .sidebar { width: 50px; background: var(--charcoal); display: flex; align-items: center; justify-content: center; }
+    .s2 .sidebar-logo { writing-mode: vertical-rl; transform: rotate(180deg); font-weight: 200; font-size: 18px; letter-spacing: 0.08em; color: white; }
+    .s2 .main { flex: 1; padding: 20px 25px; }
+    .s2 .top-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--light-grey); }
+    .s2 .person { font-size: 12px; font-weight: 400; color: var(--black); letter-spacing: 0.05em; }
+    .s2 .role { font-size: 9px; color: var(--grey); margin-top: 3px; }
+    .s2 .company { font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 300; color: var(--grey); }
+    .s2 .contact { font-size: 8px; color: var(--grey); line-height: 1.8; }
+    
+    /* ===== 3: WATERMARK BOLD ===== */
+    .s3 { position: relative; overflow: hidden; }
+    .s3 .watermark { position: absolute; top: 50%; right: -20px; transform: translateY(-50%); font-weight: 200; font-size: 80px; letter-spacing: 0.02em; color: rgba(0,0,0,0.04); }
+    .s3 .content { position: relative; z-index: 1; }
+    .s3 .top-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 2px solid var(--black); }
+    .s3 .logo-area { display: flex; align-items: center; gap: 12px; }
+    .s3 .hoc { font-weight: 200; font-size: 24px; letter-spacing: 0.06em; color: var(--black); }
+    .s3 .text-area { border-left: 2px solid var(--grey); padding-left: 10px; }
+    .s3 .person { font-size: 11px; font-weight: 400; color: var(--black); letter-spacing: 0.05em; }
+    .s3 .role { font-size: 8px; color: var(--grey); margin-top: 2px; }
+    .s3 .bottom-row { display: flex; justify-content: space-between; }
+    .s3 .company { font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 300; color: var(--black); }
+    .s3 .contact { font-size: 8px; color: var(--grey); display: flex; gap: 15px; }
+    
+    /* ===== 4: DOUBLE BORDER ===== */
+    .s4 { padding: 12px; border: 2px solid var(--black); }
+    .s4 .inner { border: 1px solid var(--light-grey); padding: 15px; }
+    .s4 .top-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+    .s4 .logo-area { display: flex; flex-direction: column; gap: 3px; }
+    .s4 .hoc { font-weight: 200; font-size: 22px; letter-spacing: 0.08em; color: var(--black); }
+    .s4 .company { font-size: 8px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 300; color: var(--black); }
+    .s4 .name-area { text-align: right; }
+    .s4 .person { font-size: 11px; font-weight: 400; color: var(--black); }
+    .s4 .role { font-size: 8px; color: var(--grey); margin-top: 2px; }
+    .s4 .divider { height: 3px; background: var(--black); margin-bottom: 10px; }
+    .s4 .contact { font-size: 8px; color: var(--grey); display: flex; gap: 15px; }
+    
+    /* ===== 5: FULL BLEED TOP ===== */
+    .s5 { padding: 0; }
+    .s5 .top { background: var(--black); padding: 18px 22px; display: flex; justify-content: space-between; align-items: center; }
+    .s5 .hoc { font-weight: 200; font-size: 26px; letter-spacing: 0.06em; color: white; }
+    .s5 .name-area { text-align: right; }
+    .s5 .person { font-size: 11px; font-weight: 400; color: white; }
+    .s5 .role { font-size: 8px; color: #666; margin-top: 2px; }
+    .s5 .grey-bar { height: 4px; background: var(--grey); }
+    .s5 .bottom { padding: 15px 22px; display: flex; justify-content: space-between; }
+    .s5 .company { font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 300; color: var(--black); }
+    .s5 .contact { font-size: 8px; color: var(--grey); display: flex; gap: 15px; }
+    
+    /* ===== 6: CORNER BLOCK ===== */
+    .s6 { padding: 0; position: relative; }
+    .s6 .corner { position: absolute; top: 0; left: 0; width: 60px; height: 60px; background: var(--black); display: flex; align-items: center; justify-content: center; }
+    .s6 .hoc { font-weight: 200; font-size: 16px; letter-spacing: 0.05em; color: white; }
+    .s6 .main { padding: 15px 20px 15px 80px; }
+    .s6 .top-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--light-grey); }
+    .s6 .text-area { }
+    .s6 .person { font-size: 12px; font-weight: 400; color: var(--black); }
+    .s6 .role { font-size: 8px; color: var(--grey); margin-top: 2px; }
+    .s6 .company { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 300; color: var(--grey); }
+    .s6 .contact { font-size: 8px; color: var(--grey); display: flex; gap: 15px; }
+    
+    /* ===== 7: THREE COLUMN ===== */
+    .s7 { padding: 0; }
+    .s7 .top { padding: 18px 22px; display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid var(--black); }
+    .s7 .logo-area { display: flex; align-items: center; gap: 12px; }
+    .s7 .hoc { font-weight: 200; font-size: 24px; letter-spacing: 0.06em; color: var(--black); }
+    .s7 .name-area { }
+    .s7 .person { font-size: 11px; font-weight: 400; color: var(--black); }
+    .s7 .role { font-size: 8px; color: var(--grey); margin-top: 2px; }
+    .s7 .company { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 300; color: var(--grey); text-align: right; }
+    .s7 .bottom { background: var(--black); display: flex; }
+    .s7 .col { flex: 1; padding: 12px 15px; border-right: 1px solid #333; }
+    .s7 .col:last-child { border-right: none; }
+    .s7 .col-label { font-size: 7px; letter-spacing: 0.1em; text-transform: uppercase; color: #555; margin-bottom: 4px; }
+    .s7 .col-value { font-size: 8px; color: #999; }
+    
+    /* ===== 8: STRIPED ACCENT ===== */
+    .s8 { padding: 0; position: relative; }
+    .s8 .stripes { position: absolute; top: 0; right: 0; width: 35px; height: 100%; display: flex; flex-direction: column; }
+    .s8 .stripe { flex: 1; }
+    .s8 .stripe:nth-child(1) { background: var(--black); }
+    .s8 .stripe:nth-child(2) { background: var(--grey); }
+    .s8 .stripe:nth-child(3) { background: var(--off-white); }
+    .s8 .main { padding: 20px 55px 20px 22px; }
+    .s8 .top-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--light-grey); }
+    .s8 .logo-area { display: flex; flex-direction: column; gap: 3px; }
+    .s8 .hoc { font-weight: 200; font-size: 22px; letter-spacing: 0.08em; color: var(--black); }
+    .s8 .company { font-size: 8px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 300; color: var(--black); }
+    .s8 .name-area { text-align: right; }
+    .s8 .person { font-size: 11px; font-weight: 400; color: var(--black); }
+    .s8 .role { font-size: 8px; color: var(--grey); margin-top: 2px; }
+    .s8 .contact { font-size: 8px; color: var(--grey); display: flex; gap: 15px; }
+    
+    /* ===== 9: CENTERED GRAND ===== */
+    .s9 { text-align: center; background: var(--off-white); }
+    .s9 .hoc { font-weight: 200; font-size: 28px; letter-spacing: 0.1em; color: var(--black); margin-bottom: 5px; }
+    .s9 .company { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 300; color: var(--black); margin-bottom: 12px; padding-bottom: 12px; border-bottom: 2px solid var(--black); }
+    .s9 .person { font-size: 12px; font-weight: 400; color: var(--black); }
+    .s9 .role { font-size: 9px; color: var(--grey); margin-top: 3px; margin-bottom: 10px; }
+    .s9 .contact { font-size: 8px; color: var(--grey); display: flex; justify-content: center; gap: 20px; }
+    
+    /* ===== 10: LAYERED DEPTH ===== */
+    .s10 { padding: 0; position: relative; }
+    .s10 .bg-shape { position: absolute; top: 0; right: 0; width: 45%; height: 100%; background: var(--off-white); }
+    .s10 .content { position: relative; z-index: 1; padding: 20px 22px; }
+    .s10 .top-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 2px solid var(--black); }
+    .s10 .logo-area { display: flex; flex-direction: column; gap: 3px; }
+    .s10 .hoc { font-weight: 200; font-size: 24px; letter-spacing: 0.08em; color: var(--black); }
+    .s10 .company { font-size: 8px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 300; color: var(--black); }
+    .s10 .name-area { text-align: right; }
+    .s10 .person { font-size: 11px; font-weight: 400; color: var(--black); }
+    .s10 .role { font-size: 8px; color: var(--grey); margin-top: 2px; }
+    .s10 .contact { font-size: 8px; color: var(--grey); display: flex; gap: 15px; }
+    
+    /* ===== 11: FRAMED ELEGANT ===== */
+    .s11 { position: relative; }
+    .s11 .frame { position: absolute; top: 8px; left: 8px; right: 8px; bottom: 8px; border: 1px solid var(--light-grey); pointer-events: none; }
+    .s11 .top-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--light-grey); }
+    .s11 .logo-area { display: flex; flex-direction: column; gap: 3px; }
+    .s11 .hoc { font-weight: 200; font-size: 24px; letter-spacing: 0.08em; color: var(--black); }
+    .s11 .company { font-size: 8px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 300; color: var(--black); }
+    .s11 .name-area { text-align: right; }
+    .s11 .person { font-size: 11px; font-weight: 400; color: var(--black); }
+    .s11 .role { font-size: 8px; color: var(--grey); margin-top: 2px; }
+    .s11 .contact { font-size: 8px; color: var(--grey); display: flex; gap: 15px; }
+    
+    /* ===== 12: BOXED SECTIONS ===== */
+    .s12 { padding: 0; }
+    .s12 .top { display: flex; }
+    .s12 .top-left { flex: 1; background: var(--black); padding: 18px 20px; }
+    .s12 .top-right { width: 140px; background: var(--off-white); padding: 18px 15px; }
+    .s12 .hoc { font-weight: 200; font-size: 22px; letter-spacing: 0.06em; color: white; margin-bottom: 3px; }
+    .s12 .company { font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #666; }
+    .s12 .person { font-size: 10px; font-weight: 400; color: var(--black); }
+    .s12 .role { font-size: 8px; color: var(--grey); margin-top: 2px; }
+    .s12 .bottom { padding: 12px 20px; display: flex; justify-content: space-between; background: var(--light-grey); }
+    .s12 .contact { font-size: 8px; color: var(--charcoal); display: flex; gap: 15px; }
+    .s12 .web { font-size: 8px; color: var(--charcoal); }
+    
+    /* ===== 13: TALL HEADER ===== */
+    .s13 { padding: 0; }
+    .s13 .top { background: var(--black); padding: 22px; }
+    .s13 .top-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid #333; }
+    .s13 .hoc { font-weight: 200; font-size: 28px; letter-spacing: 0.06em; color: white; }
+    .s13 .name-area { text-align: right; }
+    .s13 .person { font-size: 11px; font-weight: 400; color: white; }
+    .s13 .role { font-size: 8px; color: #666; margin-top: 2px; }
+    .s13 .company { font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 300; color: #888; }
+    .s13 .bottom { padding: 12px 22px; background: var(--off-white); display: flex; justify-content: space-between; }
+    .s13 .contact { font-size: 8px; color: var(--grey); display: flex; gap: 15px; }
+    .s13 .web { font-size: 8px; color: var(--grey); }
+    
+    /* ===== 14: MULTI-BAR ===== */
+    .s14 { padding: 0; }
+    .s14 .bars { display: flex; height: 6px; }
+    .s14 .bar1 { width: 50%; background: var(--black); }
+    .s14 .bar2 { width: 30%; background: var(--grey); }
+    .s14 .bar3 { width: 20%; background: var(--off-white); }
+    .s14 .main { padding: 18px 22px; }
+    .s14 .top-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--light-grey); }
+    .s14 .logo-area { display: flex; align-items: center; gap: 12px; }
+    .s14 .hoc { font-weight: 200; font-size: 22px; letter-spacing: 0.06em; color: var(--black); }
+    .s14 .text-area { border-left: 2px solid var(--charcoal); padding-left: 10px; }
+    .s14 .person { font-size: 11px; font-weight: 400; color: var(--black); }
+    .s14 .role { font-size: 8px; color: var(--grey); margin-top: 2px; }
+    .s14 .company { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 300; color: var(--grey); }
+    .s14 .contact { font-size: 8px; color: var(--grey); display: flex; gap: 15px; }
+    
+    /* ===== 15: DIAGONAL SPLIT ===== */
+    .s15 { padding: 0; position: relative; overflow: hidden; }
+    .s15 .diagonal { position: absolute; top: 0; left: 0; width: 100%; height: 55px; background: var(--black); clip-path: polygon(0 0, 100% 0, 100% 60%, 0 100%); }
+    .s15 .main { position: relative; z-index: 1; padding: 15px 22px 18px; }
+    .s15 .top-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 25px; }
+    .s15 .hoc { font-weight: 200; font-size: 22px; letter-spacing: 0.08em; color: white; }
+    .s15 .name-area { text-align: right; }
+    .s15 .person { font-size: 10px; font-weight: 400; color: white; }
+    .s15 .role { font-size: 8px; color: #888; margin-top: 2px; }
+    .s15 .bottom-row { display: flex; justify-content: space-between; }
+    .s15 .company { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 300; color: var(--black); }
+    .s15 .contact { font-size: 8px; color: var(--grey); display: flex; gap: 15px; }
+    
+    /* ===== 16: ENCLOSED ===== */
+    .s16 { padding: 15px; background: var(--off-white); }
+    .s16 .inner { background: white; padding: 18px; border: 1px solid var(--light-grey); }
+    .s16 .top-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+    .s16 .logo-area { display: flex; align-items: flex-start; gap: 12px; }
+    .s16 .hoc-box { background: var(--black); padding: 10px 12px; }
+    .s16 .hoc { font-weight: 200; font-size: 16px; letter-spacing: 0.06em; color: white; }
+    .s16 .text-area { padding-top: 3px; }
+    .s16 .company { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 300; color: var(--black); }
+    .s16 .name-area { text-align: right; }
+    .s16 .person { font-size: 11px; font-weight: 400; color: var(--black); }
+    .s16 .role { font-size: 8px; color: var(--grey); margin-top: 2px; }
+    .s16 .divider { height: 2px; background: var(--grey); margin-bottom: 10px; }
+    .s16 .contact { font-size: 8px; color: var(--grey); display: flex; gap: 15px; }
+    
+    /* ===== 17: VERTICAL BLOCKS ===== */
+    .s17 { padding: 0; position: relative; }
+    .s17 .blocks { position: absolute; left: 0; top: 0; bottom: 0; width: 15px; display: flex; flex-direction: column; }
+    .s17 .block1 { height: 40%; background: var(--black); }
+    .s17 .block2 { height: 30%; background: var(--grey); }
+    .s17 .block3 { height: 30%; background: var(--off-white); }
+    .s17 .main { padding: 18px 22px 18px 35px; }
+    .s17 .top-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--light-grey); }
+    .s17 .logo-area { display: flex; flex-direction: column; gap: 3px; }
+    .s17 .hoc { font-weight: 200; font-size: 22px; letter-spacing: 0.08em; color: var(--black); }
+    .s17 .company { font-size: 8px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 300; color: var(--black); }
+    .s17 .name-area { text-align: right; }
+    .s17 .person { font-size: 11px; font-weight: 400; color: var(--black); }
+    .s17 .role { font-size: 8px; color: var(--grey); margin-top: 2px; }
+    .s17 .contact { font-size: 8px; color: var(--grey); display: flex; gap: 15px; }
+    
+    /* ===== 18: OVERLAPPING ===== */
+    .s18 { padding: 0; position: relative; }
+    .s18 .bg-shape { position: absolute; top: 10px; left: 10px; width: 100px; height: 50px; background: var(--off-white); }
+    .s18 .card { position: relative; z-index: 1; margin: 18px 18px 18px 25px; background: var(--black); padding: 18px 20px; }
+    .s18 .top-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #333; }
+    .s18 .logo-area { display: flex; flex-direction: column; gap: 3px; }
+    .s18 .hoc { font-weight: 200; font-size: 22px; letter-spacing: 0.06em; color: white; }
+    .s18 .company { font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #666; }
+    .s18 .name-area { text-align: right; }
+    .s18 .person { font-size: 10px; font-weight: 400; color: white; }
+    .s18 .role { font-size: 8px; color: #666; margin-top: 2px; }
+    .s18 .contact { font-size: 8px; color: #888; display: flex; gap: 15px; }
+    
+    /* ===== 19: BOTTOM HEAVY ===== */
+    .s19 { padding: 0; }
+    .s19 .top { padding: 18px 22px; }
+    .s19 .top-row { display: flex; justify-content: space-between; align-items: flex-start; }
+    .s19 .logo-area { display: flex; align-items: center; gap: 10px; }
+    .s19 .hoc { font-weight: 200; font-size: 20px; letter-spacing: 0.08em; color: var(--black); }
+    .s19 .company { font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 300; color: var(--black); }
+    .s19 .name-area { text-align: right; }
+    .s19 .person { font-size: 11px; font-weight: 400; color: var(--black); }
+    .s19 .role { font-size: 8px; color: var(--grey); margin-top: 2px; }
+    .s19 .bottom { background: var(--black); padding: 15px 22px; }
+    .s19 .bottom-row { display: flex; justify-content: space-between; align-items: center; }
+    .s19 .bottom-logo { font-weight: 200; font-size: 14px; letter-spacing: 0.08em; color: white; }
+    .s19 .contact { font-size: 8px; color: #888; display: flex; gap: 15px; }
+    
+    /* ===== 20: FLOATING CARD ===== */
+    .s20 { padding: 15px; background: var(--off-white); }
+    .s20 .card { background: white; padding: 18px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
+    .s20 .top-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 2px solid var(--black); }
+    .s20 .logo-area { display: flex; flex-direction: column; gap: 3px; }
+    .s20 .hoc { font-weight: 200; font-size: 22px; letter-spacing: 0.08em; color: var(--black); }
+    .s20 .company { font-size: 8px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 300; color: var(--black); }
+    .s20 .name-area { text-align: right; }
+    .s20 .person { font-size: 11px; font-weight: 400; color: var(--black); }
+    .s20 .role { font-size: 8px; color: var(--grey); margin-top: 2px; }
+    .s20 .contact { font-size: 8px; color: var(--grey); display: flex; gap: 15px; }
+    
+    /* ===== 21: DOUBLE SIDEBAR ===== */
+    .s21 { padding: 0; display: flex; }
+    .s21 .sidebar-left { width: 8px; background: var(--black); }
+    .s21 .sidebar-right { width: 30px; background: var(--grey); display: flex; align-items: center; justify-content: center; }
+    .s21 .sidebar-text { writing-mode: vertical-rl; transform: rotate(180deg); font-size: 6px; letter-spacing: 0.15em; text-transform: uppercase; color: white; }
+    .s21 .main { flex: 1; padding: 18px 22px; }
+    .s21 .top-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--light-grey); }
+    .s21 .logo-area { display: flex; flex-direction: column; gap: 3px; }
+    .s21 .hoc { font-weight: 200; font-size: 22px; letter-spacing: 0.08em; color: var(--black); }
+    .s21 .company { font-size: 8px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 300; color: var(--black); }
+    .s21 .name-area { text-align: right; }
+    .s21 .person { font-size: 11px; font-weight: 400; color: var(--black); }
+    .s21 .role { font-size: 8px; color: var(--grey); margin-top: 2px; }
+    .s21 .contact { font-size: 8px; color: var(--grey); display: flex; gap: 15px; }
+    
+    /* ===== 22: GRID HEADER ===== */
+    .s22 { padding: 0; }
+    .s22 .top { display: grid; grid-template-columns: 1fr 1fr; }
+    .s22 .top-left { background: var(--black); padding: 18px 20px; }
+    .s22 .top-right { background: var(--off-white); padding: 18px 20px; }
+    .s22 .hoc { font-weight: 200; font-size: 22px; letter-spacing: 0.08em; color: white; margin-bottom: 3px; }
+    .s22 .company { font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #666; }
+    .s22 .person { font-size: 10px; font-weight: 400; color: var(--black); text-align: right; }
+    .s22 .role { font-size: 8px; color: var(--grey); margin-top: 2px; text-align: right; }
+    .s22 .grey-bar { height: 3px; background: var(--charcoal); }
+    .s22 .bottom { padding: 12px 20px; display: flex; justify-content: space-between; }
+    .s22 .contact { font-size: 8px; color: var(--grey); display: flex; gap: 15px; }
+    .s22 .web { font-size: 8px; color: var(--grey); }
+    
+    /* ===== 23: MONOGRAM WATERMARK ===== */
+    .s23 { position: relative; overflow: hidden; background: var(--off-white); }
+    .s23 .watermark { position: absolute; top: -30px; right: -30px; font-weight: 200; font-size: 120px; letter-spacing: -0.02em; color: rgba(0,0,0,0.03); }
+    .s23 .content { position: relative; z-index: 1; }
+    .s23 .top-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 2px solid var(--black); }
+    .s23 .logo-area { display: flex; align-items: center; gap: 12px; }
+    .s23 .hoc { font-weight: 200; font-size: 26px; letter-spacing: 0.06em; color: var(--black); }
+    .s23 .text-area { border-left: 2px solid var(--charcoal); padding-left: 10px; }
+    .s23 .person { font-size: 11px; font-weight: 400; color: var(--black); }
+    .s23 .role { font-size: 8px; color: var(--grey); margin-top: 2px; }
+    .s23 .company { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 300; color: var(--grey); }
+    .s23 .contact { font-size: 8px; color: var(--grey); display: flex; gap: 15px; }
+    
+    /* ===== 24: STACKED BANDS ===== */
+    .s24 { padding: 0; }
+    .s24 .band1 { height: 5px; background: var(--black); }
+    .s24 .band2 { height: 2px; background: var(--grey); }
+    .s24 .main { padding: 18px 22px; }
+    .s24 .top-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--light-grey); }
+    .s24 .logo-area { display: flex; flex-direction: column; gap: 3px; }
+    .s24 .hoc { font-weight: 200; font-size: 24px; letter-spacing: 0.08em; color: var(--black); }
+    .s24 .company { font-size: 8px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 300; color: var(--black); }
+    .s24 .name-area { text-align: right; }
+    .s24 .person { font-size: 11px; font-weight: 400; color: var(--black); }
+    .s24 .role { font-size: 8px; color: var(--grey); margin-top: 2px; }
+    .s24 .contact { font-size: 8px; color: var(--grey); display: flex; gap: 15px; }
+    
+    /* ===== 25: CORNER TRIANGLES ===== */
+    .s25 { padding: 0; position: relative; }
+    .s25 .tri-tl { position: absolute; top: 0; left: 0; width: 0; height: 0; border-top: 35px solid var(--black); border-right: 35px solid transparent; }
+    .s25 .tri-br { position: absolute; bottom: 0; right: 0; width: 0; height: 0; border-bottom: 35px solid var(--grey); border-left: 35px solid transparent; }
+    .s25 .main { padding: 18px 22px 18px 45px; }
+    .s25 .top-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--light-grey); }
+    .s25 .logo-area { display: flex; flex-direction: column; gap: 3px; }
+    .s25 .hoc { font-weight: 200; font-size: 22px; letter-spacing: 0.08em; color: var(--black); }
+    .s25 .company { font-size: 8px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 300; color: var(--black); }
+    .s25 .name-area { text-align: right; }
+    .s25 .person { font-size: 11px; font-weight: 400; color: var(--black); }
+    .s25 .role { font-size: 8px; color: var(--grey); margin-top: 2px; }
+    .s25 .contact { font-size: 8px; color: var(--grey); display: flex; gap: 12px; }
+    
+    /* ===== 26: INSET HEADER ===== */
+    .s26 { padding: 0; }
+    .s26 .outer { background: var(--black); padding: 12px 12px 0 12px; }
+    .s26 .card { background: white; padding: 15px 18px; display: flex; justify-content: space-between; align-items: flex-start; }
+    .s26 .logo-area { display: flex; align-items: center; gap: 10px; }
+    .s26 .hoc { font-weight: 200; font-size: 20px; letter-spacing: 0.08em; color: var(--black); }
+    .s26 .company { font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 300; color: var(--black); }
+    .s26 .name-area { text-align: right; }
+    .s26 .person { font-size: 10px; font-weight: 400; color: var(--black); }
+    .s26 .role { font-size: 8px; color: var(--grey); margin-top: 2px; }
+    .s26 .grey-bar { height: 3px; background: var(--grey); }
+    .s26 .bottom { padding: 12px 18px; display: flex; justify-content: space-between; }
+    .s26 .contact { font-size: 8px; color: var(--grey); display: flex; gap: 15px; }
+    .s26 .web { font-size: 8px; color: var(--grey); }
+    
+    /* ===== 27: FULL DARK ===== */
+    .s27 { background: #111; }
+    .s27 .top-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #333; }
+    .s27 .logo-area { display: flex; align-items: center; gap: 12px; }
+    .s27 .hoc { font-weight: 200; font-size: 26px; letter-spacing: 0.06em; color: white; }
+    .s27 .text-area { border-left: 2px solid var(--grey); padding-left: 10px; }
+    .s27 .person { font-size: 11px; font-weight: 400; color: white; }
+    .s27 .role { font-size: 8px; color: #666; margin-top: 2px; }
+    .s27 .company { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 300; color: #666; }
+    .s27 .bottom-row { display: flex; justify-content: space-between; }
+    .s27 .contact { font-size: 8px; color: #888; display: flex; gap: 15px; }
+    .s27 .web { font-size: 8px; color: #888; }
+    
+    /* ===== 28: SPLIT VERTICAL ===== */
+    .s28 { padding: 0; display: flex; }
+    .s28 .left { width: 35%; background: var(--black); padding: 18px 15px; }
+    .s28 .hoc { font-weight: 200; font-size: 20px; letter-spacing: 0.06em; color: white; margin-bottom: 3px; }
+    .s28 .company { font-size: 7px; letter-spacing: 0.1em; text-transform: uppercase; color: #666; }
+    .s28 .right { width: 65%; display: flex; flex-direction: column; }
+    .s28 .grey-bar { height: 4px; background: var(--grey); }
+    .s28 .main { flex: 1; padding: 15px 18px; }
+    .s28 .person { font-size: 11px; font-weight: 400; color: var(--black); }
+    .s28 .role { font-size: 8px; color: var(--grey); margin-top: 2px; margin-bottom: 8px; }
+    .s28 .contact { font-size: 8px; color: var(--grey); line-height: 1.8; }
+    
+    /* ===== 29: HEADER CARD ===== */
+    .s29 { padding: 0; }
+    .s29 .top-area { background: var(--off-white); padding: 15px 18px; }
+    .s29 .card { background: white; padding: 15px 18px; border: 1px solid var(--light-grey); display: flex; justify-content: space-between; align-items: flex-start; }
+    .s29 .logo-area { display: flex; flex-direction: column; gap: 3px; }
+    .s29 .hoc { font-weight: 200; font-size: 22px; letter-spacing: 0.08em; color: var(--black); }
+    .s29 .company { font-size: 8px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 300; color: var(--black); }
+    .s29 .name-area { text-align: right; }
+    .s29 .person { font-size: 10px; font-weight: 400; color: var(--black); }
+    .s29 .role { font-size: 8px; color: var(--grey); margin-top: 2px; }
+    .s29 .bottom { padding: 12px 18px; background: var(--black); display: flex; justify-content: space-between; }
+    .s29 .contact { font-size: 8px; color: #888; display: flex; gap: 15px; }
+    .s29 .web { font-size: 8px; color: #888; }
+    
+    /* ===== 30: COMPLETE PREMIUM ===== */
+    .s30 { padding: 0; }
+    .s30 .top-stripe { height: 6px; background: var(--black); }
+    .s30 .main { padding: 18px 22px; background: var(--off-white); }
+    .s30 .top-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 2px solid var(--black); }
+    .s30 .logo-area { display: flex; align-items: center; gap: 12px; }
+    .s30 .hoc { font-weight: 200; font-size: 26px; letter-spacing: 0.06em; color: var(--black); }
+    .s30 .text-area { border-left: 2px solid var(--charcoal); padding-left: 10px; }
+    .s30 .person { font-size: 11px; font-weight: 400; color: var(--black); }
+    .s30 .role { font-size: 8px; color: var(--grey); margin-top: 2px; }
+    .s30 .company { font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 300; color: var(--grey); }
+    .s30 .bottom { display: flex; justify-content: space-between; align-items: center; }
+    .s30 .contact { font-size: 8px; color: var(--grey); display: flex; gap: 15px; }
+    .s30 .web { font-size: 8px; color: var(--grey); }
+    .s30 .bottom-stripe { height: 4px; background: var(--grey); }
+  </style>
+</head>
+<body>
+  <h1>House of Clarence — Black & White Email Signatures (30 Designs)</h1>
+  <div class="tip"><strong>Usage:</strong> Copy the HTML of your preferred signature and paste into your email client's signature settings. Black, white & grey only.</div>
+  
+  <!-- 1 -->
+  <div class="sig-container"><p class="label">1. Grand Header</p><div class="signature s1"><div class="top"><div class="top-row"><div class="hoc">HOC</div><div class="name-title"><div class="person">John Smith</div><div class="role">Managing Director</div></div></div></div><div class="bottom"><div class="company">House of Clarence</div><div class="contact"><span>020 3370 4057</span><span>john@houseofclarence.com</span></div></div></div></div>
+  
+  <!-- 2 -->
+  <div class="sig-container"><p class="label">2. Split Sidebar</p><div class="signature s2"><div class="sidebar"><div class="sidebar-logo">HOC</div></div><div class="main"><div class="top-row"><div><div class="person">John Smith</div><div class="role">Managing Director</div></div><div class="company">House of Clarence</div></div><div class="contact">020 3370 4057<br>john@houseofclarence.com<br>houseofclarence.com</div></div></div></div>
+  
+  <!-- 3 -->
+  <div class="sig-container"><p class="label">3. Watermark Bold</p><div class="signature s3"><div class="watermark">HOC</div><div class="content"><div class="top-row"><div class="logo-area"><div class="hoc">HOC</div><div class="text-area"><div class="person">John Smith</div><div class="role">Managing Director</div></div></div></div><div class="bottom-row"><div class="company">House of Clarence</div><div class="contact"><span>020 3370 4057</span><span>john@houseofclarence.com</span></div></div></div></div></div>
+  
+  <!-- 4 -->
+  <div class="sig-container"><p class="label">4. Double Border</p><div class="signature s4"><div class="inner"><div class="top-row"><div class="logo-area"><div class="hoc">HOC</div><div class="company">House of Clarence</div></div><div class="name-area"><div class="person">John Smith</div><div class="role">Managing Director</div></div></div><div class="divider"></div><div class="contact"><span>020 3370 4057</span><span>john@houseofclarence.com</span><span>houseofclarence.com</span></div></div></div></div>
+  
+  <!-- 5 -->
+  <div class="sig-container"><p class="label">5. Full Bleed Top</p><div class="signature s5"><div class="top"><div class="hoc">HOC</div><div class="name-area"><div class="person">John Smith</div><div class="role">Managing Director</div></div></div><div class="grey-bar"></div><div class="bottom"><div class="company">House of Clarence</div><div class="contact"><span>020 3370 4057</span><span>john@houseofclarence.com</span></div></div></div></div>
+  
+  <!-- 6 -->
+  <div class="sig-container"><p class="label">6. Corner Block</p><div class="signature s6"><div class="corner"><div class="hoc">HOC</div></div><div class="main"><div class="top-row"><div class="text-area"><div class="person">John Smith</div><div class="role">Managing Director</div></div><div class="company">House of Clarence</div></div><div class="contact"><span>020 3370 4057</span><span>john@houseofclarence.com</span><span>houseofclarence.com</span></div></div></div></div>
+  
+  <!-- 7 -->
+  <div class="sig-container"><p class="label">7. Three Column</p><div class="signature s7"><div class="top"><div class="logo-area"><div class="hoc">HOC</div><div class="name-area"><div class="person">John Smith</div><div class="role">Managing Director</div></div></div><div class="company">House of Clarence</div></div><div class="bottom"><div class="col"><div class="col-label">Phone</div><div class="col-value">020 3370 4057</div></div><div class="col"><div class="col-label">Email</div><div class="col-value">john@houseofclarence.com</div></div><div class="col"><div class="col-label">Web</div><div class="col-value">houseofclarence.com</div></div></div></div></div>
+  
+  <!-- 8 -->
+  <div class="sig-container"><p class="label">8. Striped Accent</p><div class="signature s8"><div class="stripes"><div class="stripe"></div><div class="stripe"></div><div class="stripe"></div></div><div class="main"><div class="top-row"><div class="logo-area"><div class="hoc">HOC</div><div class="company">House of Clarence</div></div><div class="name-area"><div class="person">John Smith</div><div class="role">Managing Director</div></div></div><div class="contact"><span>020 3370 4057</span><span>john@houseofclarence.com</span><span>houseofclarence.com</span></div></div></div></div>
+  
+  <!-- 9 -->
+  <div class="sig-container"><p class="label">9. Centered Grand</p><div class="signature s9"><div class="hoc">HOC</div><div class="company">House of Clarence</div><div class="person">John Smith</div><div class="role">Managing Director</div><div class="contact"><span>020 3370 4057</span><span>john@houseofclarence.com</span><span>houseofclarence.com</span></div></div></div>
+  
+  <!-- 10 -->
+  <div class="sig-container"><p class="label">10. Layered Depth</p><div class="signature s10"><div class="bg-shape"></div><div class="content"><div class="top-row"><div class="logo-area"><div class="hoc">HOC</div><div class="company">House of Clarence</div></div><div class="name-area"><div class="person">John Smith</div><div class="role">Managing Director</div></div></div><div class="contact"><span>020 3370 4057</span><span>john@houseofclarence.com</span><span>houseofclarence.com</span></div></div></div></div>
+  
+  <!-- 11 -->
+  <div class="sig-container"><p class="label">11. Framed Elegant</p><div class="signature s11"><div class="frame"></div><div class="top-row"><div class="logo-area"><div class="hoc">HOC</div><div class="company">House of Clarence</div></div><div class="name-area"><div class="person">John Smith</div><div class="role">Managing Director</div></div></div><div class="contact"><span>020 3370 4057</span><span>john@houseofclarence.com</span><span>houseofclarence.com</span></div></div></div>
+  
+  <!-- 12 -->
+  <div class="sig-container"><p class="label">12. Boxed Sections</p><div class="signature s12"><div class="top"><div class="top-left"><div class="hoc">HOC</div><div class="company">House of Clarence</div></div><div class="top-right"><div class="person">John Smith</div><div class="role">Managing Director</div></div></div><div class="bottom"><div class="contact"><span>020 3370 4057</span><span>john@houseofclarence.com</span></div><div class="web">houseofclarence.com</div></div></div></div>
+  
+  <!-- 13 -->
+  <div class="sig-container"><p class="label">13. Tall Header</p><div class="signature s13"><div class="top"><div class="top-row"><div class="hoc">HOC</div><div class="name-area"><div class="person">John Smith</div><div class="role">Managing Director</div></div></div><div class="company">House of Clarence</div></div><div class="bottom"><div class="contact"><span>020 3370 4057</span><span>john@houseofclarence.com</span></div><div class="web">houseofclarence.com</div></div></div></div>
+  
+  <!-- 14 -->
+  <div class="sig-container"><p class="label">14. Multi-Bar</p><div class="signature s14"><div class="bars"><div class="bar1"></div><div class="bar2"></div><div class="bar3"></div></div><div class="main"><div class="top-row"><div class="logo-area"><div class="hoc">HOC</div><div class="text-area"><div class="person">John Smith</div><div class="role">Managing Director</div></div></div><div class="company">House of Clarence</div></div><div class="contact"><span>020 3370 4057</span><span>john@houseofclarence.com</span><span>houseofclarence.com</span></div></div></div></div>
+  
+  <!-- 15 -->
+  <div class="sig-container"><p class="label">15. Diagonal Split</p><div class="signature s15"><div class="diagonal"></div><div class="main"><div class="top-row"><div class="hoc">HOC</div><div class="name-area"><div class="person">John Smith</div><div class="role">Managing Director</div></div></div><div class="bottom-row"><div class="company">House of Clarence</div><div class="contact"><span>020 3370 4057</span><span>john@houseofclarence.com</span></div></div></div></div></div>
+  
+  <!-- 16 -->
+  <div class="sig-container"><p class="label">16. Enclosed</p><div class="signature s16"><div class="inner"><div class="top-row"><div class="logo-area"><div class="hoc-box"><div class="hoc">HOC</div></div><div class="text-area"><div class="company">House of Clarence</div></div></div><div class="name-area"><div class="person">John Smith</div><div class="role">Managing Director</div></div></div><div class="divider"></div><div class="contact"><span>020 3370 4057</span><span>john@houseofclarence.com</span><span>houseofclarence.com</span></div></div></div></div>
+  
+  <!-- 17 -->
+  <div class="sig-container"><p class="label">17. Vertical Blocks</p><div class="signature s17"><div class="blocks"><div class="block1"></div><div class="block2"></div><div class="block3"></div></div><div class="main"><div class="top-row"><div class="logo-area"><div class="hoc">HOC</div><div class="company">House of Clarence</div></div><div class="name-area"><div class="person">John Smith</div><div class="role">Managing Director</div></div></div><div class="contact"><span>020 3370 4057</span><span>john@houseofclarence.com</span><span>houseofclarence.com</span></div></div></div></div>
+  
+  <!-- 18 -->
+  <div class="sig-container"><p class="label">18. Overlapping</p><div class="signature s18"><div class="bg-shape"></div><div class="card"><div class="top-row"><div class="logo-area"><div class="hoc">HOC</div><div class="company">House of Clarence</div></div><div class="name-area"><div class="person">John Smith</div><div class="role">Managing Director</div></div></div><div class="contact"><span>020 3370 4057</span><span>john@houseofclarence.com</span><span>houseofclarence.com</span></div></div></div></div>
+  
+  <!-- 19 -->
+  <div class="sig-container"><p class="label">19. Bottom Heavy</p><div class="signature s19"><div class="top"><div class="top-row"><div class="logo-area"><div class="hoc">HOC</div><div class="company">House of Clarence</div></div><div class="name-area"><div class="person">John Smith</div><div class="role">Managing Director</div></div></div></div><div class="bottom"><div class="bottom-row"><div class="bottom-logo">HOC</div><div class="contact"><span>020 3370 4057</span><span>john@houseofclarence.com</span><span>houseofclarence.com</span></div></div></div></div></div>
+  
+  <!-- 20 -->
+  <div class="sig-container"><p class="label">20. Floating Card</p><div class="signature s20"><div class="card"><div class="top-row"><div class="logo-area"><div class="hoc">HOC</div><div class="company">House of Clarence</div></div><div class="name-area"><div class="person">John Smith</div><div class="role">Managing Director</div></div></div><div class="contact"><span>020 3370 4057</span><span>john@houseofclarence.com</span><span>houseofclarence.com</span></div></div></div></div>
+  
+  <!-- 21 -->
+  <div class="sig-container"><p class="label">21. Double Sidebar</p><div class="signature s21"><div class="sidebar-left"></div><div class="sidebar-right"><div class="sidebar-text">HOC</div></div><div class="main"><div class="top-row"><div class="logo-area"><div class="hoc">HOC</div><div class="company">House of Clarence</div></div><div class="name-area"><div class="person">John Smith</div><div class="role">Managing Director</div></div></div><div class="contact"><span>020 3370 4057</span><span>john@houseofclarence.com</span><span>houseofclarence.com</span></div></div></div></div>
+  
+  <!-- 22 -->
+  <div class="sig-container"><p class="label">22. Grid Header</p><div class="signature s22"><div class="top"><div class="top-left"><div class="hoc">HOC</div><div class="company">House of Clarence</div></div><div class="top-right"><div class="person">John Smith</div><div class="role">Managing Director</div></div></div><div class="grey-bar"></div><div class="bottom"><div class="contact"><span>020 3370 4057</span><span>john@houseofclarence.com</span></div><div class="web">houseofclarence.com</div></div></div></div>
+  
+  <!-- 23 -->
+  <div class="sig-container"><p class="label">23. Monogram Watermark</p><div class="signature s23"><div class="watermark">HOC</div><div class="content"><div class="top-row"><div class="logo-area"><div class="hoc">HOC</div><div class="text-area"><div class="person">John Smith</div><div class="role">Managing Director</div></div></div><div class="company">House of Clarence</div></div><div class="contact"><span>020 3370 4057</span><span>john@houseofclarence.com</span><span>houseofclarence.com</span></div></div></div></div>
+  
+  <!-- 24 -->
+  <div class="sig-container"><p class="label">24. Stacked Bands</p><div class="signature s24"><div class="band1"></div><div class="band2"></div><div class="main"><div class="top-row"><div class="logo-area"><div class="hoc">HOC</div><div class="company">House of Clarence</div></div><div class="name-area"><div class="person">John Smith</div><div class="role">Managing Director</div></div></div><div class="contact"><span>020 3370 4057</span><span>john@houseofclarence.com</span><span>houseofclarence.com</span></div></div></div></div>
+  
+  <!-- 25 -->
+  <div class="sig-container"><p class="label">25. Corner Triangles</p><div class="signature s25"><div class="tri-tl"></div><div class="tri-br"></div><div class="main"><div class="top-row"><div class="logo-area"><div class="hoc">HOC</div><div class="company">House of Clarence</div></div><div class="name-area"><div class="person">John Smith</div><div class="role">Managing Director</div></div></div><div class="contact"><span>020 3370 4057</span><span>john@houseofclarence.com</span><span>houseofclarence.com</span></div></div></div></div>
+  
+  <!-- 26 -->
+  <div class="sig-container"><p class="label">26. Inset Header</p><div class="signature s26"><div class="outer"><div class="card"><div class="logo-area"><div class="hoc">HOC</div><div class="company">House of Clarence</div></div><div class="name-area"><div class="person">John Smith</div><div class="role">Managing Director</div></div></div></div><div class="grey-bar"></div><div class="bottom"><div class="contact"><span>020 3370 4057</span><span>john@houseofclarence.com</span></div><div class="web">houseofclarence.com</div></div></div></div>
+  
+  <!-- 27 -->
+  <div class="sig-container"><p class="label">27. Full Dark</p><div class="signature s27"><div class="top-row"><div class="logo-area"><div class="hoc">HOC</div><div class="text-area"><div class="person">John Smith</div><div class="role">Managing Director</div></div></div><div class="company">House of Clarence</div></div><div class="bottom-row"><div class="contact"><span>020 3370 4057</span><span>john@houseofclarence.com</span></div><div class="web">houseofclarence.com</div></div></div></div>
+  
+  <!-- 28 -->
+  <div class="sig-container"><p class="label">28. Split Vertical</p><div class="signature s28"><div class="left"><div class="hoc">HOC</div><div class="company">House of Clarence</div></div><div class="right"><div class="grey-bar"></div><div class="main"><div class="person">John Smith</div><div class="role">Managing Director</div><div class="contact">020 3370 4057<br>john@houseofclarence.com<br>houseofclarence.com</div></div></div></div></div>
+  
+  <!-- 29 -->
+  <div class="sig-container"><p class="label">29. Header Card</p><div class="signature s29"><div class="top-area"><div class="card"><div class="logo-area"><div class="hoc">HOC</div><div class="company">House of Clarence</div></div><div class="name-area"><div class="person">John Smith</div><div class="role">Managing Director</div></div></div></div><div class="bottom"><div class="contact"><span>020 3370 4057</span><span>john@houseofclarence.com</span></div><div class="web">houseofclarence.com</div></div></div></div>
+  
+  <!-- 30 -->
+  <div class="sig-container"><p class="label">30. Complete Premium</p><div class="signature s30"><div class="top-stripe"></div><div class="main"><div class="top-row"><div class="logo-area"><div class="hoc">HOC</div><div class="text-area"><div class="person">John Smith</div><div class="role">Managing Director</div></div></div><div class="company">House of Clarence</div></div><div class="bottom"><div class="contact"><span>020 3370 4057</span><span>john@houseofclarence.com</span></div><div class="web">houseofclarence.com</div></div></div><div class="bottom-stripe"></div></div></div>
+
+</body>
+</html>
+
+

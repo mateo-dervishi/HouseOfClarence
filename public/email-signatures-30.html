@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>House of Clarence - 30 Full Email Signatures</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Inter',sans-serif;background:#B5B5B5;padding:40px}
+    h1{text-align:center;font-size:11px;letter-spacing:.25em;text-transform:uppercase;font-weight:300;color:#888;margin-bottom:40px}
+    .c{margin-bottom:50px}
+    .l{text-align:center;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#888;margin-bottom:12px}
+    .sig{max-width:580px;margin:0 auto;background:#fff;box-shadow:0 2px 15px rgba(0,0,0,.1)}
+    .n{font-size:8px;color:#999;line-height:1.5;border-top:1px solid #eee;padding:10px 18px;background:#fafafa}
+    .n strong{color:#666}
+    .si{width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;font-size:10px;text-decoration:none;margin-right:4px}
+    .si-b{background:#0a0a0a;color:#fff}
+    .si-g{background:#333;color:#fff}
+    .si-w{background:#fff;color:#0a0a0a;border:1px solid #ddd}
+    .cr{display:flex;align-items:center;margin-bottom:5px;font-size:9px;color:#333}
+    .cr svg{flex-shrink:0;margin-right:7px}
+    svg{width:12px;height:12px;fill:none;stroke:#888;stroke-width:1.5}
+    .soc{display:flex;gap:4px}
+
+    /* 1: Grand Header */
+    .s1 .h{background:#0a0a0a;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #333}
+    .s1 .hoc{font-weight:200;font-size:26px;letter-spacing:.06em;color:#fff}
+    .s1 .pa{text-align:right}
+    .s1 .p{font-size:11px;font-weight:400;color:#fff}
+    .s1 .r{font-size:8px;color:#666;margin-top:2px}
+    .s1 .b{background:#0a0a0a;padding:12px 20px;display:flex;justify-content:space-between;align-items:flex-end}
+    .s1 .co{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#888}
+    .s1 .m{padding:15px 20px;display:flex;justify-content:space-between;align-items:flex-end}
+
+    /* 2: Split Sidebar */
+    .s2{display:flex}
+    .s2 .sb{width:45px;background:#2d2d2d;display:flex;align-items:center;justify-content:center}
+    .s2 .sb-t{writing-mode:vertical-rl;transform:rotate(180deg);font-weight:200;font-size:16px;letter-spacing:.06em;color:#fff}
+    .s2 .mn{flex:1;display:flex;flex-direction:column}
+    .s2 .h{padding:15px 18px;border-bottom:1px solid #eee;display:flex;justify-content:space-between;align-items:flex-start}
+    .s2 .p{font-size:11px;font-weight:400;color:#0a0a0a}
+    .s2 .r{font-size:8px;color:#888;margin-top:2px}
+    .s2 .co{font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:#888}
+    .s2 .b{padding:12px 18px;display:flex;justify-content:space-between;align-items:flex-end}
+    .s2 .ft{padding:10px 18px;background:#0a0a0a;display:flex;justify-content:space-between;font-size:8px;color:#666}
+
+    /* 3: Watermark Bold */
+    .s3{position:relative;overflow:hidden}
+    .s3 .wm{position:absolute;top:50%;right:-15px;transform:translateY(-50%);font-weight:200;font-size:70px;color:rgba(0,0,0,.03)}
+    .s3 .ct{position:relative;z-index:1}
+    .s3 .h{padding:15px 18px;border-bottom:2px solid #0a0a0a;display:flex;justify-content:space-between;align-items:flex-start}
+    .s3 .la{display:flex;align-items:center;gap:12px}
+    .s3 .hoc{font-weight:200;font-size:22px;letter-spacing:.06em;color:#0a0a0a}
+    .s3 .ta{border-left:2px solid #888;padding-left:10px}
+    .s3 .p{font-size:10px;font-weight:400;color:#0a0a0a}
+    .s3 .r{font-size:8px;color:#888;margin-top:2px}
+    .s3 .co{font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:#888}
+    .s3 .b{padding:12px 18px;display:flex;justify-content:space-between;align-items:flex-end}
+    .s3 .ft{padding:10px 18px;background:#0a0a0a;display:flex;justify-content:space-between;font-size:8px;color:#666}
+
+    /* 4: Double Border */
+    .s4{padding:10px;border:2px solid #0a0a0a}
+    .s4 .in{border:1px solid #e8e8e8}
+    .s4 .h{padding:12px 15px;display:flex;justify-content:space-between;align-items:flex-start}
+    .s4 .la{display:flex;flex-direction:column;gap:2px}
+    .s4 .hoc{font-weight:200;font-size:20px;letter-spacing:.06em;color:#0a0a0a}
+    .s4 .co{font-size:7px;letter-spacing:.1em;text-transform:uppercase;color:#0a0a0a}
+    .s4 .pa{text-align:right}
+    .s4 .p{font-size:10px;font-weight:400;color:#0a0a0a}
+    .s4 .r{font-size:8px;color:#888;margin-top:2px}
+    .s4 .dv{height:3px;background:#0a0a0a}
+    .s4 .b{padding:12px 15px;display:flex;justify-content:space-between;align-items:flex-end}
+
+    /* 5: Full Bleed Top */
+    .s5 .tp{background:#0a0a0a;padding:15px 18px;display:flex;justify-content:space-between;align-items:center}
+    .s5 .hoc{font-weight:200;font-size:24px;letter-spacing:.06em;color:#fff}
+    .s5 .pa{text-align:right}
+    .s5 .p{font-size:10px;font-weight:400;color:#fff}
+    .s5 .r{font-size:8px;color:#666;margin-top:2px}
+    .s5 .gb{height:4px;background:#8a8a8a}
+    .s5 .b{padding:12px 18px;display:flex;justify-content:space-between;align-items:flex-end}
+    .s5 .co{font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:#0a0a0a}
+
+    /* 6: Corner Block */
+    .s6{position:relative}
+    .s6 .cb{position:absolute;top:0;left:0;width:50px;height:50px;background:#0a0a0a;display:flex;align-items:center;justify-content:center}
+    .s6 .cb-t{font-weight:200;font-size:14px;letter-spacing:.04em;color:#fff}
+    .s6 .h{padding:12px 18px 12px 65px;border-bottom:1px solid #e8e8e8;display:flex;justify-content:space-between;align-items:flex-start}
+    .s6 .p{font-size:11px;font-weight:400;color:#0a0a0a}
+    .s6 .r{font-size:8px;color:#888;margin-top:2px}
+    .s6 .co{font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:#888}
+    .s6 .b{padding:12px 18px;display:flex;justify-content:space-between;align-items:flex-end}
+    .s6 .ft{padding:10px 18px;background:#f8f7f5;display:flex;justify-content:space-between;font-size:8px;color:#888}
+
+    /* 7: Three Column Footer */
+    .s7 .h{padding:15px 18px;border-bottom:2px solid #0a0a0a;display:flex;justify-content:space-between;align-items:flex-start}
+    .s7 .la{display:flex;align-items:center;gap:12px}
+    .s7 .hoc{font-weight:200;font-size:22px;letter-spacing:.06em;color:#0a0a0a}
+    .s7 .ta{padding-top:3px}
+    .s7 .p{font-size:10px;font-weight:400;color:#0a0a0a}
+    .s7 .r{font-size:8px;color:#888;margin-top:2px}
+    .s7 .co{font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:#888}
+    .s7 .b{padding:12px 18px}
+    .s7 .ft{background:#0a0a0a;display:flex}
+    .s7 .fc{flex:1;padding:10px 12px;border-right:1px solid #333}
+    .s7 .fc:last-child{border-right:none}
+    .s7 .fl{font-size:6px;letter-spacing:.1em;text-transform:uppercase;color:#555;margin-bottom:3px}
+    .s7 .fv{font-size:8px;color:#999}
+
+    /* 8: Striped Accent */
+    .s8{position:relative}
+    .s8 .st{position:absolute;top:0;right:0;width:30px;height:100%;display:flex;flex-direction:column}
+    .s8 .st1{flex:1;background:#0a0a0a}
+    .s8 .st2{flex:1;background:#8a8a8a}
+    .s8 .st3{flex:1;background:#f8f7f5}
+    .s8 .h{padding:15px 50px 15px 18px;border-bottom:1px solid #e8e8e8;display:flex;justify-content:space-between;align-items:flex-start}
+    .s8 .la{display:flex;flex-direction:column;gap:2px}
+    .s8 .hoc{font-weight:200;font-size:20px;letter-spacing:.06em;color:#0a0a0a}
+    .s8 .co{font-size:7px;letter-spacing:.1em;text-transform:uppercase;color:#0a0a0a}
+    .s8 .pa{text-align:right}
+    .s8 .p{font-size:10px;font-weight:400;color:#0a0a0a}
+    .s8 .r{font-size:8px;color:#888;margin-top:2px}
+    .s8 .b{padding:12px 50px 12px 18px;display:flex;justify-content:space-between;align-items:flex-end}
+
+    /* 9: Centered Grand */
+    .s9{text-align:center}
+    .s9 .h{padding:18px;background:#f8f7f5;border-bottom:2px solid #0a0a0a}
+    .s9 .hoc{font-weight:200;font-size:26px;letter-spacing:.08em;color:#0a0a0a}
+    .s9 .co{font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:#0a0a0a;margin-top:3px}
+    .s9 .b{padding:15px 18px}
+    .s9 .p{font-size:11px;font-weight:500;color:#0a0a0a}
+    .s9 .r{font-size:8px;color:#888;margin-top:2px;margin-bottom:10px}
+    .s9 .cr{justify-content:center;display:inline-flex;margin:0 10px 5px}
+    .s9 .soc{justify-content:center;margin-top:8px}
+    .s9 .ft{padding:10px 18px;background:#0a0a0a;font-size:8px;color:#888}
+
+    /* 10: Layered Depth */
+    .s10{position:relative}
+    .s10 .bg{position:absolute;top:0;right:0;width:45%;height:100%;background:#f8f7f5}
+    .s10 .ct{position:relative;z-index:1}
+    .s10 .h{padding:15px 18px;border-bottom:2px solid #0a0a0a;display:flex;justify-content:space-between;align-items:flex-start}
+    .s10 .la{display:flex;flex-direction:column;gap:2px}
+    .s10 .hoc{font-weight:200;font-size:22px;letter-spacing:.06em;color:#0a0a0a}
+    .s10 .co{font-size:7px;letter-spacing:.1em;text-transform:uppercase;color:#0a0a0a}
+    .s10 .pa{text-align:right}
+    .s10 .p{font-size:10px;font-weight:400;color:#0a0a0a}
+    .s10 .r{font-size:8px;color:#888;margin-top:2px}
+    .s10 .b{padding:12px 18px;display:flex;justify-content:space-between;align-items:flex-end}
+    .s10 .ft{padding:10px 18px;background:#0a0a0a;display:flex;justify-content:space-between;font-size:8px;color:#888}
+
+    /* 11: Framed Elegant */
+    .s11{position:relative}
+    .s11 .fr{position:absolute;top:6px;left:6px;right:6px;bottom:6px;border:1px solid #e8e8e8;pointer-events:none}
+    .s11 .h{padding:15px 18px;border-bottom:1px solid #e8e8e8;display:flex;justify-content:space-between;align-items:flex-start}
+    .s11 .la{display:flex;flex-direction:column;gap:2px}
+    .s11 .hoc{font-weight:200;font-size:22px;letter-spacing:.06em;color:#0a0a0a}
+    .s11 .co{font-size:7px;letter-spacing:.1em;text-transform:uppercase;color:#0a0a0a}
+    .s11 .pa{text-align:right}
+    .s11 .p{font-size:10px;font-weight:400;color:#0a0a0a}
+    .s11 .r{font-size:8px;color:#888;margin-top:2px}
+    .s11 .b{padding:12px 18px;display:flex;justify-content:space-between;align-items:flex-end}
+
+    /* 12: Boxed Sections */
+    .s12 .tp{display:flex}
+    .s12 .tl{flex:1;background:#0a0a0a;padding:15px 18px}
+    .s12 .tr{width:140px;background:#f8f7f5;padding:15px}
+    .s12 .hoc{font-weight:200;font-size:20px;letter-spacing:.06em;color:#fff;margin-bottom:2px}
+    .s12 .co{font-size:7px;letter-spacing:.08em;text-transform:uppercase;color:#666}
+    .s12 .p{font-size:10px;font-weight:400;color:#0a0a0a}
+    .s12 .r{font-size:8px;color:#888;margin-top:2px}
+    .s12 .b{padding:12px 18px;display:flex;justify-content:space-between;align-items:flex-end}
+    .s12 .ft{display:flex}
+    .s12 .fl{flex:1;padding:10px 18px;background:#e8e8e8;font-size:8px;color:#2d2d2d}
+    .s12 .frr{padding:10px 15px;background:#0a0a0a;font-size:8px;color:#888}
+
+    /* 13: Tall Header */
+    .s13 .h{background:#0a0a0a;padding:18px}
+    .s13 .ht{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid #333}
+    .s13 .hoc{font-weight:200;font-size:26px;letter-spacing:.06em;color:#fff}
+    .s13 .pa{text-align:right}
+    .s13 .p{font-size:10px;font-weight:400;color:#fff}
+    .s13 .r{font-size:8px;color:#666;margin-top:2px}
+    .s13 .co{font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:#888}
+    .s13 .b{padding:12px 18px;display:flex;justify-content:space-between;align-items:flex-end;background:#f8f7f5}
+
+    /* 14: Multi-Bar */
+    .s14 .br{display:flex;height:5px}
+    .s14 .b1{width:50%;background:#0a0a0a}
+    .s14 .b2{width:30%;background:#8a8a8a}
+    .s14 .b3{width:20%;background:#f8f7f5}
+    .s14 .h{padding:15px 18px;border-bottom:1px solid #e8e8e8;display:flex;justify-content:space-between;align-items:flex-start}
+    .s14 .la{display:flex;align-items:center;gap:10px}
+    .s14 .hoc{font-weight:200;font-size:20px;letter-spacing:.06em;color:#0a0a0a}
+    .s14 .ta{border-left:2px solid #2d2d2d;padding-left:8px}
+    .s14 .p{font-size:10px;font-weight:400;color:#0a0a0a}
+    .s14 .r{font-size:8px;color:#888;margin-top:2px}
+    .s14 .co{font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:#888}
+    .s14 .b{padding:12px 18px;display:flex;justify-content:space-between;align-items:flex-end}
+
+    /* 15: Diagonal Split */
+    .s15{position:relative;overflow:hidden}
+    .s15 .dg{position:absolute;top:0;left:0;width:100%;height:50px;background:#0a0a0a;clip-path:polygon(0 0,100% 0,100% 60%,0 100%)}
+    .s15 .ct{position:relative;z-index:1}
+    .s15 .h{padding:12px 18px 22px;display:flex;justify-content:space-between;align-items:flex-start}
+    .s15 .hoc{font-weight:200;font-size:20px;letter-spacing:.06em;color:#fff}
+    .s15 .pa{text-align:right}
+    .s15 .p{font-size:10px;font-weight:400;color:#fff}
+    .s15 .r{font-size:8px;color:#888;margin-top:2px}
+    .s15 .b{padding:12px 18px;display:flex;justify-content:space-between;align-items:flex-end}
+    .s15 .co{font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:#0a0a0a}
+    .s15 .ft{padding:10px 18px;background:#f8f7f5;display:flex;justify-content:space-between;font-size:8px;color:#888}
+
+    /* 16: Enclosed */
+    .s16{padding:12px;background:#f8f7f5}
+    .s16 .in{background:#fff;border:1px solid #e8e8e8}
+    .s16 .h{padding:12px 15px;display:flex;justify-content:space-between;align-items:flex-start}
+    .s16 .la{display:flex;align-items:flex-start;gap:10px}
+    .s16 .hb{background:#0a0a0a;padding:8px 10px}
+    .s16 .hoc{font-weight:200;font-size:14px;letter-spacing:.04em;color:#fff}
+    .s16 .ta{padding-top:2px}
+    .s16 .co{font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:#0a0a0a}
+    .s16 .pa{text-align:right}
+    .s16 .p{font-size:10px;font-weight:400;color:#0a0a0a}
+    .s16 .r{font-size:8px;color:#888;margin-top:2px}
+    .s16 .gd{height:2px;background:#8a8a8a}
+    .s16 .b{padding:12px 15px;display:flex;justify-content:space-between;align-items:flex-end}
+    .s16 .ft{padding:10px 15px;background:#0a0a0a;display:flex;justify-content:space-between;font-size:8px;color:#888}
+
+    /* 17: Vertical Blocks */
+    .s17{position:relative}
+    .s17 .vb{position:absolute;left:0;top:0;bottom:0;width:12px;display:flex;flex-direction:column}
+    .s17 .vb1{height:40%;background:#0a0a0a}
+    .s17 .vb2{height:30%;background:#8a8a8a}
+    .s17 .vb3{height:30%;background:#f8f7f5}
+    .s17 .h{padding:15px 18px 15px 30px;border-bottom:1px solid #e8e8e8;display:flex;justify-content:space-between;align-items:flex-start}
+    .s17 .la{display:flex;flex-direction:column;gap:2px}
+    .s17 .hoc{font-weight:200;font-size:20px;letter-spacing:.06em;color:#0a0a0a}
+    .s17 .co{font-size:7px;letter-spacing:.1em;text-transform:uppercase;color:#0a0a0a}
+    .s17 .pa{text-align:right}
+    .s17 .p{font-size:10px;font-weight:400;color:#0a0a0a}
+    .s17 .r{font-size:8px;color:#888;margin-top:2px}
+    .s17 .b{padding:12px 18px 12px 30px;display:flex;justify-content:space-between;align-items:flex-end}
+
+    /* 18: Overlapping */
+    .s18{position:relative}
+    .s18 .bg{position:absolute;top:8px;left:8px;width:80px;height:40px;background:#f8f7f5}
+    .s18 .cd{position:relative;z-index:1;margin:15px 15px 0 20px;background:#0a0a0a;padding:15px 18px}
+    .s18 .ht{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid #333}
+    .s18 .la{display:flex;flex-direction:column;gap:2px}
+    .s18 .hoc{font-weight:200;font-size:20px;letter-spacing:.06em;color:#fff}
+    .s18 .co{font-size:7px;letter-spacing:.08em;text-transform:uppercase;color:#666}
+    .s18 .pa{text-align:right}
+    .s18 .p{font-size:10px;font-weight:400;color:#fff}
+    .s18 .r{font-size:8px;color:#666;margin-top:2px}
+    .s18 .cr{color:#999}
+    .s18 .b{padding:15px}
+    .s18 .ft{padding:10px 18px;background:#f8f7f5;display:flex;justify-content:space-between;font-size:8px;color:#888}
+
+    /* 19: Bottom Heavy */
+    .s19 .h{padding:15px 18px;display:flex;justify-content:space-between;align-items:flex-start}
+    .s19 .la{display:flex;align-items:center;gap:8px}
+    .s19 .hoc{font-weight:200;font-size:18px;letter-spacing:.06em;color:#0a0a0a}
+    .s19 .co{font-size:7px;letter-spacing:.08em;text-transform:uppercase;color:#0a0a0a}
+    .s19 .pa{text-align:right}
+    .s19 .p{font-size:10px;font-weight:400;color:#0a0a0a}
+    .s19 .r{font-size:8px;color:#888;margin-top:2px}
+    .s19 .ft{background:#0a0a0a;padding:15px 18px}
+    .s19 .ft1{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid #333}
+    .s19 .fl{font-weight:200;font-size:14px;letter-spacing:.06em;color:#fff}
+    .s19 .fc{text-align:right;font-size:8px;color:#666}
+    .s19 .ft2{display:flex;justify-content:space-between;font-size:8px;color:#555}
+
+    /* 20: Floating Card */
+    .s20{padding:12px;background:#f8f7f5}
+    .s20 .cd{background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .s20 .h{padding:15px 18px;border-bottom:2px solid #0a0a0a;display:flex;justify-content:space-between;align-items:flex-start}
+    .s20 .la{display:flex;flex-direction:column;gap:2px}
+    .s20 .hoc{font-weight:200;font-size:20px;letter-spacing:.06em;color:#0a0a0a}
+    .s20 .co{font-size:7px;letter-spacing:.1em;text-transform:uppercase;color:#0a0a0a}
+    .s20 .pa{text-align:right}
+    .s20 .p{font-size:10px;font-weight:400;color:#0a0a0a}
+    .s20 .r{font-size:8px;color:#888;margin-top:2px}
+    .s20 .b{padding:12px 18px;display:flex;justify-content:space-between;align-items:flex-end}
+    .s20 .ft{padding:10px 18px;background:#0a0a0a;display:flex;justify-content:space-between;font-size:8px;color:#888}
+
+    /* 21: Double Sidebar */
+    .s21{display:flex}
+    .s21 .sl{width:6px;background:#0a0a0a}
+    .s21 .sr{width:25px;background:#8a8a8a;display:flex;align-items:center;justify-content:center}
+    .s21 .sr-t{writing-mode:vertical-rl;transform:rotate(180deg);font-size:6px;letter-spacing:.12em;text-transform:uppercase;color:#fff}
+    .s21 .mn{flex:1;display:flex;flex-direction:column}
+    .s21 .h{padding:15px 18px;border-bottom:1px solid #e8e8e8;display:flex;justify-content:space-between;align-items:flex-start}
+    .s21 .la{display:flex;flex-direction:column;gap:2px}
+    .s21 .hoc{font-weight:200;font-size:20px;letter-spacing:.06em;color:#0a0a0a}
+    .s21 .co{font-size:7px;letter-spacing:.1em;text-transform:uppercase;color:#0a0a0a}
+    .s21 .pa{text-align:right}
+    .s21 .p{font-size:10px;font-weight:400;color:#0a0a0a}
+    .s21 .r{font-size:8px;color:#888;margin-top:2px}
+    .s21 .b{padding:12px 18px;display:flex;justify-content:space-between;align-items:flex-end}
+    .s21 .ft{padding:10px 18px;background:#f8f7f5;display:flex;justify-content:space-between;font-size:8px;color:#888}
+
+    /* 22: Grid Header */
+    .s22 .tp{display:grid;grid-template-columns:1fr 1fr}
+    .s22 .tl{background:#0a0a0a;padding:15px 18px}
+    .s22 .tr{background:#f8f7f5;padding:15px 18px;text-align:right}
+    .s22 .hoc{font-weight:200;font-size:20px;letter-spacing:.06em;color:#fff;margin-bottom:2px}
+    .s22 .co{font-size:7px;letter-spacing:.08em;text-transform:uppercase;color:#666}
+    .s22 .p{font-size:10px;font-weight:400;color:#0a0a0a}
+    .s22 .r{font-size:8px;color:#888;margin-top:2px}
+    .s22 .gb{height:3px;background:#2d2d2d}
+    .s22 .b{padding:12px 18px;display:flex;justify-content:space-between;align-items:flex-end}
+    .s22 .ft{padding:10px 18px;background:#0a0a0a;display:flex;justify-content:space-between;font-size:8px;color:#888}
+
+    /* 23: Monogram Watermark */
+    .s23{position:relative;overflow:hidden;background:#f8f7f5}
+    .s23 .wm{position:absolute;top:-25px;right:-25px;font-weight:200;font-size:100px;color:rgba(0,0,0,.03)}
+    .s23 .ct{position:relative;z-index:1}
+    .s23 .h{padding:15px 18px;border-bottom:2px solid #0a0a0a;display:flex;justify-content:space-between;align-items:flex-start}
+    .s23 .la{display:flex;align-items:center;gap:12px}
+    .s23 .hoc{font-weight:200;font-size:24px;letter-spacing:.06em;color:#0a0a0a}
+    .s23 .ta{border-left:2px solid #2d2d2d;padding-left:10px}
+    .s23 .p{font-size:10px;font-weight:400;color:#0a0a0a}
+    .s23 .r{font-size:8px;color:#888;margin-top:2px}
+    .s23 .co{font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:#888}
+    .s23 .b{padding:12px 18px;display:flex;justify-content:space-between;align-items:flex-end}
+    .s23 .ft{padding:10px 18px;background:#0a0a0a;display:flex;justify-content:space-between;font-size:8px;color:#888}
+
+    /* 24: Stacked Bands */
+    .s24 .bd1{height:5px;background:#0a0a0a}
+    .s24 .bd2{height:2px;background:#8a8a8a}
+    .s24 .h{padding:15px 18px;border-bottom:1px solid #e8e8e8;display:flex;justify-content:space-between;align-items:flex-start}
+    .s24 .la{display:flex;flex-direction:column;gap:2px}
+    .s24 .hoc{font-weight:200;font-size:22px;letter-spacing:.06em;color:#0a0a0a}
+    .s24 .co{font-size:7px;letter-spacing:.1em;text-transform:uppercase;color:#0a0a0a}
+    .s24 .pa{text-align:right}
+    .s24 .p{font-size:10px;font-weight:400;color:#0a0a0a}
+    .s24 .r{font-size:8px;color:#888;margin-top:2px}
+    .s24 .b{padding:12px 18px;display:flex;justify-content:space-between;align-items:flex-end}
+    .s24 .ft{display:flex;flex-direction:column}
+
+    /* 25: Corner Triangles */
+    .s25{position:relative}
+    .s25 .ttl{position:absolute;top:0;left:0;width:0;height:0;border-top:30px solid #0a0a0a;border-right:30px solid transparent}
+    .s25 .tbr{position:absolute;bottom:0;right:0;width:0;height:0;border-bottom:30px solid #8a8a8a;border-left:30px solid transparent}
+    .s25 .h{padding:15px 18px 15px 40px;border-bottom:1px solid #e8e8e8;display:flex;justify-content:space-between;align-items:flex-start}
+    .s25 .la{display:flex;flex-direction:column;gap:2px}
+    .s25 .hoc{font-weight:200;font-size:20px;letter-spacing:.06em;color:#0a0a0a}
+    .s25 .co{font-size:7px;letter-spacing:.1em;text-transform:uppercase;color:#0a0a0a}
+    .s25 .pa{text-align:right}
+    .s25 .p{font-size:10px;font-weight:400;color:#0a0a0a}
+    .s25 .r{font-size:8px;color:#888;margin-top:2px}
+    .s25 .b{padding:12px 40px 35px 40px;display:flex;justify-content:space-between;align-items:flex-end}
+
+    /* 26: Inset Header */
+    .s26 .ot{background:#0a0a0a;padding:10px 10px 0 10px}
+    .s26 .cd{background:#fff;padding:12px 15px;display:flex;justify-content:space-between;align-items:flex-start}
+    .s26 .la{display:flex;align-items:center;gap:8px}
+    .s26 .hoc{font-weight:200;font-size:18px;letter-spacing:.06em;color:#0a0a0a}
+    .s26 .co{font-size:7px;letter-spacing:.08em;text-transform:uppercase;color:#0a0a0a}
+    .s26 .pa{text-align:right}
+    .s26 .p{font-size:10px;font-weight:400;color:#0a0a0a}
+    .s26 .r{font-size:8px;color:#888;margin-top:2px}
+    .s26 .gd{height:3px;background:#8a8a8a}
+    .s26 .b{padding:12px 18px;display:flex;justify-content:space-between;align-items:flex-end}
+    .s26 .ft{padding:10px 18px;background:#f8f7f5;display:flex;justify-content:space-between;font-size:8px;color:#888}
+
+    /* 27: Full Dark */
+    .s27{background:#111}
+    .s27 .h{padding:15px 18px;border-bottom:1px solid #333;display:flex;justify-content:space-between;align-items:flex-start}
+    .s27 .la{display:flex;align-items:center;gap:12px}
+    .s27 .hoc{font-weight:200;font-size:24px;letter-spacing:.06em;color:#fff}
+    .s27 .ta{border-left:2px solid #8a8a8a;padding-left:10px}
+    .s27 .p{font-size:10px;font-weight:400;color:#fff}
+    .s27 .r{font-size:8px;color:#666;margin-top:2px}
+    .s27 .co{font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:#666}
+    .s27 .b{padding:12px 18px;display:flex;justify-content:space-between;align-items:flex-end}
+    .s27 .cr{color:#999}
+    .s27 .ft{padding:10px 18px;background:#8a8a8a;display:flex;justify-content:space-between;font-size:8px;color:#fff}
+
+    /* 28: Split Vertical */
+    .s28{display:flex}
+    .s28 .lp{width:35%;background:#0a0a0a;padding:18px 15px;display:flex;flex-direction:column;justify-content:space-between}
+    .s28 .hoc{font-weight:200;font-size:18px;letter-spacing:.06em;color:#fff;margin-bottom:2px}
+    .s28 .co{font-size:6px;letter-spacing:.08em;text-transform:uppercase;color:#666}
+    .s28 .lb{font-size:7px;color:#555;line-height:1.8;margin-top:12px}
+    .s28 .rp{width:65%;display:flex;flex-direction:column}
+    .s28 .gb{height:4px;background:#8a8a8a}
+    .s28 .mn{flex:1;padding:15px 18px}
+    .s28 .p{font-size:10px;font-weight:400;color:#0a0a0a}
+    .s28 .r{font-size:8px;color:#888;margin-top:2px;margin-bottom:10px}
+    .s28 .ft{padding:10px 18px;background:#f8f7f5;display:flex;justify-content:space-between;font-size:8px;color:#888}
+
+    /* 29: Header Card */
+    .s29 .ta{background:#f8f7f5;padding:12px 15px}
+    .s29 .cd{background:#fff;padding:12px 15px;border:1px solid #e8e8e8;display:flex;justify-content:space-between;align-items:flex-start}
+    .s29 .la{display:flex;flex-direction:column;gap:2px}
+    .s29 .hoc{font-weight:200;font-size:20px;letter-spacing:.06em;color:#0a0a0a}
+    .s29 .co{font-size:7px;letter-spacing:.1em;text-transform:uppercase;color:#0a0a0a}
+    .s29 .pa{text-align:right}
+    .s29 .p{font-size:10px;font-weight:400;color:#0a0a0a}
+    .s29 .r{font-size:8px;color:#888;margin-top:2px}
+    .s29 .b{padding:12px 15px;display:flex;justify-content:space-between;align-items:flex-end}
+    .s29 .ft{padding:10px 15px;background:#0a0a0a;display:flex;justify-content:space-between;font-size:8px;color:#888}
+
+    /* 30: Complete Premium */
+    .s30 .ts{height:5px;background:#0a0a0a}
+    .s30 .mn{padding:15px 18px;background:#f8f7f5}
+    .s30 .h{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;padding-bottom:12px;border-bottom:2px solid #0a0a0a}
+    .s30 .la{display:flex;align-items:center;gap:12px}
+    .s30 .hoc{font-weight:200;font-size:24px;letter-spacing:.06em;color:#0a0a0a}
+    .s30 .ta{border-left:2px solid #2d2d2d;padding-left:10px}
+    .s30 .co{font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:#0a0a0a}
+    .s30 .tg{font-size:7px;color:#888;margin-top:2px}
+    .s30 .pa{text-align:right}
+    .s30 .p{font-size:11px;font-weight:500;color:#0a0a0a}
+    .s30 .r{font-size:8px;color:#888;margin-top:2px}
+    .s30 .b{display:flex;justify-content:space-between;align-items:flex-end}
+    .s30 .bs{height:4px;background:#8a8a8a}
+  </style>
+</head>
+<body>
+<h1>House of Clarence — 30 Full Email Signatures</h1>
+
+<!-- SVG icons template -->
+<svg style="display:none"><defs>
+<symbol id="i-mail" viewBox="0 0 12 12"><path d="M1.5 3l4.5 3 4.5-3"/><rect x="1" y="2.5" width="10" height="7" rx="1"/></symbol>
+<symbol id="i-web" viewBox="0 0 12 12"><circle cx="6" cy="6" r="4.5"/><path d="M8 8l2 2"/></symbol>
+<symbol id="i-phone" viewBox="0 0 12 12"><path d="M1.5 3l2.5 2.5-2.5 2.5"/><path d="M6 8h4"/></symbol>
+<symbol id="i-loc" viewBox="0 0 12 12"><path d="M2.5 4.5C2.5 3 4 1.5 6 1.5s3.5 1.5 3.5 3C9.5 6.5 6 10.5 6 10.5S2.5 6.5 2.5 4.5z"/></symbol>
+</defs></svg>
+
+<!-- 1 --><div class="c"><p class="l">1. Grand Header</p><div class="sig s1"><div class="h"><div class="hoc">HOC</div><div class="pa"><div class="p">John Smith</div><div class="r">Managing Director</div></div></div><div class="b"><div class="co">House of Clarence</div><div class="soc"><a class="si si-b">in</a><a class="si si-b">f</a><a class="si si-b">X</a><a class="si si-b">◎</a></div></div><div class="m"><div><div class="cr"><svg><use href="#i-mail"/></svg>john@houseofclarence.com</div><div class="cr"><svg><use href="#i-phone"/></svg>020 3370 4057</div><div class="cr"><svg><use href="#i-web"/></svg>houseofclarence.com</div><div class="cr"><svg><use href="#i-loc"/></svg>London, UK</div></div><div class="soc"><a class="si si-b">in</a><a class="si si-b">f</a><a class="si si-b">X</a><a class="si si-b">◎</a></div></div><div class="n"><strong>CONFIDENTIALITY:</strong> This email is confidential. If received in error, please delete. House of Clarence Ltd.</div></div></div>
+
+<!-- 2 --><div class="c"><p class="l">2. Split Sidebar</p><div class="sig s2"><div class="sb"><div class="sb-t">HOC</div></div><div class="mn"><div class="h"><div><div class="p">John Smith</div><div class="r">Managing Director</div></div><div class="co">House of Clarence</div></div><div class="b"><div><div class="cr"><svg><use href="#i-mail"/></svg>john@houseofclarence.com</div><div class="cr"><svg><use href="#i-phone"/></svg>020 3370 4057</div><div class="cr"><svg><use href="#i-web"/></svg>houseofclarence.com</div></div><div class="soc"><a class="si si-b">in</a><a class="si si-b">f</a><a class="si si-b">X</a><a class="si si-b">◎</a></div></div><div class="ft"><span>Refined Finishing for Discerning Spaces</span><span>London</span></div></div></div><div class="n"><strong>CONFIDENTIALITY:</strong> This email is confidential. Unauthorized use prohibited. House of Clarence Ltd.</div></div></div>
+
+<!-- 3 --><div class="c"><p class="l">3. Watermark Bold</p><div class="sig s3"><div class="wm">HOC</div><div class="ct"><div class="h"><div class="la"><div class="hoc">HOC</div><div class="ta"><div class="p">John Smith</div><div class="r">Managing Director</div></div></div><div class="co">House of Clarence</div></div><div class="b"><div><div class="cr"><svg><use href="#i-mail"/></svg>john@houseofclarence.com</div><div class="cr"><svg><use href="#i-phone"/></svg>020 3370 4057</div><div class="cr"><svg><use href="#i-web"/></svg>houseofclarence.com</div><div class="cr"><svg><use href="#i-loc"/></svg>London, UK</div></div><div class="soc"><a class="si si-b">in</a><a class="si si-b">f</a><a class="si si-b">X</a><a class="si si-b">◎</a></div></div><div class="ft"><span>Refined Finishing for Discerning Spaces</span><span>houseofclarence.com</span></div></div><div class="n"><strong>CONFIDENTIALITY:</strong> This email is confidential. House of Clarence Ltd.</div></div></div>
+
+<!-- 4 --><div class="c"><p class="l">4. Double Border</p><div class="sig s4"><div class="in"><div class="h"><div class="la"><div class="hoc">HOC</div><div class="co">House of Clarence</div></div><div class="pa"><div class="p">John Smith</div><div class="r">Managing Director</div></div></div><div class="dv"></div><div class="b"><div><div class="cr"><svg><use href="#i-mail"/></svg>john@houseofclarence.com</div><div class="cr"><svg><use href="#i-phone"/></svg>020 3370 4057</div><div class="cr"><svg><use href="#i-web"/></svg>houseofclarence.com</div></div><div class="soc"><a class="si si-b">in</a><a class="si si-b">f</a><a class="si si-b">X</a><a class="si si-b">◎</a></div></div></div></div><div class="n"><strong>CONFIDENTIALITY:</strong> This email is confidential. House of Clarence Ltd.</div></div></div>
+
+<!-- 5 --><div class="c"><p class="l">5. Full Bleed Top</p><div class="sig s5"><div class="tp"><div class="hoc">HOC</div><div class="pa"><div class="p">John Smith</div><div class="r">Managing Director</div></div></div><div class="gb"></div><div class="b"><div><div class="co">House of Clarence</div><div class="cr"><svg><use href="#i-mail"/></svg>john@houseofclarence.com</div><div class="cr"><svg><use href="#i-phone"/></svg>020 3370 4057</div><div class="cr"><svg><use href="#i-web"/></svg>houseofclarence.com</div></div><div class="soc"><a class="si si-b">in</a><a class="si si-b">f</a><a class="si si-b">X</a><a class="si si-b">◎</a></div></div><div class="n"><strong>CONFIDENTIALITY:</strong> This email is confidential. House of Clarence Ltd.</div></div></div>
+
+<!-- 6 --><div class="c"><p class="l">6. Corner Block</p><div class="sig s6"><div class="cb"><div class="cb-t">HOC</div></div><div class="h"><div><div class="p">John Smith</div><div class="r">Managing Director</div></div><div class="co">House of Clarence</div></div><div class="b"><div><div class="cr"><svg><use href="#i-mail"/></svg>john@houseofclarence.com</div><div class="cr"><svg><use href="#i-phone"/></svg>020 3370 4057</div><div class="cr"><svg><use href="#i-web"/></svg>houseofclarence.com</div></div><div class="soc"><a class="si si-b">in</a><a class="si si-b">f</a><a class="si si-b">X</a><a class="si si-b">◎</a></div></div><div class="ft"><span>Refined Finishing for Discerning Spaces</span><span>London</span></div><div class="n"><strong>CONFIDENTIALITY:</strong> This email is confidential. House of Clarence Ltd.</div></div></div>
+
+<!-- 7 --><div class="c"><p class="l">7. Three Column Footer</p><div class="sig s7"><div class="h"><div class="la"><div class="hoc">HOC</div><div class="ta"><div class="p">John Smith</div><div class="r">Managing Director</div></div></div><div class="co">House of Clarence</div></div><div class="b"><div><div class="cr"><svg><use href="#i-mail"/></svg>john@houseofclarence.com</div><div class="cr"><svg><use href="#i-phone"/></svg>020 3370 4057</div></div><div class="soc"><a class="si si-b">in</a><a class="si si-b">f</a><a class="si si-b">X</a><a class="si si-b">◎</a></div></div><div class="ft"><div class="fc"><div class="fl">Website</div><div class="fv">houseofclarence.com</div></div><div class="fc"><div class="fl">Location</div><div class="fv">London, UK</div></div><div class="fc"><div class="fl">Tagline</div><div class="fv">Refined Finishing</div></div></div><div class="n"><strong>CONFIDENTIALITY:</strong> This email is confidential. House of Clarence Ltd.</div></div></div>
+
+<!-- 8 --><div class="c"><p class="l">8. Striped Accent</p><div class="sig s8"><div class="st"><div class="st1"></div><div class="st2"></div><div class="st3"></div></div><div class="h"><div class="la"><div class="hoc">HOC</div><div class="co">House of Clarence</div></div><div class="pa"><div class="p">John Smith</div><div class="r">Managing Director</div></div></div><div class="b"><div><div class="cr"><svg><use href="#i-mail"/></svg>john@houseofclarence.com</div><div class="cr"><svg><use href="#i-phone"/></svg>020 3370 4057</div><div class="cr"><svg><use href="#i-web"/></svg>houseofclarence.com</div></div><div class="soc"><a class="si si-b">in</a><a class="si si-b">f</a><a class="si si-b">X</a><a class="si si-b">◎</a></div></div><div class="n"><strong>CONFIDENTIALITY:</strong> This email is confidential. House of Clarence Ltd.</div></div></div>
+
+<!-- 9 --><div class="c"><p class="l">9. Centered Grand</p><div class="sig s9"><div class="h"><div class="hoc">HOC</div><div class="co">House of Clarence</div></div><div class="b"><div class="p">John Smith</div><div class="r">Managing Director</div><div><div class="cr"><svg><use href="#i-mail"/></svg>john@houseofclarence.com</div><div class="cr"><svg><use href="#i-phone"/></svg>020 3370 4057</div><div class="cr"><svg><use href="#i-web"/></svg>houseofclarence.com</div></div><div class="soc"><a class="si si-b">in</a><a class="si si-b">f</a><a class="si si-b">X</a><a class="si si-b">◎</a></div></div><div class="ft">Refined Finishing for Discerning Spaces · London</div><div class="n"><strong>CONFIDENTIALITY:</strong> This email is confidential. House of Clarence Ltd.</div></div></div>
+
+<!-- 10 --><div class="c"><p class="l">10. Layered Depth</p><div class="sig s10"><div class="bg"></div><div class="ct"><div class="h"><div class="la"><div class="hoc">HOC</div><div class="co">House of Clarence</div></div><div class="pa"><div class="p">John Smith</div><div class="r">Managing Director</div></div></div><div class="b"><div><div class="cr"><svg><use href="#i-mail"/></svg>john@houseofclarence.com</div><div class="cr"><svg><use href="#i-phone"/></svg>020 3370 4057</div><div class="cr"><svg><use href="#i-web"/></svg>houseofclarence.com</div></div><div class="soc"><a class="si si-b">in</a><a class="si si-b">f</a><a class="si si-b">X</a><a class="si si-b">◎</a></div></div><div class="ft"><span>Refined Finishing for Discerning Spaces</span><span>London</span></div></div><div class="n"><strong>CONFIDENTIALITY:</strong> This email is confidential. House of Clarence Ltd.</div></div></div>
+
+<!-- 11 --><div class="c"><p class="l">11. Framed Elegant</p><div class="sig s11"><div class="fr"></div><div class="h"><div class="la"><div class="hoc">HOC</div><div class="co">House of Clarence</div></div><div class="pa"><div class="p">John Smith</div><div class="r">Managing Director</div></div></div><div class="b"><div><div class="cr"><svg><use href="#i-mail"/></svg>john@houseofclarence.com</div><div class="cr"><svg><use href="#i-phone"/></svg>020 3370 4057</div><div class="cr"><svg><use href="#i-web"/></svg>houseofclarence.com</div><div class="cr"><svg><use href="#i-loc"/></svg>London, UK</div></div><div class="soc"><a class="si si-b">in</a><a class="si si-b">f</a><a class="si si-b">X</a><a class="si si-b">◎</a></div></div><div class="n"><strong>CONFIDENTIALITY:</strong> This email is confidential. House of Clarence Ltd.</div></div></div>
+
+<!-- 12 --><div class="c"><p class="l">12. Boxed Sections</p><div class="sig s12"><div class="tp"><div class="tl"><div class="hoc">HOC</div><div class="co">House of Clarence</div></div><div class="tr"><div class="p">John Smith</div><div class="r">Managing Director</div></div></div><div class="b"><div><div class="cr"><svg><use href="#i-mail"/></svg>john@houseofclarence.com</div><div class="cr"><svg><use href="#i-phone"/></svg>020 3370 4057</div><div class="cr"><svg><use href="#i-web"/></svg>houseofclarence.com</div></div><div class="soc"><a class="si si-b">in</a><a class="si si-b">f</a><a class="si si-b">X</a><a class="si si-b">◎</a></div></div><div class="ft"><div class="fl">Refined Finishing · London</div><div class="frr">houseofclarence.com</div></div><div class="n"><strong>CONFIDENTIALITY:</strong> This email is confidential. House of Clarence Ltd.</div></div></div>
+
+<!-- 13 --><div class="c"><p class="l">13. Tall Header</p><div class="sig s13"><div class="h"><div class="ht"><div class="hoc">HOC</div><div class="pa"><div class="p">John Smith</div><div class="r">Managing Director</div></div></div><div class="co">House of Clarence · Refined Finishing for Discerning Spaces</div></div><div class="b"><div><div class="cr"><svg><use href="#i-mail"/></svg>john@houseofclarence.com</div><div class="cr"><svg><use href="#i-phone"/></svg>020 3370 4057</div><div class="cr"><svg><use href="#i-web"/></svg>houseofclarence.com</div></div><div class="soc"><a class="si si-b">in</a><a class="si si-b">f</a><a class="si si-b">X</a><a class="si si-b">◎</a></div></div><div class="n"><strong>CONFIDENTIALITY:</strong> This email is confidential. House of Clarence Ltd.</div></div></div>
+
+<!-- 14 --><div class="c"><p class="l">14. Multi-Bar</p><div class="sig s14"><div class="br"><div class="b1"></div><div class="b2"></div><div class="b3"></div></div><div class="h"><div class="la"><div class="hoc">HOC</div><div class="ta"><div class="p">John Smith</div><div class="r">Managing Director</div></div></div><div class="co">House of Clarence</div></div><div class="b"><div><div class="cr"><svg><use href="#i-mail"/></svg>john@houseofclarence.com</div><div class="cr"><svg><use href="#i-phone"/></svg>020 3370 4057</div><div class="cr"><svg><use href="#i-web"/></svg>houseofclarence.com</div></div><div class="soc"><a class="si si-b">in</a><a class="si si-b">f</a><a class="si si-b">X</a><a class="si si-b">◎</a></div></div><div class="n"><strong>CONFIDENTIALITY:</strong> This email is confidential. House of Clarence Ltd.</div></div></div>
+
+<!-- 15 --><div class="c"><p class="l">15. Diagonal Split</p><div class="sig s15"><div class="dg"></div><div class="ct"><div class="h"><div class="hoc">HOC</div><div class="pa"><div class="p">John Smith</div><div class="r">Managing Director</div></div></div><div class="b"><div><div class="co">House of Clarence</div><div class="cr"><svg><use href="#i-mail"/></svg>john@houseofclarence.com</div><div class="cr"><svg><use href="#i-phone"/></svg>020 3370 4057</div></div><div class="soc"><a class="si si-b">in</a><a class="si si-b">f</a><a class="si si-b">X</a><a class="si si-b">◎</a></div></div><div class="ft"><span>houseofclarence.com</span><span>London</span></div></div><div class="n"><strong>CONFIDENTIALITY:</strong> This email is confidential. House of Clarence Ltd.</div></div></div>
+
+<!-- 16 --><div class="c"><p class="l">16. Enclosed</p><div class="sig s16"><div class="in"><div class="h"><div class="la"><div class="hb"><div class="hoc">HOC</div></div><div class="ta"><div class="co">House of Clarence</div></div></div><div class="pa"><div class="p">John Smith</div><div class="r">Managing Director</div></div></div><div class="gd"></div><div class="b"><div><div class="cr"><svg><use href="#i-mail"/></svg>john@houseofclarence.com</div><div class="cr"><svg><use href="#i-phone"/></svg>020 3370 4057</div><div class="cr"><svg><use href="#i-web"/></svg>houseofclarence.com</div></div><div class="soc"><a class="si si-b">in</a><a class="si si-b">f</a><a class="si si-b">X</a><a class="si si-b">◎</a></div></div><div class="ft"><span>Refined Finishing</span><span>London</span></div></div></div><div class="n"><strong>CONFIDENTIALITY:</strong> This email is confidential. House of Clarence Ltd.</div></div></div>
+
+<!-- 17 --><div class="c"><p class="l">17. Vertical Blocks</p><div class="sig s17"><div class="vb"><div class="vb1"></div><div class="vb2"></div><div class="vb3"></div></div><div class="h"><div class="la"><div class="hoc">HOC</div><div class="co">House of Clarence</div></div><div class="pa"><div class="p">John Smith</div><div class="r">Managing Director</div></div></div><div class="b"><div><div class="cr"><svg><use href="#i-mail"/></svg>john@houseofclarence.com</div><div class="cr"><svg><use href="#i-phone"/></svg>020 3370 4057</div><div class="cr"><svg><use href="#i-web"/></svg>houseofclarence.com</div></div><div class="soc"><a class="si si-b">in</a><a class="si si-b">f</a><a class="si si-b">X</a><a class="si si-b">◎</a></div></div><div class="n"><strong>CONFIDENTIALITY:</strong> This email is confidential. House of Clarence Ltd.</div></div></div>
+
+<!-- 18 --><div class="c"><p class="l">18. Overlapping</p><div class="sig s18"><div class="bg"></div><div class="cd"><div class="ht"><div class="la"><div class="hoc">HOC</div><div class="co">House of Clarence</div></div><div class="pa"><div class="p">John Smith</div><div class="r">Managing Director</div></div></div><div><div class="cr"><svg><use href="#i-mail"/></svg>john@houseofclarence.com</div><div class="cr"><svg><use href="#i-phone"/></svg>020 3370 4057</div><div class="cr"><svg><use href="#i-web"/></svg>houseofclarence.com</div></div></div><div class="b"><div class="soc"><a class="si si-g">in</a><a class="si si-g">f</a><a class="si si-g">X</a><a class="si si-g">◎</a></div></div><div class="ft"><span>Refined Finishing</span><span>London</span></div><div class="n"><strong>CONFIDENTIALITY:</strong> This email is confidential. House of Clarence Ltd.</div></div></div>
+
+<!-- 19 --><div class="c"><p class="l">19. Bottom Heavy</p><div class="sig s19"><div class="h"><div class="la"><div class="hoc">HOC</div><div class="co">House of Clarence</div></div><div class="pa"><div class="p">John Smith</div><div class="r">Managing Director</div></div></div><div class="ft"><div class="ft1"><div class="fl">HOC</div><div class="fc"><div class="cr" style="color:#666"><svg><use href="#i-mail"/></svg>john@houseofclarence.com</div><div class="cr" style="color:#666"><svg><use href="#i-phone"/></svg>020 3370 4057</div></div></div><div class="ft2"><span>houseofclarence.com · London</span><div class="soc"><a class="si si-g">in</a><a class="si si-g">f</a><a class="si si-g">X</a><a class="si si-g">◎</a></div></div></div><div class="n"><strong>CONFIDENTIALITY:</strong> This email is confidential. House of Clarence Ltd.</div></div></div>
+
+<!-- 20 --><div class="c"><p class="l">20. Floating Card</p><div class="sig s20"><div class="cd"><div class="h"><div class="la"><div class="hoc">HOC</div><div class="co">House of Clarence</div></div><div class="pa"><div class="p">John Smith</div><div class="r">Managing Director</div></div></div><div class="b"><div><div class="cr"><svg><use href="#i-mail"/></svg>john@houseofclarence.com</div><div class="cr"><svg><use href="#i-phone"/></svg>020 3370 4057</div><div class="cr"><svg><use href="#i-web"/></svg>houseofclarence.com</div></div><div class="soc"><a class="si si-b">in</a><a class="si si-b">f</a><a class="si si-b">X</a><a class="si si-b">◎</a></div></div><div class="ft"><span>Refined Finishing</span><span>London</span></div></div></div><div class="n"><strong>CONFIDENTIALITY:</strong> This email is confidential. House of Clarence Ltd.</div></div></div>
+
+<!-- 21 --><div class="c"><p class="l">21. Double Sidebar</p><div class="sig s21"><div class="sl"></div><div class="sr"><div class="sr-t">HOC</div></div><div class="mn"><div class="h"><div class="la"><div class="hoc">HOC</div><div class="co">House of Clarence</div></div><div class="pa"><div class="p">John Smith</div><div class="r">Managing Director</div></div></div><div class="b"><div><div class="cr"><svg><use href="#i-mail"/></svg>john@houseofclarence.com</div><div class="cr"><svg><use href="#i-phone"/></svg>020 3370 4057</div><div class="cr"><svg><use href="#i-web"/></svg>houseofclarence.com</div></div><div class="soc"><a class="si si-b">in</a><a class="si si-b">f</a><a class="si si-b">X</a><a class="si si-b">◎</a></div></div><div class="ft"><span>Refined Finishing</span><span>London</span></div></div></div><div class="n"><strong>CONFIDENTIALITY:</strong> This email is confidential. House of Clarence Ltd.</div></div></div>
+
+<!-- 22 --><div class="c"><p class="l">22. Grid Header</p><div class="sig s22"><div class="tp"><div class="tl"><div class="hoc">HOC</div><div class="co">House of Clarence</div></div><div class="tr"><div class="p">John Smith</div><div class="r">Managing Director</div></div></div><div class="gb"></div><div class="b"><div><div class="cr"><svg><use href="#i-mail"/></svg>john@houseofclarence.com</div><div class="cr"><svg><use href="#i-phone"/></svg>020 3370 4057</div><div class="cr"><svg><use href="#i-web"/></svg>houseofclarence.com</div></div><div class="soc"><a class="si si-b">in</a><a class="si si-b">f</a><a class="si si-b">X</a><a class="si si-b">◎</a></div></div><div class="ft"><span>Refined Finishing for Discerning Spaces</span><span>London</span></div><div class="n"><strong>CONFIDENTIALITY:</strong> This email is confidential. House of Clarence Ltd.</div></div></div>
+
+<!-- 23 --><div class="c"><p class="l">23. Monogram Watermark</p><div class="sig s23"><div class="wm">HOC</div><div class="ct"><div class="h"><div class="la"><div class="hoc">HOC</div><div class="ta"><div class="p">John Smith</div><div class="r">Managing Director</div></div></div><div class="co">House of Clarence</div></div><div class="b"><div><div class="cr"><svg><use href="#i-mail"/></svg>john@houseofclarence.com</div><div class="cr"><svg><use href="#i-phone"/></svg>020 3370 4057</div><div class="cr"><svg><use href="#i-web"/></svg>houseofclarence.com</div></div><div class="soc"><a class="si si-b">in</a><a class="si si-b">f</a><a class="si si-b">X</a><a class="si si-b">◎</a></div></div><div class="ft"><span>Refined Finishing</span><span>London</span></div></div><div class="n"><strong>CONFIDENTIALITY:</strong> This email is confidential. House of Clarence Ltd.</div></div></div>
+
+<!-- 24 --><div class="c"><p class="l">24. Stacked Bands</p><div class="sig s24"><div class="bd1"></div><div class="bd2"></div><div class="h"><div class="la"><div class="hoc">HOC</div><div class="co">House of Clarence</div></div><div class="pa"><div class="p">John Smith</div><div class="r">Managing Director</div></div></div><div class="b"><div><div class="cr"><svg><use href="#i-mail"/></svg>john@houseofclarence.com</div><div class="cr"><svg><use href="#i-phone"/></svg>020 3370 4057</div><div class="cr"><svg><use href="#i-web"/></svg>houseofclarence.com</div></div><div class="soc"><a class="si si-b">in</a><a class="si si-b">f</a><a class="si si-b">X</a><a class="si si-b">◎</a></div></div><div class="ft"><div class="bd2"></div><div class="bd1"></div></div><div class="n"><strong>CONFIDENTIALITY:</strong> This email is confidential. House of Clarence Ltd.</div></div></div>
+
+<!-- 25 --><div class="c"><p class="l">25. Corner Triangles</p><div class="sig s25"><div class="ttl"></div><div class="tbr"></div><div class="h"><div class="la"><div class="hoc">HOC</div><div class="co">House of Clarence</div></div><div class="pa"><div class="p">John Smith</div><div class="r">Managing Director</div></div></div><div class="b"><div><div class="cr"><svg><use href="#i-mail"/></svg>john@houseofclarence.com</div><div class="cr"><svg><use href="#i-phone"/></svg>020 3370 4057</div><div class="cr"><svg><use href="#i-web"/></svg>houseofclarence.com</div></div><div class="soc"><a class="si si-b">in</a><a class="si si-b">f</a><a class="si si-b">X</a><a class="si si-b">◎</a></div></div><div class="n"><strong>CONFIDENTIALITY:</strong> This email is confidential. House of Clarence Ltd.</div></div></div>
+
+<!-- 26 --><div class="c"><p class="l">26. Inset Header</p><div class="sig s26"><div class="ot"><div class="cd"><div class="la"><div class="hoc">HOC</div><div class="co">House of Clarence</div></div><div class="pa"><div class="p">John Smith</div><div class="r">Managing Director</div></div></div></div><div class="gd"></div><div class="b"><div><div class="cr"><svg><use href="#i-mail"/></svg>john@houseofclarence.com</div><div class="cr"><svg><use href="#i-phone"/></svg>020 3370 4057</div><div class="cr"><svg><use href="#i-web"/></svg>houseofclarence.com</div></div><div class="soc"><a class="si si-b">in</a><a class="si si-b">f</a><a class="si si-b">X</a><a class="si si-b">◎</a></div></div><div class="ft"><span>Refined Finishing</span><span>London</span></div><div class="n"><strong>CONFIDENTIALITY:</strong> This email is confidential. House of Clarence Ltd.</div></div></div>
+
+<!-- 27 --><div class="c"><p class="l">27. Full Dark</p><div class="sig s27"><div class="h"><div class="la"><div class="hoc">HOC</div><div class="ta"><div class="p">John Smith</div><div class="r">Managing Director</div></div></div><div class="co">House of Clarence</div></div><div class="b"><div><div class="cr"><svg><use href="#i-mail"/></svg>john@houseofclarence.com</div><div class="cr"><svg><use href="#i-phone"/></svg>020 3370 4057</div><div class="cr"><svg><use href="#i-web"/></svg>houseofclarence.com</div></div><div class="soc"><a class="si si-g">in</a><a class="si si-g">f</a><a class="si si-g">X</a><a class="si si-g">◎</a></div></div><div class="ft"><span>Refined Finishing · London</span><span>houseofclarence.com</span></div><div class="n" style="background:#222;border-color:#333"><strong style="color:#888">CONFIDENTIALITY:</strong> This email is confidential. House of Clarence Ltd.</div></div></div>
+
+<!-- 28 --><div class="c"><p class="l">28. Split Vertical</p><div class="sig s28"><div class="lp"><div><div class="hoc">HOC</div><div class="co">House of Clarence</div></div><div class="lb">Refined Finishing<br>for Discerning Spaces</div></div><div class="rp"><div class="gb"></div><div class="mn"><div class="p">John Smith</div><div class="r">Managing Director</div><div class="cr"><svg><use href="#i-mail"/></svg>john@houseofclarence.com</div><div class="cr"><svg><use href="#i-phone"/></svg>020 3370 4057</div><div class="cr"><svg><use href="#i-web"/></svg>houseofclarence.com</div><div class="soc" style="margin-top:8px"><a class="si si-b">in</a><a class="si si-b">f</a><a class="si si-b">X</a><a class="si si-b">◎</a></div></div><div class="ft"><span>London</span><span>houseofclarence.com</span></div></div></div><div class="n"><strong>CONFIDENTIALITY:</strong> This email is confidential. House of Clarence Ltd.</div></div></div>
+
+<!-- 29 --><div class="c"><p class="l">29. Header Card</p><div class="sig s29"><div class="ta"><div class="cd"><div class="la"><div class="hoc">HOC</div><div class="co">House of Clarence</div></div><div class="pa"><div class="p">John Smith</div><div class="r">Managing Director</div></div></div></div><div class="b"><div><div class="cr"><svg><use href="#i-mail"/></svg>john@houseofclarence.com</div><div class="cr"><svg><use href="#i-phone"/></svg>020 3370 4057</div><div class="cr"><svg><use href="#i-web"/></svg>houseofclarence.com</div></div><div class="soc"><a class="si si-b">in</a><a class="si si-b">f</a><a class="si si-b">X</a><a class="si si-b">◎</a></div></div><div class="ft"><span>Refined Finishing</span><span>London</span></div><div class="n"><strong>CONFIDENTIALITY:</strong> This email is confidential. House of Clarence Ltd.</div></div></div>
+
+<!-- 30 --><div class="c"><p class="l">30. Complete Premium</p><div class="sig s30"><div class="ts"></div><div class="mn"><div class="h"><div class="la"><div class="hoc">HOC</div><div class="ta"><div class="co">House of Clarence</div><div class="tg">Refined Finishing for Discerning Spaces</div></div></div><div class="pa"><div class="p">John Smith</div><div class="r">Managing Director</div></div></div><div class="b"><div><div class="cr"><svg><use href="#i-mail"/></svg>john@houseofclarence.com</div><div class="cr"><svg><use href="#i-phone"/></svg>020 3370 4057</div><div class="cr"><svg><use href="#i-web"/></svg>houseofclarence.com</div><div class="cr"><svg><use href="#i-loc"/></svg>London, United Kingdom</div></div><div class="soc"><a class="si si-b">in</a><a class="si si-b">f</a><a class="si si-b">X</a><a class="si si-b">◎</a></div></div></div><div class="bs"></div><div class="n"><strong>PRIVILEGED AND CONFIDENTIAL:</strong> This email and any attachments are confidential and intended solely for the addressee. If you are not the intended recipient, please notify us immediately and delete this message. Unauthorized disclosure, copying or distribution is strictly prohibited. House of Clarence Ltd.</div></div></div>
+
+</body>
+</html>
+
+
