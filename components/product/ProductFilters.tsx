@@ -9,7 +9,6 @@ export interface FilterState {
   materials: string[];
   colours: string[];
   finishes: string[];
-  priceRange: [number, number] | null;
   isNew: boolean;
   isFeatured: boolean;
 }
@@ -21,13 +20,6 @@ interface ProductFiltersProps {
   onClearFilters: () => void;
 }
 
-const PRICE_RANGES: { label: string; range: [number, number] }[] = [
-  { label: "Under £100", range: [0, 100] },
-  { label: "£100 - £500", range: [100, 500] },
-  { label: "£500 - £1,000", range: [500, 1000] },
-  { label: "£1,000 - £2,000", range: [1000, 2000] },
-  { label: "Over £2,000", range: [2000, Infinity] },
-];
 
 export function ProductFilters({
   products,
@@ -39,7 +31,6 @@ export function ProductFilters({
     "material",
     "colour",
     "finish",
-    "price",
   ]);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
@@ -91,7 +82,6 @@ export function ProductFilters({
     filters.materials.length +
     filters.colours.length +
     filters.finishes.length +
-    (filters.priceRange ? 1 : 0) +
     (filters.isNew ? 1 : 0) +
     (filters.isFeatured ? 1 : 0);
 
@@ -366,69 +356,6 @@ export function ProductFilters({
         </div>
       )}
 
-      {/* Price Range Filter */}
-      <div>
-        <button
-          onClick={() => toggleSection("price")}
-          className="w-full flex items-center justify-between py-2 text-left"
-        >
-          <span className="text-[12px] tracking-[0.1em] uppercase font-medium text-primary-black">
-            Price
-          </span>
-          <ChevronDown
-            className={`w-4 h-4 text-warm-grey transition-transform ${
-              expandedSections.includes("price") ? "rotate-180" : ""
-            }`}
-          />
-        </button>
-        <AnimatePresence>
-          {expandedSections.includes("price") && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="overflow-hidden"
-            >
-              <div className="space-y-2 pt-2 pb-4">
-                {PRICE_RANGES.map((priceRange) => (
-                  <label
-                    key={priceRange.label}
-                    className="flex items-center gap-3 cursor-pointer group"
-                  >
-                    <div
-                      className={`w-4 h-4 border rounded-full flex items-center justify-center transition-colors ${
-                        filters.priceRange?.[0] === priceRange.range[0] &&
-                        filters.priceRange?.[1] === priceRange.range[1]
-                          ? "bg-primary-black border-primary-black"
-                          : "border-light-grey group-hover:border-warm-grey"
-                      }`}
-                      onClick={() =>
-                        onFiltersChange({
-                          ...filters,
-                          priceRange:
-                            filters.priceRange?.[0] === priceRange.range[0] &&
-                            filters.priceRange?.[1] === priceRange.range[1]
-                              ? null
-                              : priceRange.range,
-                        })
-                      }
-                    >
-                      {filters.priceRange?.[0] === priceRange.range[0] &&
-                        filters.priceRange?.[1] === priceRange.range[1] && (
-                          <div className="w-2 h-2 bg-white rounded-full" />
-                        )}
-                    </div>
-                    <span className="text-[13px] text-warm-grey group-hover:text-primary-black transition-colors">
-                      {priceRange.label}
-                    </span>
-                  </label>
-                ))}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
 
       {/* Clear Filters Button */}
       {activeFilterCount > 0 && (
@@ -540,14 +467,6 @@ export function applyFilters(products: Product[], filters: FilterState): Product
       return false;
     }
 
-    // Price range filter
-    if (filters.priceRange) {
-      const price = product.pricing.salePrice || product.pricing.price;
-      if (price < filters.priceRange[0] || price > filters.priceRange[1]) {
-        return false;
-      }
-    }
-
     // New arrivals filter
     if (filters.isNew && !product.isNew) {
       return false;
@@ -567,7 +486,6 @@ export const defaultFilters: FilterState = {
   materials: [],
   colours: [],
   finishes: [],
-  priceRange: null,
   isNew: false,
   isFeatured: false,
 };

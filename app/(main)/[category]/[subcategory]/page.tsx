@@ -59,16 +59,6 @@ export default function SubcategoryPage({ params }: SubcategoryPageProps) {
   const sortedProducts = useMemo(() => {
     return [...filteredProducts].sort((a, b) => {
       switch (sortBy) {
-        case "price-low":
-          return (
-            (a.pricing.salePrice || a.pricing.price) -
-            (b.pricing.salePrice || b.pricing.price)
-          );
-        case "price-high":
-          return (
-            (b.pricing.salePrice || b.pricing.price) -
-            (a.pricing.salePrice || a.pricing.price)
-          );
         case "newest":
           return b.isNew ? 1 : -1;
         case "name-az":
@@ -213,8 +203,6 @@ export default function SubcategoryPage({ params }: SubcategoryPageProps) {
                 className="text-[13px] bg-transparent border-none cursor-pointer appearance-none pr-6 focus:outline-none"
               >
                 <option value="featured">Sort by: Featured</option>
-                <option value="price-low">Price: Low to High</option>
-                <option value="price-high">Price: High to Low</option>
                 <option value="newest">Newest</option>
                 <option value="name-az">Name: A to Z</option>
                 <option value="name-za">Name: Z to A</option>
@@ -229,7 +217,6 @@ export default function SubcategoryPage({ params }: SubcategoryPageProps) {
       {(filters.materials.length > 0 || 
         filters.colours.length > 0 || 
         filters.finishes.length > 0 || 
-        filters.priceRange || 
         filters.isNew || 
         filters.isFeatured) && (
         <div className="max-w-[1600px] mx-auto px-6 py-4">
@@ -283,17 +270,6 @@ export default function SubcategoryPage({ params }: SubcategoryPageProps) {
                 </button>
               </span>
             ))}
-            {filters.priceRange && (
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-off-white text-[12px] tracking-[0.05em]">
-                {filters.priceRange[1] === Infinity 
-                  ? `Over £${filters.priceRange[0].toLocaleString()}`
-                  : `£${filters.priceRange[0].toLocaleString()} - £${filters.priceRange[1].toLocaleString()}`
-                }
-                <button onClick={() => setFilters({ ...filters, priceRange: null })} className="hover:text-red-500">
-                  <span className="sr-only">Remove</span>×
-                </button>
-              </span>
-            )}
             <button
               onClick={handleClearFilters}
               className="text-[12px] tracking-[0.05em] text-warm-grey hover:text-primary-black underline"
