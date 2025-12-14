@@ -18,6 +18,7 @@ interface ProductFiltersProps {
   filters: FilterState;
   onFiltersChange: (filters: FilterState) => void;
   onClearFilters: () => void;
+  variant?: "mobile" | "desktop"; // mobile = button only, desktop = sidebar only
 }
 
 
@@ -26,12 +27,9 @@ export function ProductFilters({
   filters,
   onFiltersChange,
   onClearFilters,
+  variant,
 }: ProductFiltersProps) {
-  const [expandedSections, setExpandedSections] = useState<string[]>([
-    "material",
-    "colour",
-    "finish",
-  ]);
+  const [expandedSections, setExpandedSections] = useState<string[]>([]);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
   // Extract unique filter values from products
@@ -369,6 +367,81 @@ export function ProductFilters({
     </div>
   );
 
+  // Desktop sidebar only
+  if (variant === "desktop") {
+    return (
+      <div className="w-64 flex-shrink-0">
+        <div className="sticky top-28">
+          <h3 className="text-[12px] tracking-[0.15em] uppercase font-medium text-primary-black mb-6">
+            Filter By
+          </h3>
+          <FilterContent />
+        </div>
+      </div>
+    );
+  }
+
+  // Mobile button + slide-out panel only
+  if (variant === "mobile") {
+    return (
+      <>
+        <button
+          onClick={() => setMobileFiltersOpen(true)}
+          className="flex items-center gap-2 text-[13px] tracking-[0.05em] text-primary-black"
+        >
+          <SlidersHorizontal className="w-4 h-4" />
+          Filters
+          {activeFilterCount > 0 && (
+            <span className="bg-primary-black text-white text-[10px] px-2 py-0.5 rounded-full">
+              {activeFilterCount}
+            </span>
+          )}
+        </button>
+
+        {/* Mobile Filter Panel */}
+        <AnimatePresence>
+          {mobileFiltersOpen && (
+            <>
+              {/* Backdrop */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 bg-black/30 z-50"
+                onClick={() => setMobileFiltersOpen(false)}
+              />
+
+              {/* Panel */}
+              <motion.div
+                initial={{ x: "-100%" }}
+                animate={{ x: 0 }}
+                exit={{ x: "-100%" }}
+                transition={{ type: "tween", duration: 0.3 }}
+                className="fixed left-0 top-0 bottom-0 w-[300px] bg-white z-50 overflow-y-auto"
+              >
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-8">
+                    <h3 className="text-[14px] tracking-[0.15em] uppercase font-medium text-primary-black">
+                      Filters
+                    </h3>
+                    <button
+                      onClick={() => setMobileFiltersOpen(false)}
+                      className="p-2 hover:bg-light-grey rounded-full transition-colors"
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
+                  </div>
+                  <FilterContent />
+                </div>
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
+      </>
+    );
+  }
+
+  // Default: both (for backwards compatibility)
   return (
     <>
       {/* Desktop Sidebar Filters */}

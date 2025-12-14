@@ -139,12 +139,15 @@ export default function CategoryPage({ params }: CategoryPageProps) {
         <div className="max-w-[1600px] mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-6">
             {/* Mobile Filter Button */}
-            <ProductFilters
-              products={categoryProducts}
-              filters={filters}
-              onFiltersChange={setFilters}
-              onClearFilters={handleClearFilters}
-            />
+            <div className="lg:hidden">
+              <ProductFilters
+                products={categoryProducts}
+                filters={filters}
+                onFiltersChange={setFilters}
+                onClearFilters={handleClearFilters}
+                variant="mobile"
+              />
+            </div>
             
             <p className="text-[13px] text-warm-grey hidden sm:block">
               {sortedProducts.length} {sortedProducts.length === 1 ? "Product" : "Products"}
@@ -268,6 +271,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
               filters={filters}
               onFiltersChange={setFilters}
               onClearFilters={handleClearFilters}
+              variant="desktop"
             />
           </div>
 
