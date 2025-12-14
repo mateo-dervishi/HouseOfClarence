@@ -23,8 +23,11 @@ import {
   FileSpreadsheet,
   Upload,
   Sparkles,
+  LayoutGrid,
+  List,
 } from "lucide-react";
 import { useSelectionStore, SelectionLabel, SelectionItem } from "@/stores/selectionStore";
+import { KanbanBoard } from "@/components/selection/KanbanBoard";
 
 export default function SelectionPage() {
   const router = useRouter();
@@ -51,6 +54,7 @@ export default function SelectionPage() {
   const [showMobileSidebar, setShowMobileSidebar] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [viewMode, setViewMode] = useState<"list" | "kanban">("list");
 
   const itemCount = getItemCount();
 
@@ -157,6 +161,32 @@ export default function SelectionPage() {
             </div>
 
             <div className="flex items-center gap-2 sm:gap-3">
+              {/* View Toggle */}
+              <div className="hidden md:flex items-center border border-light-grey">
+                <button
+                  onClick={() => setViewMode("list")}
+                  className={`p-2 transition-colors ${
+                    viewMode === "list"
+                      ? "bg-primary-black text-white"
+                      : "text-warm-grey hover:text-primary-black"
+                  }`}
+                  title="List view"
+                >
+                  <List className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => setViewMode("kanban")}
+                  className={`p-2 transition-colors ${
+                    viewMode === "kanban"
+                      ? "bg-primary-black text-white"
+                      : "text-warm-grey hover:text-primary-black"
+                  }`}
+                  title="Board view"
+                >
+                  <LayoutGrid className="w-4 h-4" />
+                </button>
+              </div>
+              
               <button
                 onClick={clearSelection}
                 className="px-3 py-2 text-[11px] md:text-[12px] tracking-[0.1em] uppercase text-warm-grey border border-light-grey hover:border-primary-black hover:text-primary-black transition-colors"
@@ -199,18 +229,61 @@ export default function SelectionPage() {
           </div>
         </div>
 
-        {/* Mobile: Toggle Sidebar Button */}
-        <button
-          onClick={() => setShowMobileSidebar(!showMobileSidebar)}
-          className="lg:hidden w-full mb-4 p-4 bg-white shadow-sm flex items-center justify-between"
-        >
-          <div className="flex items-center gap-2">
-            <FolderPlus className="w-4 h-4" />
-            <span className="text-sm font-medium">Organise by Room ({labels.length})</span>
+        {/* Mobile: View Toggle + Sidebar Button */}
+        <div className="lg:hidden flex gap-2 mb-4">
+          <div className="flex items-center border border-light-grey bg-white">
+            <button
+              onClick={() => setViewMode("list")}
+              className={`p-3 transition-colors ${
+                viewMode === "list"
+                  ? "bg-primary-black text-white"
+                  : "text-warm-grey hover:text-primary-black"
+              }`}
+              title="List view"
+            >
+              <List className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => setViewMode("kanban")}
+              className={`p-3 transition-colors ${
+                viewMode === "kanban"
+                  ? "bg-primary-black text-white"
+                  : "text-warm-grey hover:text-primary-black"
+              }`}
+              title="Board view"
+            >
+              <LayoutGrid className="w-4 h-4" />
+            </button>
           </div>
-          {showMobileSidebar ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-        </button>
+          
+          {viewMode === "list" && (
+            <button
+              onClick={() => setShowMobileSidebar(!showMobileSidebar)}
+              className="flex-1 p-3 bg-white shadow-sm flex items-center justify-between"
+            >
+              <div className="flex items-center gap-2">
+                <FolderPlus className="w-4 h-4" />
+                <span className="text-sm font-medium">Rooms ({labels.length})</span>
+              </div>
+              {showMobileSidebar ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+            </button>
+          )}
+        </div>
 
+        {/* Kanban View */}
+        {viewMode === "kanban" ? (
+          <KanbanBoard
+            items={items}
+            labels={labels}
+            onUpdateItemLabel={updateItemLabel}
+            onUpdateQuantity={updateQuantity}
+            onRemoveItem={removeItem}
+            onAddLabel={addLabel}
+            onRemoveLabel={removeLabel}
+            onUpdateLabel={updateLabel}
+          />
+        ) : (
+        /* List View */
         <div className="grid lg:grid-cols-[280px,1fr] gap-6 lg:gap-8">
           {/* Left Sidebar - Labels */}
           <aside className={`space-y-4 md:space-y-6 ${showMobileSidebar ? 'block' : 'hidden lg:block'}`}>
@@ -434,6 +507,7 @@ export default function SelectionPage() {
             )}
           </div>
         </div>
+        )}
 
         {/* Mobile: Fixed Bottom Bar */}
         <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-light-grey p-4 z-40">
