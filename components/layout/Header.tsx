@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { navigationData, Category, Subcategory } from "@/lib/navigation";
 import { useSelectionStore } from "@/stores/selectionStore";
 import { SelectionDrawer } from "@/components/selection/SelectionDrawer";
+import { SearchModal } from "@/components/search/SearchModal";
 import { createClient } from "@/lib/supabase/client";
 
 // Featured images for each category dropdown
@@ -51,6 +52,7 @@ export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
   const pathname = usePathname();
 
@@ -105,6 +107,18 @@ export function Header() {
     };
     document.addEventListener("keydown", handleEscape);
     return () => document.removeEventListener("keydown", handleEscape);
+  }, []);
+
+  // Keyboard shortcut for search (Cmd/Ctrl + K)
+  useEffect(() => {
+    const handleSearchShortcut = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        setSearchOpen(true);
+      }
+    };
+    document.addEventListener("keydown", handleSearchShortcut);
+    return () => document.removeEventListener("keydown", handleSearchShortcut);
   }, []);
 
   // Show solid header (white bg, black text) when: scrolled, dropdown open, or on pages without dark hero
@@ -165,7 +179,8 @@ export function Header() {
           {/* Right icons - Search, Profile, and Selection */}
           <div className="flex items-center justify-end">
             <button
-              className={`hidden md:flex items-center justify-center w-10 h-10 transition-colors duration-300 ${
+              onClick={() => setSearchOpen(true)}
+              className={`flex items-center justify-center w-10 h-10 transition-colors duration-300 ${
                 showSolidHeader ? "text-primary-black hover:opacity-60" : "text-white hover:opacity-70"
               }`}
               aria-label="Search"
@@ -418,6 +433,18 @@ export function Header() {
                   <X className="w-5 h-5" />
                 </button>
               </div>
+
+              {/* Mobile Search Button */}
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  setSearchOpen(true);
+                }}
+                className="flex items-center gap-3 w-full px-4 py-4 border-b border-light-grey text-left hover:bg-off-white transition-colors"
+              >
+                <Search className="w-5 h-5 text-warm-grey" strokeWidth={1.5} />
+                <span className="text-[14px] text-warm-grey">Search products...</span>
+              </button>
               
               {/* Categories */}
               <nav className="p-4">
@@ -493,6 +520,9 @@ export function Header() {
 
       {/* Selection Drawer */}
       <SelectionDrawer />
+
+      {/* Search Modal */}
+      <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
     </>
   );
 }
