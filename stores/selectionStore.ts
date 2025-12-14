@@ -48,6 +48,11 @@ interface SelectionStore {
   labels: SelectionLabel[];
   isOpen: boolean;
   
+  // Sync state
+  isSyncing: boolean;
+  lastSyncedAt: number | null;
+  isLoggedIn: boolean;
+  
   // Item Actions
   addItem: (item: Omit<SelectionItem, "quantity">) => void;
   removeItem: (id: string) => void;
@@ -66,6 +71,12 @@ interface SelectionStore {
   closeSelection: () => void;
   toggleSelection: () => void;
   
+  // Sync Actions
+  setLoggedIn: (isLoggedIn: boolean) => void;
+  loadFromServer: () => Promise<void>;
+  syncToServer: () => Promise<void>;
+  setSelection: (items: SelectionItem[], labels: SelectionLabel[]) => void;
+  
   // Getters
   getItemCount: () => number;
   isInSelection: (id: string) => boolean;
@@ -74,12 +85,26 @@ interface SelectionStore {
   getTotalByLabel: (labelId: string) => number;
 }
 
+// Debounce helper
+let syncTimeout: NodeJS.Timeout | null = null;
+const debouncedSync = (syncFn: () => Promise<void>, delay: number = 2000) => {
+  if (syncTimeout) {
+    clearTimeout(syncTimeout);
+  }
+  syncTimeout = setTimeout(() => {
+    syncFn();
+  }, delay);
+};
+
 export const useSelectionStore = create<SelectionStore>()(
   persist(
     (set, get) => ({
       items: [],
       labels: [],
       isOpen: false,
+      isSyncing: false,
+      lastSyncedAt: null,
+      isLoggedIn: false,
 
       // Item Actions
       addItem: (item) => {
@@ -95,10 +120,20 @@ export const useSelectionStore = create<SelectionStore>()(
         } else {
           set({ items: [...items, { ...item, quantity: 1 }] });
         }
+        
+        // Auto-sync if logged in
+        if (get().isLoggedIn) {
+          debouncedSync(() => get().syncToServer());
+        }
       },
 
       removeItem: (id) => {
         set({ items: get().items.filter((item) => item.id !== id) });
+        
+        // Auto-sync if logged in
+        if (get().isLoggedIn) {
+          debouncedSync(() => get().syncToServer());
+        }
       },
 
       updateQuantity: (id, quantity) => {
@@ -111,6 +146,11 @@ export const useSelectionStore = create<SelectionStore>()(
             item.id === id ? { ...item, quantity } : item
           ),
         });
+        
+        // Auto-sync if logged in
+        if (get().isLoggedIn) {
+          debouncedSync(() => get().syncToServer());
+        }
       },
 
       updateItemLabel: (itemId, labelId) => {
@@ -119,6 +159,11 @@ export const useSelectionStore = create<SelectionStore>()(
             item.id === itemId ? { ...item, labelId } : item
           ),
         });
+        
+        // Auto-sync if logged in
+        if (get().isLoggedIn) {
+          debouncedSync(() => get().syncToServer());
+        }
       },
 
       updateItemNotes: (itemId, notes) => {
@@ -127,10 +172,20 @@ export const useSelectionStore = create<SelectionStore>()(
             item.id === itemId ? { ...item, notes } : item
           ),
         });
+        
+        // Auto-sync if logged in
+        if (get().isLoggedIn) {
+          debouncedSync(() => get().syncToServer());
+        }
       },
 
       clearSelection: () => {
         set({ items: [], labels: [] });
+        
+        // Auto-sync if logged in
+        if (get().isLoggedIn) {
+          debouncedSync(() => get().syncToServer());
+        }
       },
 
       // Label Actions
@@ -146,6 +201,11 @@ export const useSelectionStore = create<SelectionStore>()(
           createdAt: Date.now(),
         };
         set({ labels: [...labels, newLabel] });
+        
+        // Auto-sync if logged in
+        if (get().isLoggedIn) {
+          debouncedSync(() => get().syncToServer());
+        }
       },
 
       removeLabel: (id) => {
@@ -156,6 +216,11 @@ export const useSelectionStore = create<SelectionStore>()(
             item.labelId === id ? { ...item, labelId: undefined } : item
           ),
         });
+        
+        // Auto-sync if logged in
+        if (get().isLoggedIn) {
+          debouncedSync(() => get().syncToServer());
+        }
       },
 
       updateLabel: (id, name, color) => {
@@ -166,12 +231,104 @@ export const useSelectionStore = create<SelectionStore>()(
               : label
           ),
         });
+        
+        // Auto-sync if logged in
+        if (get().isLoggedIn) {
+          debouncedSync(() => get().syncToServer());
+        }
       },
 
       // Drawer Actions
       openSelection: () => set({ isOpen: true }),
       closeSelection: () => set({ isOpen: false }),
       toggleSelection: () => set({ isOpen: !get().isOpen }),
+
+      // Sync Actions
+      setLoggedIn: (isLoggedIn) => set({ isLoggedIn }),
+      
+      setSelection: (items, labels) => {
+        set({ items, labels });
+      },
+
+      loadFromServer: async () => {
+        try {
+          set({ isSyncing: true });
+          
+          const response = await fetch('/api/selection');
+          
+          if (!response.ok) {
+            if (response.status === 401) {
+              // Not logged in, that's fine
+              set({ isLoggedIn: false, isSyncing: false });
+              return;
+            }
+            throw new Error('Failed to load selection');
+          }
+          
+          const data = await response.json();
+          const serverItems = data.items || [];
+          const serverLabels = data.labels || [];
+          const localItems = get().items;
+          const localLabels = get().labels;
+          
+          // Merge strategy: If server has data, use it. If empty and local has data, sync local to server.
+          if (serverItems.length > 0 || serverLabels.length > 0) {
+            // Server has data - use server data
+            set({ 
+              items: serverItems, 
+              labels: serverLabels,
+              isLoggedIn: true,
+              isSyncing: false,
+              lastSyncedAt: Date.now(),
+            });
+          } else if (localItems.length > 0 || localLabels.length > 0) {
+            // Server empty but local has data - push local to server
+            set({ isLoggedIn: true, isSyncing: false });
+            await get().syncToServer();
+          } else {
+            // Both empty
+            set({ 
+              isLoggedIn: true, 
+              isSyncing: false,
+              lastSyncedAt: Date.now(),
+            });
+          }
+        } catch (error) {
+          console.error('Error loading selection from server:', error);
+          set({ isSyncing: false });
+        }
+      },
+
+      syncToServer: async () => {
+        if (!get().isLoggedIn) return;
+        
+        try {
+          set({ isSyncing: true });
+          
+          const response = await fetch('/api/selection', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              items: get().items,
+              labels: get().labels,
+            }),
+          });
+          
+          if (!response.ok) {
+            throw new Error('Failed to sync selection');
+          }
+          
+          set({ 
+            isSyncing: false, 
+            lastSyncedAt: Date.now(),
+          });
+        } catch (error) {
+          console.error('Error syncing selection to server:', error);
+          set({ isSyncing: false });
+        }
+      },
 
       // Getters
       getItemCount: () => {
@@ -198,6 +355,11 @@ export const useSelectionStore = create<SelectionStore>()(
     }),
     {
       name: "house-of-clarence-selection",
+      partialize: (state) => ({
+        items: state.items,
+        labels: state.labels,
+        // Don't persist sync state
+      }),
     }
   )
 );
