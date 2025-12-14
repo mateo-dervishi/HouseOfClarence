@@ -21,17 +21,9 @@ export default function BespokePage() {
   ]);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [contactInfo, setContactInfo] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    countryCode: "+44",
-    projectDetails: "",
-  });
 
   const fileInputRefs = useRef<{ [key: string]: HTMLInputElement | null }>({});
-  const { addItem, openSelection } = useSelectionStore();
+  const { addItem } = useSelectionStore();
 
   const handleImageUpload = (requestId: string, file: File) => {
     if (file && file.type.startsWith("image/")) {
@@ -83,19 +75,11 @@ export default function BespokePage() {
     }
   };
 
-  const handleContactChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setContactInfo((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleAddToSelection = () => {
     setIsLoading(true);
     
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2500));
-    
     // Add each bespoke request to the selection as an unassigned item
+    let itemsAdded = 0;
     requests.forEach((request, index) => {
       // Only add if the request has some content
       if (request.imagePreview || request.sourceUrl || request.description) {
@@ -117,12 +101,15 @@ export default function BespokePage() {
             description: request.description,
           },
         });
+        itemsAdded++;
       }
     });
     
-    console.log("Bespoke Request Submitted:", { contactInfo, requests });
-    setIsLoading(false);
-    setIsSubmitted(true);
+    // Small delay for UX feedback
+    setTimeout(() => {
+      setIsLoading(false);
+      setIsSubmitted(true);
+    }, 500);
   };
 
   const isValidRequest = requests.some(
@@ -146,15 +133,10 @@ export default function BespokePage() {
             >
               <Check className="w-10 h-10 text-white" strokeWidth={2} />
             </motion.div>
-            <h1 className="text-3xl tracking-[0.15em] font-light mb-4">REQUEST RECEIVED</h1>
-            <p className="text-warm-grey leading-relaxed mb-4">
-              Thank you for your bespoke request. Our team of specialists will review your 
-              submission and get back to you within 24-48 hours with availability, pricing, 
-              and sourcing options.
-            </p>
-            <p className="text-sm text-primary-black font-medium mb-8">
+            <h1 className="text-3xl tracking-[0.15em] font-light mb-4">ADDED TO SELECTION</h1>
+            <p className="text-warm-grey leading-relaxed mb-8">
               Your bespoke items have been added to your selection. 
-              Assign them to a room or area to organize your project.
+              Now assign them to a room or area to organize your project.
             </p>
             <div className="space-y-3">
               <Link
@@ -163,12 +145,15 @@ export default function BespokePage() {
               >
                 View Selection & Assign Rooms
               </Link>
-              <Link
-                href="/"
+              <button
+                onClick={() => {
+                  setIsSubmitted(false);
+                  setRequests([{ id: "1", imageFile: null, imagePreview: null, sourceUrl: "", description: "" }]);
+                }}
                 className="block w-full py-4 border border-primary-black text-primary-black text-sm uppercase tracking-wider hover:bg-primary-black hover:text-white transition-colors"
               >
-                Return to Home
-              </Link>
+                Add More Bespoke Items
+              </button>
             </div>
           </div>
         </motion.div>
@@ -248,10 +233,10 @@ export default function BespokePage() {
         </div>
       </section>
 
-      {/* Request Form */}
+      {/* Bespoke Requests */}
       <section className="py-16 px-6">
         <div className="max-w-4xl mx-auto">
-          <form onSubmit={handleSubmit}>
+          <div>
             {/* Product Requests */}
             <div className="space-y-8 mb-12">
               <h2 className="text-xl tracking-[0.1em] font-light text-center mb-8">
@@ -387,101 +372,11 @@ export default function BespokePage() {
               </button>
             </div>
 
-            {/* Contact Information */}
-            <div className="bg-white p-8 shadow-sm mb-8">
-              <h2 className="text-xl tracking-[0.1em] font-light mb-8 text-center">
-                YOUR DETAILS
-              </h2>
-
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-xs tracking-wider uppercase text-warm-grey mb-2">
-                    First Name *
-                  </label>
-                  <input
-                    type="text"
-                    name="firstName"
-                    value={contactInfo.firstName}
-                    onChange={handleContactChange}
-                    className="w-full border border-light-grey p-4 text-sm focus:border-primary-black outline-none"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs tracking-wider uppercase text-warm-grey mb-2">
-                    Last Name *
-                  </label>
-                  <input
-                    type="text"
-                    name="lastName"
-                    value={contactInfo.lastName}
-                    onChange={handleContactChange}
-                    className="w-full border border-light-grey p-4 text-sm focus:border-primary-black outline-none"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs tracking-wider uppercase text-warm-grey mb-2">
-                    Email Address *
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={contactInfo.email}
-                    onChange={handleContactChange}
-                    className="w-full border border-light-grey p-4 text-sm focus:border-primary-black outline-none"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs tracking-wider uppercase text-warm-grey mb-2">
-                    Phone Number *
-                  </label>
-                  <div className="flex">
-                    <select
-                      name="countryCode"
-                      value={contactInfo.countryCode}
-                      onChange={handleContactChange}
-                      className="border border-light-grey p-4 text-sm bg-off-white focus:border-primary-black outline-none"
-                    >
-                      <option value="+44">UK (+44)</option>
-                      <option value="+1">US (+1)</option>
-                      <option value="+353">IE (+353)</option>
-                      <option value="+33">FR (+33)</option>
-                      <option value="+49">DE (+49)</option>
-                      <option value="+971">UAE (+971)</option>
-                    </select>
-                    <input
-                      type="tel"
-                      name="phone"
-                      value={contactInfo.phone}
-                      onChange={handleContactChange}
-                      className="flex-1 border border-l-0 border-light-grey p-4 text-sm focus:border-primary-black outline-none"
-                      required
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-6">
-                <label className="block text-xs tracking-wider uppercase text-warm-grey mb-2">
-                  Project Details (Optional)
-                </label>
-                <textarea
-                  name="projectDetails"
-                  value={contactInfo.projectDetails}
-                  onChange={handleContactChange}
-                  placeholder="Tell us about your project - timeline, budget range, room type, style preferences..."
-                  rows={4}
-                  className="w-full border border-light-grey p-4 text-sm focus:border-primary-black outline-none resize-none"
-                />
-              </div>
-            </div>
-
-            {/* Submit */}
+            {/* Add to Selection Button */}
             <div className="space-y-4">
               <button
-                type="submit"
+                type="button"
+                onClick={handleAddToSelection}
                 disabled={isLoading || !isValidRequest}
                 className="w-full py-5 bg-primary-black text-white text-sm uppercase tracking-[0.15em] hover:bg-charcoal transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
               >
@@ -491,18 +386,21 @@ export default function BespokePage() {
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
-                    Submitting Request...
+                    Adding to Selection...
                   </>
                 ) : (
-                  "Submit Bespoke Request"
+                  <>
+                    <Plus className="w-5 h-5" />
+                    Add to My Selection
+                  </>
                 )}
               </button>
               
               <p className="text-center text-xs text-warm-grey">
-                By submitting, you agree to be contacted by our team regarding your request.
+                Items will be added to your selection as unassigned. You can then assign them to rooms or areas.
               </p>
             </div>
-          </form>
+          </div>
         </div>
       </section>
 
