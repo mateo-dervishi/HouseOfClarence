@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { Upload, X, Link as LinkIcon, FileText, Check, Plus, Instagram, Globe } from "lucide-react";
+import { useSelectionStore } from "@/stores/selectionStore";
 
 interface BespokeRequest {
   id: string;
@@ -30,6 +31,7 @@ export default function BespokePage() {
   });
 
   const fileInputRefs = useRef<{ [key: string]: HTMLInputElement | null }>({});
+  const { addItem, openSelection } = useSelectionStore();
 
   const handleImageUpload = (requestId: string, file: File) => {
     if (file && file.type.startsWith("image/")) {
@@ -93,6 +95,31 @@ export default function BespokePage() {
     // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 2500));
     
+    // Add each bespoke request to the selection as an unassigned item
+    requests.forEach((request, index) => {
+      // Only add if the request has some content
+      if (request.imagePreview || request.sourceUrl || request.description) {
+        const itemName = request.description 
+          ? request.description.slice(0, 50) + (request.description.length > 50 ? "..." : "")
+          : `Bespoke Item ${index + 1}`;
+        
+        addItem({
+          id: `bespoke-${Date.now()}-${index}`,
+          slug: `bespoke-item-${Date.now()}-${index}`,
+          name: itemName,
+          price: 0,
+          priceExVat: 0,
+          image: request.imagePreview || "/bespoke-placeholder.png",
+          category: "Bespoke",
+          // No labelId - item will be unassigned
+          customOptions: {
+            sourceUrl: request.sourceUrl,
+            description: request.description,
+          },
+        });
+      }
+    });
+    
     console.log("Bespoke Request Submitted:", { contactInfo, requests });
     setIsLoading(false);
     setIsSubmitted(true);
@@ -120,24 +147,28 @@ export default function BespokePage() {
               <Check className="w-10 h-10 text-white" strokeWidth={2} />
             </motion.div>
             <h1 className="text-3xl tracking-[0.15em] font-light mb-4">REQUEST RECEIVED</h1>
-            <p className="text-warm-grey leading-relaxed mb-8">
+            <p className="text-warm-grey leading-relaxed mb-4">
               Thank you for your bespoke request. Our team of specialists will review your 
               submission and get back to you within 24-48 hours with availability, pricing, 
               and sourcing options.
             </p>
+            <p className="text-sm text-primary-black font-medium mb-8">
+              Your bespoke items have been added to your selection. 
+              Assign them to a room or area to organize your project.
+            </p>
             <div className="space-y-3">
               <Link
-                href="/"
+                href="/selection"
                 className="block w-full py-4 bg-primary-black text-white text-sm uppercase tracking-wider hover:bg-charcoal transition-colors"
+              >
+                View Selection & Assign Rooms
+              </Link>
+              <Link
+                href="/"
+                className="block w-full py-4 border border-primary-black text-primary-black text-sm uppercase tracking-wider hover:bg-primary-black hover:text-white transition-colors"
               >
                 Return to Home
               </Link>
-              <a
-                href="tel:+442033704057"
-                className="block w-full py-4 border border-primary-black text-primary-black text-sm uppercase tracking-wider hover:bg-primary-black hover:text-white transition-colors"
-              >
-                Call Us: 020 3370 4057
-              </a>
             </div>
           </div>
         </motion.div>

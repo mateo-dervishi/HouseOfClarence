@@ -24,6 +24,8 @@ export interface SelectionItem {
   customOptions?: {
     color?: string;
     dimensions?: string;
+    sourceUrl?: string; // For bespoke items - where the item was found
+    description?: string; // For bespoke items - detailed description
   };
 }
 
