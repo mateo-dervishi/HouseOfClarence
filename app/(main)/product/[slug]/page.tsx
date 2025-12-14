@@ -4,10 +4,11 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { mockProducts } from "@/lib/mockData";
-import { ProductCard } from "@/components/product/ProductCard";
 import { ProductGallery } from "@/components/product/ProductGallery";
 import { ProductInfo } from "@/components/product/ProductInfo";
 import { ProductAccordion } from "@/components/product/ProductAccordion";
+import { ProductRecommendations } from "@/components/product/ProductRecommendations";
+import { getProductRecommendations } from "@/lib/recommendations";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { ChevronRight, Truck, Shield, Phone } from "lucide-react";
@@ -75,9 +76,8 @@ export default function ProductPage({ params }: ProductPageProps) {
     finish: product.specifications.finish,
   };
 
-  const relatedProducts = mockProducts
-    .filter((p) => p.id !== product.id && p.category.id === product.category.id)
-    .slice(0, 4);
+  // Get smart recommendations
+  const recommendations = getProductRecommendations(product);
 
   return (
     <main className="pt-20">
@@ -203,49 +203,13 @@ export default function ProductPage({ params }: ProductPageProps) {
         </div>
       </section>
 
-      {/* Related Products */}
-      {relatedProducts.length > 0 && (
-        <section className="border-t border-light-grey py-20 bg-[#FAFAFA]">
-          <div className="max-w-[1800px] mx-auto px-6 lg:px-12">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="flex flex-col md:flex-row md:items-end md:justify-between mb-12"
-            >
-              <div>
-                <span className="inline-block text-[10px] tracking-[0.25em] uppercase text-warm-grey mb-3">
-                  Discover More
-                </span>
-                <h2 className="text-2xl lg:text-3xl font-light tracking-wide">
-                  You May Also Like
-                </h2>
-              </div>
-              <Link 
-                href={`/${product.category.slug}`}
-                className="mt-4 md:mt-0 text-[12px] tracking-[0.1em] uppercase border-b border-primary-black pb-1 hover:text-charcoal hover:border-charcoal transition-colors"
-              >
-                View All {product.category.name}
-              </Link>
-            </motion.div>
-            
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-              {relatedProducts.map((relatedProduct, index) => (
-                <motion.div
-                  key={relatedProduct.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                >
-                  <ProductCard product={relatedProduct} />
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
+      {/* Smart Recommendations */}
+      <ProductRecommendations
+        product={product}
+        pairsWellWith={recommendations.pairsWellWith}
+        similarStyle={recommendations.similarStyle}
+        moreFromCollection={recommendations.moreFromCollection}
+      />
 
       {/* Bottom CTA Section */}
       <section className="relative py-24 overflow-hidden">
