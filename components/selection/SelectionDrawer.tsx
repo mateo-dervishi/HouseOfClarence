@@ -1,7 +1,7 @@
 "use client";
 
 import { useSelectionStore, SelectionItem } from "@/stores/selectionStore";
-import { X, Minus, Plus, Trash2, ClipboardList, Maximize2, Check } from "lucide-react";
+import { X, Minus, Plus, Trash2, ClipboardList, Maximize2, Check, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
@@ -122,19 +122,28 @@ export function SelectionDrawer() {
                           <li key={item.id} className="p-4">
                             <div className="flex gap-4">
                               {/* Image */}
-                              <Link
-                                href={`/product/${item.slug}`}
-                                onClick={closeSelection}
-                                className="flex-shrink-0 w-24 h-24 bg-off-white relative overflow-hidden"
-                              >
-                                <Image
-                                  src={item.image}
-                                  alt={item.name}
-                                  fill
-                                  className="object-cover"
-                                  sizes="96px"
-                                />
-                              </Link>
+                              <div className="flex-shrink-0 w-24 h-24 bg-off-white relative overflow-hidden">
+                                {item.category === "Bespoke" && (!item.image || item.image === "/bespoke-placeholder.png") ? (
+                                  // Bespoke item placeholder
+                                  <div className="w-full h-full bg-gradient-to-br from-primary-black to-charcoal flex flex-col items-center justify-center text-white">
+                                    <Sparkles className="w-6 h-6 opacity-80" strokeWidth={1.5} />
+                                    <span className="text-[9px] tracking-widest mt-1 opacity-70">BESPOKE</span>
+                                  </div>
+                                ) : (
+                                  <Link
+                                    href={`/product/${item.slug}`}
+                                    onClick={closeSelection}
+                                  >
+                                    <Image
+                                      src={item.image}
+                                      alt={item.name}
+                                      fill
+                                      className="object-cover"
+                                      sizes="96px"
+                                    />
+                                  </Link>
+                                )}
+                              </div>
 
                               {/* Details */}
                               <div className="flex-1 min-w-0">

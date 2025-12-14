@@ -22,6 +22,7 @@ import {
   FolderPlus,
   FileSpreadsheet,
   Upload,
+  Sparkles,
 } from "lucide-react";
 import { useSelectionStore, SelectionLabel, SelectionItem } from "@/stores/selectionStore";
 
@@ -513,18 +514,25 @@ function SelectionItemRow({
     <li className="p-3 md:p-4">
       <div className="flex gap-3 md:gap-4">
         {/* Image */}
-        <Link
-          href={`/product/${item.slug}`}
-          className="flex-shrink-0 w-16 h-16 md:w-20 md:h-20 bg-off-white relative overflow-hidden"
-        >
-          <Image
-            src={item.image}
-            alt={item.name}
-            fill
-            className="object-cover"
-            sizes="80px"
-          />
-        </Link>
+        <div className="flex-shrink-0 w-16 h-16 md:w-20 md:h-20 bg-off-white relative overflow-hidden">
+          {item.category === "Bespoke" && (!item.image || item.image === "/bespoke-placeholder.png") ? (
+            // Bespoke item placeholder
+            <div className="w-full h-full bg-gradient-to-br from-primary-black to-charcoal flex flex-col items-center justify-center text-white">
+              <Sparkles className="w-5 h-5 md:w-6 md:h-6 opacity-80" strokeWidth={1.5} />
+              <span className="text-[8px] md:text-[9px] tracking-widest mt-1 opacity-70">BESPOKE</span>
+            </div>
+          ) : (
+            <Link href={`/product/${item.slug}`}>
+              <Image
+                src={item.image}
+                alt={item.name}
+                fill
+                className="object-cover"
+                sizes="80px"
+              />
+            </Link>
+          )}
+        </div>
 
         {/* Details */}
         <div className="flex-1 min-w-0">
