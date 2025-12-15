@@ -261,6 +261,27 @@ export async function POST(request: Request) {
         }, { status: 500 });
       }
 
+      // Save submission record to database
+      const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
+      const totalRooms = labels.length + (unassignedItems && unassignedItems.length > 0 ? 1 : 0);
+
+      const { error: submissionError } = await supabase
+        .from('selection_submissions')
+        .insert({
+          user_id: session.user.id,
+          items: items,
+          labels: labels,
+          total_items: totalItems,
+          total_rooms: totalRooms,
+          filename: filename,
+          status: 'submitted',
+        });
+
+      if (submissionError) {
+        console.error('Failed to save submission record:', submissionError);
+        // Don't fail the request, just log the error
+      }
+
       // Success - return confirmation (no file download)
       return NextResponse.json({
         success: true,

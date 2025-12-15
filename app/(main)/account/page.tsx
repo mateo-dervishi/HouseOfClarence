@@ -2,9 +2,8 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { 
   ClipboardList, 
   Settings, 
@@ -12,7 +11,14 @@ import {
   ChevronRight,
   Home,
   FileText,
-  User as UserIcon
+  User as UserIcon,
+  History,
+  Plus,
+  Check,
+  Calendar,
+  Package,
+  FolderOpen,
+  RefreshCw
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { useSelectionStore } from "@/stores/selectionStore";
@@ -28,11 +34,23 @@ interface UserProfile {
   created_at: string;
 }
 
+interface Submission {
+  id: string;
+  total_items: number;
+  total_rooms: number;
+  filename: string;
+  submitted_at: string;
+  status: string;
+}
+
 export default function AccountPage() {
   const router = useRouter();
   const [user, setUser] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
-  const { items, labels } = useSelectionStore();
+  const [submissions, setSubmissions] = useState<Submission[]>([]);
+  const [loadingHistory, setLoadingHistory] = useState(true);
+  const [showNewSelectionModal, setShowNewSelectionModal] = useState(false);
+  const { items, labels, clearSelection } = useSelectionStore();
 
   // Get unique label IDs from items
   const uniqueLabelIds = [...new Set(items.map(item => item.labelId))];
@@ -73,6 +91,31 @@ export default function AccountPage() {
     fetchUser();
   }, [router]);
 
+  // Fetch submission history
+  useEffect(() => {
+    const fetchHistory = async () => {
+      try {
+        const response = await fetch("/api/selection/history");
+        if (response.ok) {
+          const data = await response.json();
+          setSubmissions(data.submissions || []);
+        }
+      } catch (error) {
+        console.error("Error fetching submission history:", error);
+      } finally {
+        setLoadingHistory(false);
+      }
+    };
+
+    fetchHistory();
+  }, []);
+
+  const handleStartNewSelection = () => {
+    clearSelection();
+    setShowNewSelectionModal(false);
+    router.push("/bathroom"); // Navigate to start browsing
+  };
+
   const handleSignOut = async () => {
     const supabase = createClient();
     await supabase.auth.signOut();
@@ -83,6 +126,26 @@ export default function AccountPage() {
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-GB", { month: "long", year: "numeric" });
+  };
+
+  const formatSubmissionDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-GB", { 
+      day: "numeric",
+      month: "short", 
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "submitted": return "bg-blue-100 text-blue-700";
+      case "reviewed": return "bg-yellow-100 text-yellow-700";
+      case "confirmed": return "bg-green-100 text-green-700";
+      default: return "bg-gray-100 text-gray-700";
+    }
   };
 
   if (loading) {
@@ -99,6 +162,7 @@ export default function AccountPage() {
 
 const menuItems = [
     { icon: ClipboardList, label: "My Selection", href: "/selection", badge: `${totalItems} Items` },
+    { icon: History, label: "Submission History", href: "#history", badge: submissions.length > 0 ? `${submissions.length}` : undefined },
   { icon: Settings, label: "Account Settings", href: "/account/settings" },
 ];
 
@@ -295,7 +359,7 @@ const menuItems = [
                 transition={{ delay: 0.4 }}
                 className="bg-primary-black text-white p-8"
               >
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                   <div>
                     <h2 className="text-lg font-display tracking-[0.15em] uppercase mb-2">
                       Ready to Submit?
@@ -304,15 +368,107 @@ const menuItems = [
                       Once you are happy with your selection, submit it for review and we will prepare your quote.
                     </p>
                   </div>
-                  <Link
-                    href="/selection"
-                    className="flex-shrink-0 px-8 py-4 bg-white text-primary-black text-[12px] tracking-[0.1em] uppercase hover:bg-off-white transition-colors"
-                  >
-                    Review & Submit
-                </Link>
-              </div>
-            </motion.div>
+                  <div className="flex gap-3 flex-shrink-0">
+                    <button
+                      onClick={() => setShowNewSelectionModal(true)}
+                      className="px-6 py-3 border border-white/30 text-white text-[12px] tracking-[0.1em] uppercase hover:bg-white/10 transition-colors"
+                    >
+                      Start Fresh
+                    </button>
+                    <Link
+                      href="/selection"
+                      className="px-6 py-3 bg-white text-primary-black text-[12px] tracking-[0.1em] uppercase hover:bg-off-white transition-colors"
+                    >
+                      Review & Submit
+                    </Link>
+                  </div>
+                </div>
+              </motion.div>
             )}
+
+            {/* Submission History */}
+            <motion.div
+              id="history"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.45 }}
+              className="bg-white p-8 border border-light-grey"
+            >
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-lg font-display tracking-[0.15em] uppercase flex items-center gap-3">
+                  <History className="w-5 h-5 text-warm-grey" />
+                  Submission History
+                </h2>
+                {submissions.length > 0 && totalItems === 0 && (
+                  <button
+                    onClick={() => router.push("/bathroom")}
+                    className="text-[12px] tracking-[0.1em] uppercase text-primary-black hover:opacity-70 transition-opacity flex items-center gap-1"
+                  >
+                    <Plus className="w-4 h-4" />
+                    New Selection
+                  </button>
+                )}
+              </div>
+
+              {loadingHistory ? (
+                <div className="flex items-center justify-center py-12">
+                  <div className="w-6 h-6 border-2 border-primary-black/20 border-t-primary-black rounded-full animate-spin" />
+                </div>
+              ) : submissions.length > 0 ? (
+                <div className="space-y-4">
+                  {submissions.map((submission, index) => (
+                    <motion.div
+                      key={submission.id}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.05 }}
+                      className="flex items-center justify-between p-4 bg-off-white/50 border border-light-grey hover:border-warm-grey transition-colors"
+                    >
+                      <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 bg-primary-black/5 flex items-center justify-center">
+                          <FileText className="w-5 h-5 text-primary-black" />
+                        </div>
+                        <div>
+                          <p className="text-[14px] font-medium flex items-center gap-2">
+                            Selection #{submissions.length - index}
+                            <span className={`px-2 py-0.5 text-[10px] tracking-wide uppercase ${getStatusColor(submission.status)}`}>
+                              {submission.status}
+                            </span>
+                          </p>
+                          <div className="flex items-center gap-4 mt-1 text-[12px] text-warm-grey">
+                            <span className="flex items-center gap-1">
+                              <Calendar className="w-3 h-3" />
+                              {formatSubmissionDate(submission.submitted_at)}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <Package className="w-3 h-3" />
+                              {submission.total_items} items
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <FolderOpen className="w-3 h-3" />
+                              {submission.total_rooms} rooms
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="text-[11px] text-warm-grey">
+                        {submission.filename}
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-12">
+                  <History className="w-12 h-12 text-light-grey mx-auto mb-4" />
+                  <p className="text-warm-grey text-[14px] mb-2">
+                    No submissions yet
+                  </p>
+                  <p className="text-warm-grey/70 text-[13px]">
+                    Your submission history will appear here once you submit your first selection.
+                  </p>
+                </div>
+              )}
+            </motion.div>
 
             {/* Account Details */}
             <motion.div
@@ -356,6 +512,56 @@ const menuItems = [
           </div>
         </div>
       </div>
+
+      {/* Start New Selection Confirmation Modal */}
+      <AnimatePresence>
+        {showNewSelectionModal && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/50 z-50"
+              onClick={() => setShowNewSelectionModal(false)}
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            >
+              <div className="bg-white p-8 max-w-md w-full shadow-xl">
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <RefreshCw className="w-8 h-8 text-yellow-600" />
+                  </div>
+                  <h3 className="text-xl font-display tracking-[0.1em] uppercase mb-4">
+                    Start New Selection?
+                  </h3>
+                  <p className="text-warm-grey text-[14px] mb-8">
+                    This will clear your current selection of {totalItems} items. 
+                    Your previous submissions are saved in your history.
+                  </p>
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() => setShowNewSelectionModal(false)}
+                      className="flex-1 py-3 border border-light-grey text-[12px] tracking-[0.1em] uppercase hover:bg-off-white transition-colors"
+                    >
+                      Keep Current
+                    </button>
+                    <button
+                      onClick={handleStartNewSelection}
+                      className="flex-1 py-3 bg-primary-black text-white text-[12px] tracking-[0.1em] uppercase hover:bg-charcoal transition-colors"
+                    >
+                      Start Fresh
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </main>
   );
 }
