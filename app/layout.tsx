@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { SelectionSyncProvider } from "@/components/providers/SelectionSyncProvider";
+import { QuickViewProvider } from "@/components/product/QuickViewProvider";
 
 const inter = Inter({ 
   subsets: ["latin"],
@@ -69,7 +70,9 @@ export default function RootLayout({
       </head>
       <body className="antialiased">
         <SelectionSyncProvider>
-          {children}
+          <QuickViewProvider>
+            {children}
+          </QuickViewProvider>
         </SelectionSyncProvider>
       </body>
     </html>

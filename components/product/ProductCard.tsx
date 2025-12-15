@@ -4,8 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { Product } from "@/types/product";
 import { useState } from "react";
-import { Plus, Check } from "lucide-react";
+import { Plus, Check, Eye } from "lucide-react";
 import { useSelectionStore } from "@/stores/selectionStore";
+import { useQuickView } from "./QuickViewProvider";
 
 interface ProductCardProps {
   product: Product;
@@ -17,6 +18,7 @@ export function ProductCard({ product }: ProductCardProps) {
   const [justAdded, setJustAdded] = useState(false);
 
   const { addItem, isInSelection } = useSelectionStore();
+  const { openQuickView } = useQuickView();
   const isSelected = isInSelection(product.id);
 
   // Get second image for hover effect if available
@@ -50,6 +52,12 @@ export function ProductCard({ product }: ProductCardProps) {
     
     setJustAdded(true);
     setTimeout(() => setJustAdded(false), 1500);
+  };
+
+  const handleQuickView = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    openQuickView(product);
   };
 
   return (
@@ -100,26 +108,38 @@ export function ProductCard({ product }: ProductCardProps) {
             </span>
           )}
 
-          {/* Quick Add Button - Shows on hover */}
-          <button
-            onClick={handleAddToSelection}
-            className={`absolute bottom-4 right-4 w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 ${
-              isHovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
-            } ${
-              justAdded
-                ? "bg-green-600 text-white"
-                : isSelected
-                ? "bg-primary-black text-white"
-                : "bg-white text-primary-black hover:bg-primary-black hover:text-white"
-            }`}
-            aria-label="Add to selection"
-          >
-            {justAdded ? (
-              <Check className="w-4 h-4" />
-            ) : (
-              <Plus className="w-4 h-4" />
-            )}
-          </button>
+          {/* Action Buttons - Show on hover */}
+          <div className={`absolute bottom-4 right-4 flex flex-col gap-2 transition-all duration-300 ${
+            isHovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
+          }`}>
+            {/* Quick View Button */}
+            <button
+              onClick={handleQuickView}
+              className="w-10 h-10 rounded-full flex items-center justify-center shadow-lg bg-white text-primary-black hover:bg-primary-black hover:text-white transition-colors"
+              aria-label="Quick view"
+            >
+              <Eye className="w-4 h-4" />
+            </button>
+            
+            {/* Quick Add Button */}
+            <button
+              onClick={handleAddToSelection}
+              className={`w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition-colors ${
+                justAdded
+                  ? "bg-green-600 text-white"
+                  : isSelected
+                  ? "bg-primary-black text-white"
+                  : "bg-white text-primary-black hover:bg-primary-black hover:text-white"
+              }`}
+              aria-label="Add to selection"
+            >
+              {justAdded ? (
+                <Check className="w-4 h-4" />
+              ) : (
+                <Plus className="w-4 h-4" />
+              )}
+            </button>
+          </div>
         </div>
 
         {/* Product Info */}
