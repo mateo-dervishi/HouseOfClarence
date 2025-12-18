@@ -46,10 +46,10 @@ function HeroSection() {
     offset: ["start start", "end start"],
   });
 
-  // Framing effect like projects page
-  const paddingX = useTransform(scrollYProgress, [0, 0.4, 0.6], ["0px", "0px", "40px"]);
-  const paddingTop = useTransform(scrollYProgress, [0, 0.4, 0.6], ["0px", "0px", "120px"]); // Extra for header
-  const paddingBottom = useTransform(scrollYProgress, [0, 0.4, 0.6], ["0px", "0px", "40px"]);
+  // Framing effect like projects page - smaller padding on mobile
+  const paddingX = useTransform(scrollYProgress, [0, 0.4, 0.6], ["0px", "0px", "16px"]);
+  const paddingTop = useTransform(scrollYProgress, [0, 0.4, 0.6], ["0px", "0px", "80px"]); // Extra for header
+  const paddingBottom = useTransform(scrollYProgress, [0, 0.4, 0.6], ["0px", "0px", "16px"]);
   const borderRadius = useTransform(scrollYProgress, [0, 0.4, 0.6], [0, 0, 24]);
   const scale = useTransform(scrollYProgress, [0, 0.4, 0.6], [1, 1, 0.92]);
   const overlayOpacity = useTransform(scrollYProgress, [0, 0.6], [0.3, 0.5]);
@@ -104,15 +104,15 @@ function HeroSection() {
           className="absolute inset-0 flex items-center justify-center z-10"
           style={{ opacity: textOpacity, y: textY }}
         >
-          <div className="text-center text-white px-6">
+          <div className="text-center text-white px-4 sm:px-6">
             <h1
-              className="text-4xl md:text-6xl lg:text-7xl font-display tracking-[0.3em] mb-6 animate-fade-in-up"
+              className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-display tracking-[0.15em] sm:tracking-[0.2em] md:tracking-[0.3em] mb-4 sm:mb-6 animate-fade-in-up"
               style={{ animationDelay: '0ms' }}
             >
               REFINED FINISHING
             </h1>
             <p
-              className="text-[13px] md:text-[15px] tracking-[0.2em] text-white/70 mb-8 animate-fade-in-up"
+              className="text-[11px] sm:text-[13px] md:text-[15px] tracking-[0.15em] sm:tracking-[0.2em] text-white/70 mb-6 sm:mb-8 animate-fade-in-up"
               style={{ animationDelay: '200ms' }}
             >
               FOR DISCERNING SPACES
@@ -123,7 +123,7 @@ function HeroSection() {
             >
               <Link
                 href="/bathroom"
-                className="inline-flex items-center gap-3 px-10 py-5 border border-white/40 text-white text-[12px] tracking-[0.2em] uppercase backdrop-blur-sm bg-white/5 hover:bg-white/15 hover:border-white/70 transition-all duration-500 group"
+                className="inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-10 py-4 sm:py-5 border border-white/40 text-white text-[11px] sm:text-[12px] tracking-[0.15em] sm:tracking-[0.2em] uppercase backdrop-blur-sm bg-white/5 hover:bg-white/15 hover:border-white/70 transition-all duration-500 group"
               >
                 Explore Collections
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -134,14 +134,14 @@ function HeroSection() {
 
         {/* Brand intro - appears as hero frames, centered in image */}
         <motion.div 
-          className="absolute inset-0 flex items-center justify-center z-10 px-6"
+          className="absolute inset-0 flex items-center justify-center z-10 px-4 sm:px-6"
           style={{ opacity: introOpacity, y: introY }}
         >
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-display tracking-[0.25em] text-white mb-6">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display tracking-[0.15em] sm:tracking-[0.2em] md:tracking-[0.25em] text-white mb-4 sm:mb-6">
               CURATED EXCELLENCE
             </h2>
-            <p className="text-white/70 text-base md:text-lg leading-relaxed max-w-2xl mx-auto">
+            <p className="text-white/70 text-sm sm:text-base md:text-lg leading-relaxed max-w-2xl mx-auto px-2">
               House of Clarence brings together the finest bathroom, kitchen, and interior 
               finishing materials from around the world.
             </p>
@@ -177,10 +177,10 @@ export default function HomePage() {
       <HeroSection />
 
       {/* All Categories - Bento Grid Layout */}
-      <section className="py-24 px-6 bg-off-white">
-        <div className="max-w-7xl mx-auto space-y-6">
+      <section className="py-12 sm:py-16 md:py-24 px-4 sm:px-6 bg-off-white">
+        <div className="max-w-7xl mx-auto space-y-4 sm:space-y-6">
           {/* Row 1: Bathroom (wide) + Tiling (tall) */}
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-3 gap-4 sm:gap-6">
             {/* Bathroom - 2 columns */}
             <motion.div
               initial={{ opacity: 0, y: 40 }}
@@ -198,15 +198,15 @@ export default function HomePage() {
                   sizes="(max-width: 768px) 100vw, 66vw"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-8">
-                  <p className="text-[11px] tracking-[0.2em] text-white/70 uppercase mb-2">Explore</p>
-                  <h3 className="text-2xl md:text-3xl tracking-[0.15em] text-white font-display mb-3">
+                <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 md:p-8">
+                  <p className="text-[10px] sm:text-[11px] tracking-[0.2em] text-white/70 uppercase mb-1 sm:mb-2">Explore</p>
+                  <h3 className="text-xl sm:text-2xl md:text-3xl tracking-[0.15em] text-white font-display mb-2 sm:mb-3">
                     BATHROOM
                   </h3>
-                  <p className="text-white/80 text-sm mb-4 max-w-sm">
+                  <p className="text-white/80 text-xs sm:text-sm mb-2 sm:mb-4 max-w-sm hidden sm:block">
                     Freestanding baths, stone basins & premium brassware
                   </p>
-                  <span className="text-white text-sm tracking-wider opacity-80 group-hover:opacity-100 transition-opacity">
+                  <span className="text-white text-xs sm:text-sm tracking-wider opacity-80 group-hover:opacity-100 transition-opacity">
                     Shop Bathroom →
                   </span>
                 </div>
@@ -220,7 +220,7 @@ export default function HomePage() {
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.15 }}
             >
-              <Link href="/tiling" className="group block relative aspect-[3/4] md:aspect-auto md:h-full overflow-hidden rounded-lg">
+              <Link href="/tiling" className="group block relative aspect-[4/3] sm:aspect-[3/4] md:aspect-auto md:h-full overflow-hidden rounded-lg">
                 <Image
                   src="/tiling-hero.png"
                   alt="Premium Tiling"
@@ -229,15 +229,15 @@ export default function HomePage() {
                   sizes="(max-width: 768px) 100vw, 33vw"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-8">
-                  <p className="text-[11px] tracking-[0.2em] text-white/70 uppercase mb-2">Explore</p>
-                  <h3 className="text-xl md:text-2xl tracking-[0.15em] text-white font-display mb-3">
+                <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 md:p-8">
+                  <p className="text-[10px] sm:text-[11px] tracking-[0.2em] text-white/70 uppercase mb-1 sm:mb-2">Explore</p>
+                  <h3 className="text-lg sm:text-xl md:text-2xl tracking-[0.15em] text-white font-display mb-2 sm:mb-3">
                     TILING
                   </h3>
-                  <p className="text-white/80 text-sm mb-4">
+                  <p className="text-white/80 text-xs sm:text-sm mb-2 sm:mb-4 hidden sm:block">
                     Marble & porcelain tiles
                   </p>
-                  <span className="text-white text-sm tracking-wider opacity-80 group-hover:opacity-100 transition-opacity">
+                  <span className="text-white text-xs sm:text-sm tracking-wider opacity-80 group-hover:opacity-100 transition-opacity">
                     Shop Tiling →
                   </span>
                 </div>
@@ -246,7 +246,7 @@ export default function HomePage() {
           </div>
 
           {/* Row 2: Kitchen + Lighting (equal) */}
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-2 gap-4 sm:gap-6">
             {/* Kitchen */}
             <motion.div
               initial={{ opacity: 0, y: 40 }}
@@ -254,24 +254,24 @@ export default function HomePage() {
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
             >
-              <Link href="/kitchen" className="group block relative aspect-[4/3] overflow-hidden rounded-lg">
+              <Link href="/kitchen" className="group block relative aspect-square sm:aspect-[4/3] overflow-hidden rounded-lg">
                 <Image
                   src="/kitchen-hero.png"
                   alt="Designer Kitchen"
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
-                  sizes="(max-width: 768px) 100vw, 50vw"
+                  sizes="(max-width: 768px) 50vw, 50vw"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-8">
-                  <p className="text-[11px] tracking-[0.2em] text-white/70 uppercase mb-2">Explore</p>
-                  <h3 className="text-2xl md:text-3xl tracking-[0.15em] text-white font-display mb-3">
+                <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-6 md:p-8">
+                  <p className="text-[9px] sm:text-[11px] tracking-[0.2em] text-white/70 uppercase mb-1 sm:mb-2">Explore</p>
+                  <h3 className="text-base sm:text-2xl md:text-3xl tracking-[0.1em] sm:tracking-[0.15em] text-white font-display mb-1 sm:mb-3">
                     KITCHEN
                   </h3>
-                  <p className="text-white/80 text-sm mb-4 max-w-sm">
+                  <p className="text-white/80 text-xs sm:text-sm mb-2 sm:mb-4 max-w-sm hidden sm:block">
                     Premium sinks, designer taps & quality hardware
                   </p>
-                  <span className="text-white text-sm tracking-wider opacity-80 group-hover:opacity-100 transition-opacity">
+                  <span className="text-white text-[10px] sm:text-sm tracking-wider opacity-80 group-hover:opacity-100 transition-opacity">
                     Shop Kitchen →
                   </span>
                 </div>
@@ -285,24 +285,24 @@ export default function HomePage() {
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.15 }}
             >
-              <Link href="/lighting" className="group block relative aspect-[4/3] overflow-hidden rounded-lg">
+              <Link href="/lighting" className="group block relative aspect-square sm:aspect-[4/3] overflow-hidden rounded-lg">
                 <Image
                   src="/lighting-hero.png"
                   alt="Designer Lighting"
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
-                  sizes="(max-width: 768px) 100vw, 50vw"
+                  sizes="(max-width: 768px) 50vw, 50vw"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-8">
-                  <p className="text-[11px] tracking-[0.2em] text-white/70 uppercase mb-2">Explore</p>
-                  <h3 className="text-2xl md:text-3xl tracking-[0.15em] text-white font-display mb-3">
+                <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-6 md:p-8">
+                  <p className="text-[9px] sm:text-[11px] tracking-[0.2em] text-white/70 uppercase mb-1 sm:mb-2">Explore</p>
+                  <h3 className="text-base sm:text-2xl md:text-3xl tracking-[0.1em] sm:tracking-[0.15em] text-white font-display mb-1 sm:mb-3">
                     LIGHTING
                   </h3>
-                  <p className="text-white/80 text-sm mb-4 max-w-sm">
+                  <p className="text-white/80 text-xs sm:text-sm mb-2 sm:mb-4 max-w-sm hidden sm:block">
                     Pendant, wall & statement lighting
                   </p>
-                  <span className="text-white text-sm tracking-wider opacity-80 group-hover:opacity-100 transition-opacity">
+                  <span className="text-white text-[10px] sm:text-sm tracking-wider opacity-80 group-hover:opacity-100 transition-opacity">
                     Shop Lighting →
                   </span>
                 </div>
@@ -311,14 +311,14 @@ export default function HomePage() {
           </div>
 
           {/* Row 3: Furniture (wide) + Electrical (tall) */}
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
             {/* Furniture - 2 columns */}
             <motion.div
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className="md:col-span-2"
+              className="col-span-2 md:col-span-2"
             >
               <Link href="/furniture" className="group block relative aspect-[16/9] overflow-hidden rounded-lg">
                 <Image
@@ -329,15 +329,15 @@ export default function HomePage() {
                   sizes="(max-width: 768px) 100vw, 66vw"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-8">
-                  <p className="text-[11px] tracking-[0.2em] text-white/70 uppercase mb-2">Explore</p>
-                  <h3 className="text-2xl md:text-3xl tracking-[0.15em] text-white font-display mb-3">
+                <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 md:p-8">
+                  <p className="text-[10px] sm:text-[11px] tracking-[0.2em] text-white/70 uppercase mb-1 sm:mb-2">Explore</p>
+                  <h3 className="text-xl sm:text-2xl md:text-3xl tracking-[0.15em] text-white font-display mb-2 sm:mb-3">
                     FURNITURE
                   </h3>
-                  <p className="text-white/80 text-sm mb-4 max-w-sm">
+                  <p className="text-white/80 text-xs sm:text-sm mb-2 sm:mb-4 max-w-sm hidden sm:block">
                     Living, dining, bedroom & study furniture
                   </p>
-                  <span className="text-white text-sm tracking-wider opacity-80 group-hover:opacity-100 transition-opacity">
+                  <span className="text-white text-xs sm:text-sm tracking-wider opacity-80 group-hover:opacity-100 transition-opacity">
                     Shop Furniture →
                   </span>
                 </div>
@@ -350,8 +350,9 @@ export default function HomePage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.15 }}
+              className="col-span-2 md:col-span-1"
             >
-              <Link href="/electrical" className="group block relative aspect-[3/4] md:aspect-auto md:h-full overflow-hidden rounded-lg">
+              <Link href="/electrical" className="group block relative aspect-[16/9] sm:aspect-[4/3] md:aspect-auto md:h-full overflow-hidden rounded-lg">
                 <Image
                   src="/electrical-hero.png"
                   alt="Premium Electrical"
@@ -360,15 +361,15 @@ export default function HomePage() {
                   sizes="(max-width: 768px) 100vw, 33vw"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-8">
-                  <p className="text-[11px] tracking-[0.2em] text-white/70 uppercase mb-2">Explore</p>
-                  <h3 className="text-xl md:text-2xl tracking-[0.15em] text-white font-display mb-3">
+                <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 md:p-8">
+                  <p className="text-[10px] sm:text-[11px] tracking-[0.2em] text-white/70 uppercase mb-1 sm:mb-2">Explore</p>
+                  <h3 className="text-lg sm:text-xl md:text-2xl tracking-[0.15em] text-white font-display mb-2 sm:mb-3">
                     ELECTRICAL
                   </h3>
-                  <p className="text-white/80 text-sm mb-4">
+                  <p className="text-white/80 text-xs sm:text-sm mb-2 sm:mb-4 hidden sm:block">
                     Designer switches & sockets
                   </p>
-                  <span className="text-white text-sm tracking-wider opacity-80 group-hover:opacity-100 transition-opacity">
+                  <span className="text-white text-xs sm:text-sm tracking-wider opacity-80 group-hover:opacity-100 transition-opacity">
                     Shop Electrical →
                   </span>
                 </div>
@@ -379,22 +380,22 @@ export default function HomePage() {
       </section>
 
       {/* Collections Section - Dark */}
-      <section className="py-24 px-6 bg-primary-black text-white">
+      <section className="py-12 sm:py-16 md:py-24 px-4 sm:px-6 bg-primary-black text-white">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="text-center mb-16"
+            className="text-center mb-8 sm:mb-12 md:mb-16"
           >
-            <h2 className="text-2xl md:text-3xl font-display tracking-[0.25em] mb-4">COLLECTIONS</h2>
-            <p className="text-warm-grey max-w-xl mx-auto">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-display tracking-[0.15em] sm:tracking-[0.25em] mb-3 sm:mb-4">COLLECTIONS</h2>
+            <p className="text-warm-grey max-w-xl mx-auto text-sm sm:text-base px-2">
               Thoughtfully curated collections for your personal sanctuary
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
             {collections.map((collection, index) => (
               <motion.div
                 key={collection.id}
@@ -404,7 +405,7 @@ export default function HomePage() {
                 transition={{ duration: 0.6, delay: index * 0.1 }}
               >
                 <Link href={collection.href} className="group block">
-                  <div className="relative aspect-[3/4] overflow-hidden mb-4">
+                  <div className="relative aspect-[3/4] overflow-hidden mb-2 sm:mb-4 rounded-md sm:rounded-lg">
                     <Image
                       src={collection.image}
                       alt={collection.name}
@@ -414,10 +415,10 @@ export default function HomePage() {
                     />
                     <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-500" />
                   </div>
-                  <h3 className="text-sm md:text-base tracking-[0.15em] uppercase mb-2">
+                  <h3 className="text-xs sm:text-sm md:text-base tracking-[0.1em] sm:tracking-[0.15em] uppercase mb-1 sm:mb-2">
                     {collection.name}
                   </h3>
-                  <p className="text-[12px] text-warm-grey leading-relaxed">
+                  <p className="text-[10px] sm:text-[12px] text-warm-grey leading-relaxed hidden sm:block">
                     {collection.description}
                   </p>
                 </Link>
@@ -428,8 +429,8 @@ export default function HomePage() {
       </section>
 
       {/* About Section */}
-      <section className="py-24 px-6 bg-white">
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+      <section className="py-12 sm:py-16 md:py-24 px-4 sm:px-6 bg-white">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-20 items-center">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -437,31 +438,30 @@ export default function HomePage() {
             transition={{ duration: 0.8 }}
             className="order-2 lg:order-1"
           >
-            <p className="text-[11px] tracking-[0.2em] text-warm-grey uppercase mb-4">About House of Clarence</p>
-            <h2 className="text-2xl md:text-3xl font-display tracking-[0.15em] mb-6">
+            <p className="text-[10px] sm:text-[11px] tracking-[0.15em] sm:tracking-[0.2em] text-warm-grey uppercase mb-3 sm:mb-4">About House of Clarence</p>
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-display tracking-[0.1em] sm:tracking-[0.15em] mb-4 sm:mb-6">
               EXCEPTIONAL QUALITY, TIMELESS DESIGN
             </h2>
-            <div className="space-y-4 text-warm-grey leading-relaxed">
+            <div className="space-y-3 sm:space-y-4 text-warm-grey leading-relaxed text-sm sm:text-base">
               <p>
                 House of Clarence was founded with a singular vision: to bring together the finest 
                 bathroom, kitchen, and interior finishing materials under one roof.
               </p>
               <p>
                 Every product in our collection is carefully selected for its superior materials, 
-                expert craftsmanship, and timeless design. We work directly with artisans and 
-                manufacturers who share our commitment to excellence.
+                expert craftsmanship, and timeless design.
               </p>
             </div>
-            <div className="mt-8 flex flex-col sm:flex-row gap-4">
+            <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4">
               <Link
                 href="/about"
-                className="inline-block px-8 py-4 border border-primary-black text-primary-black text-[12px] tracking-[0.15em] uppercase hover:bg-primary-black hover:text-white transition-all duration-500 text-center"
+                className="inline-block px-6 sm:px-8 py-3 sm:py-4 border border-primary-black text-primary-black text-[11px] sm:text-[12px] tracking-[0.15em] uppercase hover:bg-primary-black hover:text-white transition-all duration-500 text-center"
               >
                 Our Story
               </Link>
               <Link
                 href="/bespoke"
-                className="inline-block px-8 py-4 border border-primary-black text-primary-black text-[12px] tracking-[0.15em] uppercase hover:bg-primary-black hover:text-white transition-all duration-500 text-center"
+                className="inline-block px-6 sm:px-8 py-3 sm:py-4 border border-primary-black text-primary-black text-[11px] sm:text-[12px] tracking-[0.15em] uppercase hover:bg-primary-black hover:text-white transition-all duration-500 text-center"
               >
                 Bespoke Service
               </Link>
@@ -473,7 +473,7 @@ export default function HomePage() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="relative aspect-[4/5] order-1 lg:order-2 overflow-hidden rounded-lg"
+            className="relative aspect-[4/3] sm:aspect-[4/5] order-1 lg:order-2 overflow-hidden rounded-lg"
           >
             <Image
               src="/stone-sanctuary.png"
@@ -487,7 +487,7 @@ export default function HomePage() {
       </section>
 
       {/* Projects Showcase */}
-      <section className="relative h-[80vh] overflow-hidden">
+      <section className="relative h-[60vh] sm:h-[70vh] md:h-[80vh] overflow-hidden">
         <motion.div 
           className="absolute inset-0"
           initial={{ scale: 1.1 }}
@@ -505,7 +505,7 @@ export default function HomePage() {
           <div className="absolute inset-0 bg-black/50" />
         </motion.div>
 
-        <div className="relative z-10 h-full flex items-center justify-center px-6">
+        <div className="relative z-10 h-full flex items-center justify-center px-4 sm:px-6">
           <motion.div
             className="text-center text-white"
             initial={{ opacity: 0, y: 40 }}
@@ -513,18 +513,18 @@ export default function HomePage() {
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <p className="text-[11px] tracking-[0.25em] uppercase mb-6 text-white/60">
+            <p className="text-[10px] sm:text-[11px] tracking-[0.15em] sm:tracking-[0.25em] uppercase mb-4 sm:mb-6 text-white/60">
               Portfolio
             </p>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-display tracking-[0.15em] mb-8">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display tracking-[0.1em] sm:tracking-[0.15em] mb-4 sm:mb-8">
               OUR PROJECTS
             </h2>
-            <p className="text-white/70 text-lg max-w-lg mx-auto mb-10 leading-relaxed">
+            <p className="text-white/70 text-sm sm:text-base md:text-lg max-w-lg mx-auto mb-6 sm:mb-10 leading-relaxed px-2">
               Explore our work across London&apos;s most prestigious addresses
             </p>
             <Link
               href="/projects"
-              className="inline-flex items-center gap-3 px-10 py-5 bg-white text-primary-black text-[12px] tracking-[0.2em] uppercase hover:bg-off-white transition-all duration-500 group"
+              className="inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-10 py-4 sm:py-5 bg-white text-primary-black text-[11px] sm:text-[12px] tracking-[0.15em] sm:tracking-[0.2em] uppercase hover:bg-off-white transition-all duration-500 group"
             >
               View Projects
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -534,7 +534,7 @@ export default function HomePage() {
       </section>
 
       {/* Contact CTA */}
-      <section className="py-24 px-6 bg-off-white">
+      <section className="py-12 sm:py-16 md:py-24 px-4 sm:px-6 bg-off-white">
         <motion.div
           className="max-w-4xl mx-auto text-center"
           initial={{ opacity: 0, y: 30 }}
@@ -542,21 +542,21 @@ export default function HomePage() {
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="text-2xl md:text-3xl font-display tracking-[0.25em] mb-4">GET IN TOUCH</h2>
-          <p className="text-warm-grey mb-8 max-w-xl mx-auto">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-display tracking-[0.15em] sm:tracking-[0.25em] mb-3 sm:mb-4">GET IN TOUCH</h2>
+          <p className="text-warm-grey mb-6 sm:mb-8 max-w-xl mx-auto text-sm sm:text-base px-2">
             Our team is available to discuss your project requirements and provide personalised quotes.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
             <a
               href="tel:+442033704057"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-primary-black text-white text-[12px] tracking-[0.15em] uppercase hover:bg-charcoal transition-all duration-500"
+              className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-primary-black text-white text-[11px] sm:text-[12px] tracking-[0.15em] uppercase hover:bg-charcoal transition-all duration-500"
             >
               <Phone className="w-4 h-4" />
               020 3370 4057
             </a>
             <Link
               href="/contact"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 border border-primary-black text-primary-black text-[12px] tracking-[0.15em] uppercase hover:bg-primary-black hover:text-white transition-all duration-500 group"
+              className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 border border-primary-black text-primary-black text-[11px] sm:text-[12px] tracking-[0.15em] uppercase hover:bg-primary-black hover:text-white transition-all duration-500 group"
             >
               Send Enquiry
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
