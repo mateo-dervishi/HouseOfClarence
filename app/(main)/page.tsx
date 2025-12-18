@@ -47,9 +47,9 @@ function HeroSection() {
   });
 
   // Framing effect like projects page - smaller padding on mobile
-  const paddingX = useTransform(scrollYProgress, [0, 0.4, 0.6], ["0px", "0px", "16px"]);
-  const paddingTop = useTransform(scrollYProgress, [0, 0.4, 0.6], ["0px", "0px", "80px"]); // Extra for header
-  const paddingBottom = useTransform(scrollYProgress, [0, 0.4, 0.6], ["0px", "0px", "16px"]);
+  const paddingX = useTransform(scrollYProgress, [0, 0.4, 0.6], ["0px", "0px", "24px"]);
+  const paddingTop = useTransform(scrollYProgress, [0, 0.4, 0.6], ["0px", "0px", "120px"]); // Extra clearance for header
+  const paddingBottom = useTransform(scrollYProgress, [0, 0.4, 0.6], ["0px", "0px", "24px"]);
   const borderRadius = useTransform(scrollYProgress, [0, 0.4, 0.6], [0, 0, 24]);
   const scale = useTransform(scrollYProgress, [0, 0.4, 0.6], [1, 1, 0.92]);
   const overlayOpacity = useTransform(scrollYProgress, [0, 0.6], [0.3, 0.5]);
