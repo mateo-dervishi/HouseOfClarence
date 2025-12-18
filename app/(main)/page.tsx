@@ -4,56 +4,90 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import { ArrowRight, ArrowDown } from "lucide-react";
+import { ArrowRight, ArrowDown, Phone } from "lucide-react";
 
-// Featured categories with immersive presentation
+// Featured categories
 const categories = [
   {
     id: "bathroom",
     title: "Bathroom",
-    description: "Freestanding baths, stone basins, and brassware for spaces of quiet luxury",
+    tagline: "Personal Sanctuaries",
+    description: "Freestanding baths, stone basins, vanity units, and premium brassware for spaces of quiet luxury.",
     image: "/bathroom-hero.png",
     href: "/bathroom",
+    links: ["Freestanding Baths", "Stone Basins", "Vanity Units", "Brassware"],
   },
   {
     id: "kitchen",
     title: "Kitchen",
-    description: "Premium sinks, designer taps, and hardware where function meets artistry",
+    tagline: "Culinary Excellence",
+    description: "Premium sinks, designer taps, and quality hardware where function meets refined artistry.",
     image: "/kitchen-hero.png",
     href: "/kitchen",
+    links: ["Kitchen Sinks", "Kitchen Taps", "Cabinet Hardware"],
   },
   {
     id: "tiling",
-    title: "Surfaces",
-    description: "Marble, terrazzo, and porcelain from the world's finest quarries",
+    title: "Tiling",
+    tagline: "Surface Artistry",
+    description: "Marble, terrazzo, porcelain and mosaic tiles from the world's finest quarries and manufacturers.",
     image: "/tiling-hero.png",
     href: "/tiling",
+    links: ["Marble Tiles", "Porcelain Tiles", "Mosaic Tiles"],
   },
 ];
 
-// Category showcase with scroll animation
-function CategoryShowcase({ category, index }: { category: typeof categories[0]; index: number }) {
+// Stagger animation variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.8, ease: [0.25, 0.1, 0.25, 1] },
+  },
+};
+
+// Category section with flowing animations
+function CategorySection({ category, index }: { category: typeof categories[0]; index: number }) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
   });
 
-  const y = useTransform(scrollYProgress, [0, 1], ["5%", "-5%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
-
+  // Smooth parallax for image
+  const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "-15%"]);
+  const imageScale = useTransform(scrollYProgress, [0, 0.5, 1], [1.1, 1.05, 1]);
+  
   const isReversed = index % 2 === 1;
 
   return (
-    <section ref={ref} className="relative min-h-[90vh] flex items-center py-20 lg:py-0">
-      <div className="w-full max-w-[1600px] mx-auto px-6 md:px-12 lg:px-20">
-        <div className={`grid lg:grid-cols-2 gap-12 lg:gap-24 items-center`}>
-          {/* Image */}
+    <section ref={ref} className="relative py-20 lg:py-0 lg:min-h-screen flex items-center overflow-hidden">
+      <div className="w-full">
+        <div className={`grid lg:grid-cols-2 ${isReversed ? '' : ''}`}>
+          {/* Image Side */}
           <motion.div 
-            className={`relative aspect-[4/5] overflow-hidden ${isReversed ? 'lg:order-2' : ''}`}
-            style={{ opacity }}
+            className={`relative h-[60vh] lg:h-screen overflow-hidden ${isReversed ? 'lg:order-2' : ''}`}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 1.2 }}
           >
-            <motion.div className="absolute inset-0" style={{ y }}>
+            <motion.div 
+              className="absolute inset-0"
+              style={{ y: imageY, scale: imageScale }}
+            >
               <Image
                 src={category.image}
                 alt={category.title}
@@ -62,40 +96,66 @@ function CategoryShowcase({ category, index }: { category: typeof categories[0];
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />
             </motion.div>
+            {/* Subtle gradient */}
+            <div className="absolute inset-0 bg-gradient-to-r from-black/10 to-transparent lg:hidden" />
           </motion.div>
 
-          {/* Content */}
-          <motion.div 
-            className={`${isReversed ? 'lg:order-1 lg:text-right' : ''}`}
-            style={{ opacity }}
-          >
+          {/* Content Side */}
+          <div className={`flex items-center ${isReversed ? 'lg:order-1' : ''}`}>
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
+              className="w-full px-8 md:px-16 lg:px-20 py-16 lg:py-0"
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
             >
-              <p className="text-[10px] tracking-[0.4em] text-warm-grey uppercase mb-8">
-                Collection
-              </p>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-display tracking-[0.2em] mb-8">
+              <motion.p 
+                variants={itemVariants}
+                className="text-[11px] tracking-[0.25em] text-warm-grey uppercase mb-4"
+              >
+                {category.tagline}
+              </motion.p>
+              
+              <motion.h2 
+                variants={itemVariants}
+                className="text-4xl md:text-5xl lg:text-6xl font-display tracking-[0.15em] mb-6"
+              >
                 {category.title.toUpperCase()}
-              </h2>
-              <p 
-                className="text-warm-grey text-base leading-relaxed max-w-md mb-12"
-                style={{ marginLeft: isReversed ? 'auto' : 0 }}
+              </motion.h2>
+              
+              <motion.p 
+                variants={itemVariants}
+                className="text-warm-grey leading-relaxed mb-8 max-w-md"
               >
                 {category.description}
-              </p>
-              <Link
-                href={category.href}
-                className={`inline-flex items-center gap-4 text-[11px] tracking-[0.25em] uppercase group ${isReversed ? 'flex-row-reverse' : ''}`}
+              </motion.p>
+
+              <motion.div 
+                variants={itemVariants}
+                className="space-y-2 mb-10"
               >
-                <span>Explore</span>
-                <span className="w-12 h-[1px] bg-primary-black group-hover:w-20 transition-all duration-500" />
-              </Link>
+                {category.links.map((link) => (
+                  <Link
+                    key={link}
+                    href={`${category.href}/${link.toLowerCase().replace(/ /g, '-')}`}
+                    className="block text-sm tracking-wide text-primary-black/70 hover:text-primary-black hover:translate-x-2 transition-all duration-300"
+                  >
+                    {link}
+                  </Link>
+                ))}
+              </motion.div>
+
+              <motion.div variants={itemVariants}>
+                <Link
+                  href={category.href}
+                  className="inline-flex items-center gap-3 px-8 py-4 border border-primary-black text-primary-black text-[12px] tracking-[0.2em] uppercase hover:bg-primary-black hover:text-white transition-all duration-500 group"
+                >
+                  Explore {category.title}
+                  <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                </Link>
+              </motion.div>
             </motion.div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>
@@ -104,23 +164,26 @@ function CategoryShowcase({ category, index }: { category: typeof categories[0];
 
 export default function HomePage() {
   const heroRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress: heroProgress } = useScroll({
+  const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ["start start", "end start"],
   });
 
-  const heroImageScale = useTransform(heroProgress, [0, 1], [1, 1.15]);
-  const heroOverlay = useTransform(heroProgress, [0, 1], [0.3, 0.6]);
-  const heroTextOpacity = useTransform(heroProgress, [0, 0.4], [1, 0]);
-  const heroTextY = useTransform(heroProgress, [0, 0.4], ["0%", "15%"]);
+  // Smooth hero animations
+  const heroImageY = useTransform(scrollYProgress, [0, 1], ["0%", "25%"]);
+  const heroImageScale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
+  const heroOverlay = useTransform(scrollYProgress, [0, 1], [0.3, 0.55]);
+  const heroContentOpacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
+  const heroContentY = useTransform(scrollYProgress, [0, 0.4], ["0%", "20%"]);
 
   return (
     <>
-      {/* Hero Section - Elegant & Minimal */}
+      {/* Hero Section */}
       <section ref={heroRef} className="h-screen relative overflow-hidden">
+        {/* Background Image with Parallax */}
         <motion.div
           className="absolute inset-0"
-          style={{ scale: heroImageScale }}
+          style={{ y: heroImageY, scale: heroImageScale }}
         >
           <Image
             src="/images/sloane-12.webp"
@@ -132,83 +195,143 @@ export default function HomePage() {
           />
         </motion.div>
 
+        {/* Animated Overlay */}
         <motion.div 
           className="absolute inset-0 bg-black"
           style={{ opacity: heroOverlay }}
         />
 
+        {/* Hero Content */}
         <motion.div 
           className="relative z-10 h-full flex flex-col items-center justify-center text-white px-6"
-          style={{ opacity: heroTextOpacity, y: heroTextY }}
+          style={{ opacity: heroContentOpacity, y: heroContentY }}
         >
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 2 }}
             className="text-center"
+            initial="hidden"
+            animate="visible"
+            variants={{
+              hidden: { opacity: 0 },
+              visible: {
+                opacity: 1,
+                transition: { staggerChildren: 0.3, delayChildren: 0.5 },
+              },
+            }}
           >
             <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1.2, delay: 0.5 }}
-              className="text-4xl md:text-6xl lg:text-8xl font-display tracking-[0.3em] mb-8"
+              variants={{
+                hidden: { opacity: 0, y: 40, scale: 0.95 },
+                visible: { 
+                  opacity: 1, 
+                  y: 0, 
+                  scale: 1,
+                  transition: { duration: 1.2, ease: [0.25, 0.1, 0.25, 1] }
+                },
+              }}
+              className="text-4xl md:text-6xl lg:text-7xl font-display tracking-[0.25em] mb-6"
             >
               REFINED FINISHING
             </motion.h1>
+            
             <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1, delay: 1.2 }}
-              className="text-[12px] md:text-[14px] tracking-[0.35em] text-white/70"
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: { 
+                  opacity: 1, 
+                  y: 0,
+                  transition: { duration: 1, ease: [0.25, 0.1, 0.25, 1] }
+                },
+              }}
+              className="text-[13px] md:text-[15px] tracking-[0.3em] text-white/70 mb-12"
             >
               FOR DISCERNING SPACES
             </motion.p>
+
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: { 
+                  opacity: 1, 
+                  y: 0,
+                  transition: { duration: 1, ease: [0.25, 0.1, 0.25, 1] }
+                },
+              }}
+            >
+              <Link
+                href="/bathroom"
+                className="inline-flex items-center gap-3 px-10 py-5 border border-white/50 text-white text-[12px] tracking-[0.2em] uppercase backdrop-blur-sm bg-white/5 hover:bg-white/15 hover:border-white transition-all duration-500 group"
+              >
+                Explore Collections
+                <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </Link>
+            </motion.div>
           </motion.div>
         </motion.div>
 
-        {/* Scroll indicator */}
+        {/* Scroll Indicator */}
         <motion.div
-          className="absolute bottom-12 left-1/2 -translate-x-1/2 z-10"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 2, duration: 0.5 }}
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 2, duration: 0.8 }}
         >
           <motion.div
+            className="flex flex-col items-center gap-2"
             animate={{ y: [0, 8, 0] }}
-            transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
+            transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
           >
-            <ArrowDown className="w-5 h-5 text-white/40" strokeWidth={1} />
+            <span className="text-[10px] tracking-[0.2em] text-white/40 uppercase">Scroll</span>
+            <ArrowDown className="w-4 h-4 text-white/40" />
           </motion.div>
         </motion.div>
       </section>
 
-      {/* Essence Statement */}
-      <section className="py-40 md:py-56 px-6 bg-white">
-        <div className="max-w-4xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
+      {/* Brand Introduction */}
+      <section className="py-28 md:py-40 px-6 bg-white">
+        <motion.div
+          className="max-w-4xl mx-auto text-center"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, ease: [0.25, 0.1, 0.25, 1] }}
+        >
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 1 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-2xl md:text-3xl font-display tracking-[0.2em] mb-10"
           >
-            <p className="text-warm-grey text-lg md:text-xl leading-[2] tracking-wide">
-              House of Clarence brings together the finest bathroom, kitchen, 
-              and interior finishing materials from around the world. Each piece 
-              is selected for its exceptional quality, timeless design, and 
-              commitment to craftsmanship.
-            </p>
-          </motion.div>
-        </div>
+            CURATED EXCELLENCE
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="text-warm-grey text-lg md:text-xl leading-relaxed"
+          >
+            House of Clarence brings together the finest bathroom, kitchen, and interior 
+            finishing materials from around the world. Each piece is selected for its 
+            exceptional quality, timeless design, and commitment to craftsmanship.
+          </motion.p>
+        </motion.div>
       </section>
 
-      {/* Category Showcases */}
+      {/* Category Sections */}
       {categories.map((category, index) => (
-        <CategoryShowcase key={category.id} category={category} index={index} />
+        <CategorySection key={category.id} category={category} index={index} />
       ))}
 
-      {/* Projects Section */}
-      <section className="relative h-screen">
-        <div className="absolute inset-0">
+      {/* Projects Showcase */}
+      <section className="relative h-[80vh] overflow-hidden">
+        <motion.div 
+          className="absolute inset-0"
+          initial={{ scale: 1.1 }}
+          whileInView={{ scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.5 }}
+        >
           <Image
             src="/furniture-hero.png"
             alt="Our Projects"
@@ -216,78 +339,100 @@ export default function HomePage() {
             className="object-cover"
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-black/50" />
-        </div>
+          <div className="absolute inset-0 bg-black/45" />
+        </motion.div>
 
-        <div className="relative z-10 h-full flex flex-col items-center justify-center text-white px-6">
+        <div className="relative z-10 h-full flex items-center justify-center px-6">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            className="text-center text-white"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
             viewport={{ once: true }}
-            transition={{ duration: 1 }}
-            className="text-center"
           >
-            <p className="text-[10px] tracking-[0.4em] uppercase mb-8 text-white/50">
-              Portfolio
-            </p>
-            <h2 className="text-4xl md:text-6xl lg:text-7xl font-display tracking-[0.2em] mb-12">
-              OUR PROJECTS
-            </h2>
-            <Link
-              href="/projects"
-              className="inline-flex items-center gap-4 text-[11px] tracking-[0.25em] uppercase group"
+            <motion.p 
+              variants={itemVariants}
+              className="text-[11px] tracking-[0.25em] uppercase mb-6 text-white/60"
             >
-              <span>View All</span>
-              <span className="w-12 h-[1px] bg-white group-hover:w-20 transition-all duration-500" />
-            </Link>
+              Portfolio
+            </motion.p>
+            <motion.h2 
+              variants={itemVariants}
+              className="text-4xl md:text-5xl lg:text-6xl font-display tracking-[0.15em] mb-8"
+            >
+              OUR PROJECTS
+            </motion.h2>
+            <motion.p 
+              variants={itemVariants}
+              className="text-white/70 text-lg max-w-lg mx-auto mb-10 leading-relaxed"
+            >
+              Explore our work across London&apos;s most prestigious addresses
+            </motion.p>
+            <motion.div variants={itemVariants}>
+              <Link
+                href="/projects"
+                className="inline-flex items-center gap-3 px-10 py-5 bg-white text-primary-black text-[12px] tracking-[0.2em] uppercase hover:bg-off-white transition-all duration-500 group"
+              >
+                View Projects
+                <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </Link>
+            </motion.div>
           </motion.div>
         </div>
       </section>
 
-      {/* Additional Collections */}
-      <section className="py-32 md:py-40 px-6 bg-white">
-        <div className="max-w-6xl mx-auto">
+      {/* More Collections Grid */}
+      <section className="py-28 md:py-36 px-6 bg-off-white">
+        <div className="max-w-7xl mx-auto">
           <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
+            className="text-center mb-20"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="text-center mb-24"
           >
-            <p className="text-[10px] tracking-[0.4em] text-warm-grey uppercase mb-6">
+            <p className="text-[11px] tracking-[0.25em] text-warm-grey uppercase mb-4">
               Discover More
             </p>
-            <h2 className="text-3xl md:text-4xl font-display tracking-[0.2em]">
-              COLLECTIONS
+            <h2 className="text-2xl md:text-3xl font-display tracking-[0.2em]">
+              ADDITIONAL COLLECTIONS
             </h2>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-12 md:gap-8">
+          <div className="grid md:grid-cols-3 gap-8">
             {[
-              { title: "Lighting", image: "/lighting-hero.png", href: "/lighting" },
-              { title: "Furniture", image: "/electrical-hero.png", href: "/furniture" },
-              { title: "Electrical", image: "/contemporary-kitchen.png", href: "/electrical" },
+              { title: "Lighting", desc: "Pendant, wall & statement lighting", image: "/lighting-hero.png", href: "/lighting" },
+              { title: "Furniture", desc: "Living, dining, bedroom & study", image: "/electrical-hero.png", href: "/furniture" },
+              { title: "Electrical", desc: "Designer switches & sockets", image: "/contemporary-kitchen.png", href: "/electrical" },
             ].map((item, index) => (
               <motion.div
                 key={item.title}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.15 }}
+                transition={{ duration: 0.8, delay: index * 0.15 }}
               >
                 <Link href={item.href} className="group block">
-                  <div className="relative aspect-[3/4] overflow-hidden mb-8">
-                    <Image
-                      src={item.image}
-                      alt={item.title}
-                      fill
-                      className="object-cover transition-transform duration-1000 group-hover:scale-105"
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                    />
+                  <div className="relative aspect-[4/5] overflow-hidden mb-6">
+                    <motion.div
+                      className="absolute inset-0"
+                      whileHover={{ scale: 1.05 }}
+                      transition={{ duration: 0.6 }}
+                    >
+                      <Image
+                        src={item.image}
+                        alt={item.title}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                      />
+                    </motion.div>
+                    <div className="absolute inset-0 bg-black/10 group-hover:bg-black/5 transition-colors duration-500" />
                   </div>
-                  <h3 className="text-center text-sm font-display tracking-[0.25em] uppercase">
-                    {item.title}
+                  <h3 className="text-lg font-display tracking-[0.15em] mb-2">
+                    {item.title.toUpperCase()}
                   </h3>
+                  <p className="text-warm-grey text-sm">{item.desc}</p>
                 </Link>
               </motion.div>
             ))}
@@ -295,16 +440,53 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Bespoke */}
-      <section className="py-32 md:py-40 px-6 bg-primary-black text-white">
-        <div className="max-w-6xl mx-auto">
+      {/* Bespoke Service */}
+      <section className="py-28 md:py-36 px-6 bg-primary-black text-white">
+        <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
             <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
               viewport={{ once: true }}
-              transition={{ duration: 1 }}
-              className="relative aspect-[4/5] overflow-hidden order-2 lg:order-1"
+            >
+              <motion.p 
+                variants={itemVariants}
+                className="text-[11px] tracking-[0.25em] uppercase mb-6 text-white/50"
+              >
+                Tailored Service
+              </motion.p>
+              <motion.h2 
+                variants={itemVariants}
+                className="text-4xl md:text-5xl font-display tracking-[0.15em] mb-8"
+              >
+                BESPOKE SOLUTIONS
+              </motion.h2>
+              <motion.p 
+                variants={itemVariants}
+                className="text-white/60 text-lg leading-relaxed mb-10 max-w-lg"
+              >
+                For architects, interior designers, and private clients with unique 
+                requirements. Our team works directly with you to source, customize, 
+                and deliver materials tailored to your exact specifications.
+              </motion.p>
+              <motion.div variants={itemVariants}>
+                <Link
+                  href="/bespoke"
+                  className="inline-flex items-center gap-3 px-10 py-5 bg-white text-primary-black text-[12px] tracking-[0.2em] uppercase hover:bg-off-white transition-all duration-500 group"
+                >
+                  Learn More
+                  <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                </Link>
+              </motion.div>
+            </motion.div>
+
+            <motion.div
+              className="relative aspect-[4/5] overflow-hidden"
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1.2 }}
             >
               <Image
                 src="/stone-sanctuary.png"
@@ -314,72 +496,52 @@ export default function HomePage() {
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />
             </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="order-1 lg:order-2"
-            >
-              <p className="text-[10px] tracking-[0.4em] uppercase mb-8 text-white/50">
-                Tailored Excellence
-              </p>
-              <h2 className="text-4xl md:text-5xl font-display tracking-[0.2em] mb-10">
-                BESPOKE
-              </h2>
-              <p className="text-white/60 text-base leading-relaxed mb-12 max-w-md">
-                For architects, interior designers, and private clients with 
-                unique requirements. Our team works directly with you to source, 
-                customize, and deliver materials tailored to your exact specifications.
-              </p>
-              <Link
-                href="/bespoke"
-                className="inline-flex items-center gap-4 text-[11px] tracking-[0.25em] uppercase group"
-              >
-                <span>Learn More</span>
-                <span className="w-12 h-[1px] bg-white group-hover:w-20 transition-all duration-500" />
-              </Link>
-            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Contact */}
-      <section className="py-40 md:py-56 px-6 bg-off-white">
-        <div className="max-w-3xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
+      {/* Contact CTA */}
+      <section className="py-28 md:py-36 px-6 bg-white">
+        <motion.div
+          className="max-w-4xl mx-auto text-center"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
+          <motion.h2 
+            variants={itemVariants}
+            className="text-3xl md:text-4xl font-display tracking-[0.2em] mb-6"
           >
-            <p className="text-[10px] tracking-[0.4em] text-warm-grey uppercase mb-8">
-              Enquiries
-            </p>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-display tracking-[0.2em] mb-12">
-              GET IN TOUCH
-            </h2>
-            <p className="text-warm-grey text-base leading-relaxed mb-16 max-w-lg mx-auto">
-              Our team is available to discuss your project requirements 
-              and provide personalised guidance.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <a
-                href="tel:+442033704057"
-                className="px-12 py-5 bg-primary-black text-white text-[11px] tracking-[0.2em] uppercase hover:bg-charcoal transition-colors duration-300"
-              >
-                020 3370 4057
-              </a>
-              <Link
-                href="/contact"
-                className="px-12 py-5 border border-primary-black text-primary-black text-[11px] tracking-[0.2em] uppercase hover:bg-primary-black hover:text-white transition-all duration-300"
-              >
-                Send Enquiry
-              </Link>
-            </div>
+            GET IN TOUCH
+          </motion.h2>
+          <motion.p 
+            variants={itemVariants}
+            className="text-warm-grey text-lg mb-12 max-w-xl mx-auto"
+          >
+            Our team is available to discuss your project requirements and 
+            provide personalised guidance.
+          </motion.p>
+          <motion.div 
+            variants={itemVariants}
+            className="flex flex-col sm:flex-row gap-4 justify-center"
+          >
+            <a
+              href="tel:+442033704057"
+              className="inline-flex items-center justify-center gap-2 px-10 py-5 bg-primary-black text-white text-[12px] tracking-[0.2em] uppercase hover:bg-charcoal transition-all duration-500"
+            >
+              <Phone className="w-4 h-4" />
+              020 3370 4057
+            </a>
+            <Link
+              href="/contact"
+              className="inline-flex items-center justify-center gap-2 px-10 py-5 border border-primary-black text-primary-black text-[12px] tracking-[0.2em] uppercase hover:bg-primary-black hover:text-white transition-all duration-500 group"
+            >
+              Send Enquiry
+              <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+            </Link>
           </motion.div>
-        </div>
+        </motion.div>
       </section>
     </>
   );
