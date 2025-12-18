@@ -427,53 +427,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Projects Showcase */}
-      <section className="relative h-[80vh] overflow-hidden">
-        <motion.div 
-          className="absolute inset-0"
-          initial={{ scale: 1.1 }}
-          whileInView={{ scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1.5 }}
-        >
-          <Image
-            src="/marble-elegance.png"
-            alt="Our Projects"
-            fill
-            className="object-cover"
-            sizes="100vw"
-          />
-          <div className="absolute inset-0 bg-black/50" />
-        </motion.div>
-
-        <div className="relative z-10 h-full flex items-center justify-center px-6">
-          <motion.div
-            className="text-center text-white"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <p className="text-[11px] tracking-[0.25em] uppercase mb-6 text-white/60">
-              Portfolio
-            </p>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-display tracking-[0.15em] mb-8">
-              OUR PROJECTS
-            </h2>
-            <p className="text-white/70 text-lg max-w-lg mx-auto mb-10 leading-relaxed">
-              Explore our work across London&apos;s most prestigious addresses
-            </p>
-            <Link
-              href="/projects"
-              className="inline-flex items-center gap-3 px-10 py-5 bg-white text-primary-black text-[12px] tracking-[0.2em] uppercase hover:bg-off-white transition-all duration-500 group"
-            >
-              View Projects
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-            </Link>
-          </motion.div>
-        </div>
-      </section>
-
       {/* About Section */}
       <section className="py-24 px-6 bg-white">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
@@ -529,6 +482,53 @@ export default function HomePage() {
               className="object-cover"
               sizes="(max-width: 1024px) 100vw, 50vw"
             />
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Projects Showcase */}
+      <section className="relative h-[80vh] overflow-hidden">
+        <motion.div 
+          className="absolute inset-0"
+          initial={{ scale: 1.1 }}
+          whileInView={{ scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.5 }}
+        >
+          <Image
+            src="/marble-elegance.png"
+            alt="Our Projects"
+            fill
+            className="object-cover"
+            sizes="100vw"
+          />
+          <div className="absolute inset-0 bg-black/50" />
+        </motion.div>
+
+        <div className="relative z-10 h-full flex items-center justify-center px-6">
+          <motion.div
+            className="text-center text-white"
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            <p className="text-[11px] tracking-[0.25em] uppercase mb-6 text-white/60">
+              Portfolio
+            </p>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-display tracking-[0.15em] mb-8">
+              OUR PROJECTS
+            </h2>
+            <p className="text-white/70 text-lg max-w-lg mx-auto mb-10 leading-relaxed">
+              Explore our work across London&apos;s most prestigious addresses
+            </p>
+            <Link
+              href="/projects"
+              className="inline-flex items-center gap-3 px-10 py-5 bg-white text-primary-black text-[12px] tracking-[0.2em] uppercase hover:bg-off-white transition-all duration-500 group"
+            >
+              View Projects
+              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+            </Link>
           </motion.div>
         </div>
       </section>
