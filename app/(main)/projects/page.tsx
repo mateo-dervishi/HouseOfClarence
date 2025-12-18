@@ -3,10 +3,10 @@
 import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
 import { ArrowRight, ArrowDown } from "lucide-react";
 
-// Project data - you can later move this to a CMS or database
+// Project data
 const projects = [
   {
     id: "kensington-residence",
@@ -70,57 +70,86 @@ const projects = [
   },
 ];
 
-// Project section component
+// Helper to use motion values in style
+function useMotionStyle(value: MotionValue<string>) {
+  return value;
+}
+
+// Project section with scroll-driven framing effect
 function ProjectSection({ project, index }: { project: typeof projects[0]; index: number }) {
-  const sectionRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  
   const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
+    target: containerRef,
+    offset: ["start start", "end start"],
   });
 
-  // Subtle parallax on the image
-  const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
+  // The framing effect: image shrinks and gets padding as you scroll
+  const padding = useTransform(scrollYProgress, [0, 0.4], ["0px", "40px"]);
+  const paddingMobile = useTransform(scrollYProgress, [0, 0.4], ["0px", "20px"]);
+  const borderRadius = useTransform(scrollYProgress, [0, 0.4], [0, 16]);
+  const scale = useTransform(scrollYProgress, [0, 0.4], [1, 0.92]);
+  
+  // Title animations
+  const titleOpacity = useTransform(scrollYProgress, [0, 0.15, 0.35, 0.5], [0, 1, 1, 0]);
+  const titleY = useTransform(scrollYProgress, [0, 0.15], [40, 0]);
 
-  // Split title into two lines
+  // Split title for content section
   const titleWords = project.title.split(" ");
   const firstLine = titleWords[0];
   const secondLine = titleWords.slice(1).join(" ");
 
   return (
-    <section ref={sectionRef}>
-      {/* Full-width Image with Overlay */}
-      <div className="relative h-[70vh] md:h-[85vh] overflow-hidden">
+    <section 
+      ref={containerRef}
+      className="relative"
+      style={{ minHeight: "250vh" }}
+    >
+      {/* Sticky image container */}
+      <div className="sticky top-0 h-screen overflow-hidden bg-white">
+        {/* Animated padding wrapper */}
         <motion.div 
-          className="absolute inset-0"
-          style={{ y: imageY }}
+          className="h-full w-full"
+          style={{ 
+            padding: typeof window !== 'undefined' && window.innerWidth < 768 ? paddingMobile : padding 
+          }}
         >
-          <Image
-            src={project.image}
-            alt={project.title}
-            fill
-            className="object-cover scale-110"
-            sizes="100vw"
-            priority={index === 0}
-          />
+          {/* Image container with scale and border-radius */}
+          <motion.div 
+            className="relative h-full w-full overflow-hidden"
+            style={{ 
+              borderRadius,
+              scale,
+            }}
+          >
+            <Image
+              src={project.image}
+              alt={project.title}
+              fill
+              className="object-cover"
+              sizes="100vw"
+              priority={index === 0}
+            />
+            
+            {/* Dark gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
+          </motion.div>
         </motion.div>
-        
-        {/* Dark gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-        
-        {/* Title overlay at bottom */}
+
+        {/* Title overlay - fades in and out */}
         <motion.div 
-          className="absolute bottom-0 left-0 right-0 p-6 md:p-12 lg:p-16"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.2 }}
+          className="absolute bottom-0 left-0 right-0 p-6 md:p-12 lg:p-16 z-10 pointer-events-none"
+          style={{ 
+            opacity: titleOpacity,
+            y: titleY,
+          }}
         >
           <h2 className="text-3xl md:text-5xl lg:text-6xl font-display tracking-[0.08em] text-white mb-4">
             {project.title}
           </h2>
           <Link
             href={project.href}
-            className="inline-flex items-center gap-2 text-white/80 text-sm tracking-[0.15em] uppercase hover:text-white transition-colors group"
+            className="inline-flex items-center gap-2 text-white/80 text-sm tracking-[0.15em] uppercase hover:text-white transition-colors group pointer-events-auto"
           >
             View Project
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -128,44 +157,35 @@ function ProjectSection({ project, index }: { project: typeof projects[0]; index
         </motion.div>
       </div>
 
-      {/* Content Section */}
-      <div className="bg-white py-16 md:py-24 px-6 md:px-12 lg:px-16">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
-            {/* Left column - Large Title */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <p className="text-[11px] tracking-[0.2em] text-warm-grey uppercase mb-6">
-                {project.year} · {project.location}
-              </p>
-              <h3 className="text-4xl md:text-5xl lg:text-6xl font-display tracking-[0.05em] leading-[1.1]">
-                {firstLine}
-                <br />
-                {secondLine}
-              </h3>
-            </motion.div>
-
-            {/* Right column - Two columns of text */}
-            <motion.div 
-              className="lg:pt-12"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-            >
-              <div className="grid md:grid-cols-2 gap-8">
-                <p className="text-warm-grey leading-relaxed text-[15px]">
-                  {project.description}
+      {/* Content section - scrolls up over the sticky image */}
+      <div className="relative z-10 bg-white -mt-[50vh]">
+        <div className="py-16 md:py-24 px-6 md:px-12 lg:px-16">
+          <div className="max-w-7xl mx-auto">
+            <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
+              {/* Left column - Large Title */}
+              <div>
+                <p className="text-[11px] tracking-[0.2em] text-warm-grey uppercase mb-6">
+                  {project.year} · {project.location}
                 </p>
-                <p className="text-warm-grey leading-relaxed text-[15px]">
-                  {project.secondaryText}
-                </p>
+                <h3 className="text-4xl md:text-5xl lg:text-6xl font-display tracking-[0.05em] leading-[1.1]">
+                  {firstLine}
+                  <br />
+                  {secondLine}
+                </h3>
               </div>
-            </motion.div>
+
+              {/* Right column - Two columns of text */}
+              <div className="lg:pt-12">
+                <div className="grid md:grid-cols-2 gap-8">
+                  <p className="text-warm-grey leading-relaxed text-[15px]">
+                    {project.description}
+                  </p>
+                  <p className="text-warm-grey leading-relaxed text-[15px]">
+                    {project.secondaryText}
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
