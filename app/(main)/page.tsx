@@ -105,26 +105,21 @@ function HeroSection() {
           style={{ opacity: textOpacity, y: textY }}
         >
           <div className="text-center text-white px-6">
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-              className="text-4xl md:text-6xl lg:text-7xl font-display tracking-[0.3em] mb-6"
+            <h1
+              className="text-4xl md:text-6xl lg:text-7xl font-display tracking-[0.3em] mb-6 animate-fade-in-up"
+              style={{ animationDelay: '0ms' }}
             >
               REFINED FINISHING
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-              className="text-[13px] md:text-[15px] tracking-[0.2em] text-white/70 mb-8"
+            </h1>
+            <p
+              className="text-[13px] md:text-[15px] tracking-[0.2em] text-white/70 mb-8 animate-fade-in-up"
+              style={{ animationDelay: '200ms' }}
             >
               FOR DISCERNING SPACES
-            </motion.p>
-            <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 1.2, ease: [0.25, 0.1, 0.25, 1] }}
+            </p>
+            <div
+              className="animate-fade-in-up"
+              style={{ animationDelay: '400ms' }}
             >
               <Link
                 href="/bathroom"
@@ -133,7 +128,7 @@ function HeroSection() {
                 Explore Collections
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </Link>
-            </motion.div>
+            </div>
           </div>
         </motion.div>
 
@@ -156,12 +151,12 @@ function HeroSection() {
         {/* Scroll indicator - pill/mouse shape */}
         <motion.div
           className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.8, duration: 0.5 }}
           style={{ opacity: textOpacity }}
         >
-          <div className="w-6 h-10 border-2 border-white/50 rounded-full flex items-start justify-center p-2">
+          <div 
+            className="w-6 h-10 border-2 border-white/50 rounded-full flex items-start justify-center p-2 animate-fade-in-up"
+            style={{ animationDelay: '600ms' }}
+          >
             <motion.div
               className="w-1 h-2.5 bg-white/70 rounded-full"
               animate={{ y: [0, 12, 0] }}
