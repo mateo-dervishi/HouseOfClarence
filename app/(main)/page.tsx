@@ -179,7 +179,7 @@ export default function HomePage() {
       {/* All Categories - Bento Grid Layout */}
       <section className="py-24 px-6 bg-off-white">
         <div className="max-w-7xl mx-auto space-y-6">
-          {/* Row 1: Bathroom (wide) + Kitchen */}
+          {/* Row 1: Bathroom (wide) + Tiling (tall) */}
           <div className="grid md:grid-cols-3 gap-6">
             {/* Bathroom - 2 columns */}
             <motion.div
@@ -213,17 +213,17 @@ export default function HomePage() {
               </Link>
             </motion.div>
 
-            {/* Kitchen - 1 column, tall */}
+            {/* Tiling - 1 column, tall */}
             <motion.div
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.15 }}
             >
-              <Link href="/kitchen" className="group block relative aspect-[3/4] md:aspect-auto md:h-full overflow-hidden rounded-lg">
+              <Link href="/tiling" className="group block relative aspect-[3/4] md:aspect-auto md:h-full overflow-hidden rounded-lg">
                 <Image
-                  src="/kitchen-hero.png"
-                  alt="Designer Kitchen"
+                  src="/tiling-hero.png"
+                  alt="Premium Tiling"
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
                   sizes="(max-width: 768px) 100vw, 33vw"
@@ -232,32 +232,32 @@ export default function HomePage() {
                 <div className="absolute bottom-0 left-0 right-0 p-8">
                   <p className="text-[11px] tracking-[0.2em] text-white/70 uppercase mb-2">Explore</p>
                   <h3 className="text-xl md:text-2xl tracking-[0.15em] text-white font-display mb-3">
-                    KITCHEN
+                    TILING
                   </h3>
                   <p className="text-white/80 text-sm mb-4">
-                    Premium sinks & taps
+                    Marble & porcelain tiles
                   </p>
                   <span className="text-white text-sm tracking-wider opacity-80 group-hover:opacity-100 transition-opacity">
-                    Shop Kitchen →
+                    Shop Tiling →
                   </span>
                 </div>
               </Link>
             </motion.div>
           </div>
 
-          {/* Row 2: Tiling + Lighting (equal) */}
+          {/* Row 2: Kitchen + Lighting (equal) */}
           <div className="grid md:grid-cols-2 gap-6">
-            {/* Tiling */}
+            {/* Kitchen */}
             <motion.div
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
             >
-              <Link href="/tiling" className="group block relative aspect-[4/3] overflow-hidden rounded-lg">
+              <Link href="/kitchen" className="group block relative aspect-[4/3] overflow-hidden rounded-lg">
                 <Image
-                  src="/tiling-hero.png"
-                  alt="Premium Tiling"
+                  src="/kitchen-hero.png"
+                  alt="Designer Kitchen"
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
                   sizes="(max-width: 768px) 100vw, 50vw"
@@ -266,13 +266,13 @@ export default function HomePage() {
                 <div className="absolute bottom-0 left-0 right-0 p-8">
                   <p className="text-[11px] tracking-[0.2em] text-white/70 uppercase mb-2">Explore</p>
                   <h3 className="text-2xl md:text-3xl tracking-[0.15em] text-white font-display mb-3">
-                    TILING
+                    KITCHEN
                   </h3>
                   <p className="text-white/80 text-sm mb-4 max-w-sm">
-                    Marble, porcelain, terrazzo & mosaic tiles
+                    Premium sinks, designer taps & quality hardware
                   </p>
                   <span className="text-white text-sm tracking-wider opacity-80 group-hover:opacity-100 transition-opacity">
-                    Shop Tiling →
+                    Shop Kitchen →
                   </span>
                 </div>
               </Link>
