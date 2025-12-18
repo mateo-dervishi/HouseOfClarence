@@ -79,13 +79,38 @@ export function Header() {
   // Pages that have dark hero backgrounds (transparent header with white text)
   const darkHeroPages = ["/"];
   const hasDarkHero = darkHeroPages.includes(pathname) || pathname.startsWith("/bathroom") || pathname.startsWith("/kitchen") || pathname.startsWith("/furniture") || pathname.startsWith("/tiling") || pathname.startsWith("/lighting") || pathname.startsWith("/electrical") || pathname.startsWith("/bespoke") || pathname.startsWith("/projects");
+  
+  // Pages where header should be hidden until user scrolls past hero
+  const isProjectsPage = pathname === "/projects";
+  const [headerVisible, setHeaderVisible] = useState(!isProjectsPage);
 
   // Scroll detection
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 50);
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      setIsScrolled(scrollY > 50);
+      
+      // On projects page, show header after scrolling past 70% of viewport height
+      if (isProjectsPage) {
+        setHeaderVisible(scrollY > window.innerHeight * 0.7);
+      }
+    };
+    
+    // Initial check
+    handleScroll();
+    
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [isProjectsPage]);
+  
+  // Reset header visibility when navigating to/from projects page
+  useEffect(() => {
+    if (!isProjectsPage) {
+      setHeaderVisible(true);
+    } else {
+      setHeaderVisible(window.scrollY > window.innerHeight * 0.7);
+    }
+  }, [isProjectsPage]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -143,10 +168,14 @@ export function Header() {
     <>
       <header
         ref={headerRef}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 border-b ${
           showSolidHeader
             ? "bg-white/95 backdrop-blur-md border-light-grey/50"
             : "bg-transparent border-white/30"
+        } ${
+          headerVisible 
+            ? "translate-y-0 opacity-100" 
+            : "-translate-y-full opacity-0 pointer-events-none"
         }`}
       >
         {/* Top Row - Logo centered with icons on sides */}
