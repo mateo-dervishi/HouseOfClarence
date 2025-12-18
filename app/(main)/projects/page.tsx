@@ -77,10 +77,10 @@ function ProjectSection({ project, index }: { project: typeof projects[0]; index
   const borderRadius = useTransform(scrollYProgress, [0, 0.3, 0.5], [0, 0, 20]);
   const scale = useTransform(scrollYProgress, [0, 0.3, 0.5], [1, 1, 0.92]);
   
-  // View Project button - fades in AFTER text fades out
-  const ctaOpacity = useTransform(scrollYProgress, [0.4, 0.55, 0.7, 0.85], [0, 1, 1, 0]);
-  const ctaY = useTransform(scrollYProgress, [0.4, 0.55], [30, 0]);
-  const ctaScale = useTransform(scrollYProgress, [0.4, 0.55], [0.95, 1]);
+  // View Project button - appears exactly when framing animation completes (0.5)
+  // Framing finishes at 0.5, so button should be fully visible at 0.5
+  const ctaOpacity = useTransform(scrollYProgress, [0.45, 0.5, 0.7, 0.85], [0, 1, 1, 0]);
+  const ctaScale = useTransform(scrollYProgress, [0.45, 0.5], [0.9, 1]);
 
   return (
     <section 
@@ -137,7 +137,7 @@ function ProjectSection({ project, index }: { project: typeof projects[0]; index
           </h2>
         </motion.div>
 
-        {/* View Project button - CENTERED, appears AFTER text fades out */}
+        {/* View Project button - CENTERED, appears when framing animation completes */}
         <motion.div 
           className="absolute inset-0 flex items-center justify-center z-10"
           style={{ 
@@ -147,10 +147,12 @@ function ProjectSection({ project, index }: { project: typeof projects[0]; index
         >
           <Link
             href={`/projects/${project.slug}`}
-            className="inline-flex items-center gap-3 px-10 py-5 bg-white text-primary-black text-[14px] md:text-[15px] tracking-[0.2em] uppercase font-medium shadow-2xl hover:bg-off-white hover:scale-105 transition-all duration-300 group"
+            className="group inline-flex items-center gap-4 px-8 py-4 md:px-12 md:py-5 bg-white/20 backdrop-blur-md border border-white/30 text-white text-[13px] md:text-[14px] tracking-[0.2em] uppercase font-medium rounded-full hover:bg-white/30 hover:border-white/50 hover:scale-105 transition-all duration-300"
           >
             View Project
-            <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+            <span className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+              <ArrowRight className="w-4 h-4 md:w-5 md:h-5 text-primary-black" />
+            </span>
           </Link>
         </motion.div>
       </div>
