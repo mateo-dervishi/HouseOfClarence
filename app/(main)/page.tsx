@@ -137,16 +137,16 @@ function HeroSection() {
           </div>
         </motion.div>
 
-        {/* Brand intro - appears as hero frames */}
+        {/* Brand intro - appears as hero frames, centered in image */}
         <motion.div 
-          className="absolute bottom-20 left-0 right-0 z-10 px-6"
+          className="absolute inset-0 flex items-center justify-center z-10 px-6"
           style={{ opacity: introOpacity, y: introY }}
         >
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-2xl md:text-3xl font-display tracking-[0.2em] text-white mb-4">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-display tracking-[0.25em] text-white mb-6">
               CURATED EXCELLENCE
             </h2>
-            <p className="text-white/60 text-base md:text-lg leading-relaxed max-w-2xl mx-auto">
+            <p className="text-white/70 text-base md:text-lg leading-relaxed max-w-2xl mx-auto">
               House of Clarence brings together the finest bathroom, kitchen, and interior 
               finishing materials from around the world.
             </p>
