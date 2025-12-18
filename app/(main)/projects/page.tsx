@@ -13,10 +13,6 @@ const projects = [
     title: "Kensington Residence",
     location: "London, UK",
     year: "2024",
-    description:
-      "A complete bathroom and kitchen renovation for a Georgian townhouse in Kensington. The project featured custom Italian marble throughout, bespoke brass fixtures, and handcrafted vanity units designed to complement the property's period features.",
-    secondaryText:
-      "Working closely with the client's architect, we sourced rare Calacatta Viola marble from Italy, paired with aged brass fixtures from our heritage collection. Every detail was considered to create a harmonious blend of contemporary luxury and Georgian elegance.",
     image: "/bathroom-hero.png",
     slug: "kensington-residence",
   },
@@ -25,10 +21,6 @@ const projects = [
     title: "Mayfair Penthouse",
     location: "London, UK",
     year: "2024",
-    description:
-      "An opulent penthouse renovation featuring our exclusive Stone Sanctuary collection. Floor-to-ceiling Calacatta marble, freestanding natural stone baths, and designer lighting create an atmosphere of refined luxury throughout.",
-    secondaryText:
-      "The master bathroom features a sculptural freestanding bath carved from a single block of Carrara marble, positioned to capture the panoramic views of Hyde Park. Underfloor heating throughout ensures comfort meets aesthetics.",
     image: "/kitchen-hero.png",
     slug: "mayfair-penthouse",
   },
@@ -37,10 +29,6 @@ const projects = [
     title: "Chelsea Townhouse",
     location: "London, UK",
     year: "2023",
-    description:
-      "A comprehensive interior finishing project spanning five floors. We supplied all bathroom fixtures, kitchen hardware, lighting, and electrical finishes, creating a cohesive design language throughout this stunning Chelsea property.",
-    secondaryText:
-      "From the basement cinema room to the rooftop terrace, every space received the same meticulous attention. Custom bronze hardware, hand-finished plaster walls, and our signature brushed brass electrical fittings unite the entire property.",
     image: "/furniture-hero.png",
     slug: "chelsea-townhouse",
   },
@@ -49,10 +37,6 @@ const projects = [
     title: "Notting Hill Mews",
     location: "London, UK",
     year: "2023",
-    description:
-      "Working with leading architects, we provided all finishing materials for this exclusive mews development. Contemporary bathroom design meets timeless quality, with each unit featuring unique material selections.",
-    secondaryText:
-      "Four distinct residences, each with its own material palette yet unified by exceptional quality. Terrazzo flooring, fluted glass partitions, and our curated collection of minimalist sanitaryware define these exceptional homes.",
     image: "/tiling-hero.png",
     slug: "notting-hill-mews",
   },
@@ -61,16 +45,12 @@ const projects = [
     title: "Belgravia Mansion",
     location: "London, UK",
     year: "2023",
-    description:
-      "A sensitive restoration project that required sourcing authentic period-appropriate materials while incorporating modern luxuries. Our brass heritage collection was central to maintaining the property's historical character.",
-    secondaryText:
-      "Listed building constraints demanded creative solutions. We collaborated with heritage consultants to source reclaimed marble and commissioned bespoke reproductions of Victorian-era fixtures, seamlessly blending old and new.",
     image: "/lighting-hero.png",
     slug: "belgravia-mansion",
   },
 ];
 
-// Project section with full-screen start and scroll-driven framing effect
+// Project section - JUST the image with framing animation, no content section
 function ProjectSection({ project, index }: { project: typeof projects[0]; index: number }) {
   const containerRef = useRef<HTMLDivElement>(null);
   
@@ -79,27 +59,21 @@ function ProjectSection({ project, index }: { project: typeof projects[0]; index
     offset: ["start start", "end start"],
   });
 
-  // Framing effect: starts at 0 (full bleed) and animates to padded/framed
-  const padding = useTransform(scrollYProgress, [0, 0.25, 0.4], ["0px", "0px", "48px"]);
-  const borderRadius = useTransform(scrollYProgress, [0, 0.25, 0.4], [0, 0, 20]);
-  const scale = useTransform(scrollYProgress, [0, 0.25, 0.4], [1, 1, 0.88]);
+  // Framing effect: image starts full bleed, then gets framed
+  const padding = useTransform(scrollYProgress, [0, 0.3, 0.5], ["0px", "0px", "48px"]);
+  const borderRadius = useTransform(scrollYProgress, [0, 0.3, 0.5], [0, 0, 20]);
+  const scale = useTransform(scrollYProgress, [0, 0.3, 0.5], [1, 1, 0.9]);
   
-  // Title and CTA animations - appear AFTER framing starts
-  const titleOpacity = useTransform(scrollYProgress, [0.15, 0.3, 0.55, 0.65], [0, 1, 1, 0]);
-  const titleY = useTransform(scrollYProgress, [0.15, 0.3], [60, 0]);
-  const ctaOpacity = useTransform(scrollYProgress, [0.25, 0.38, 0.55, 0.65], [0, 1, 1, 0]);
-  const ctaScale = useTransform(scrollYProgress, [0.25, 0.38], [0.8, 1]);
-
-  // Split title for content section
-  const titleWords = project.title.split(" ");
-  const firstLine = titleWords[0];
-  const secondLine = titleWords.slice(1).join(" ");
+  // Title and CTA animations - appear as framing happens
+  const titleOpacity = useTransform(scrollYProgress, [0.2, 0.4, 0.7, 0.85], [0, 1, 1, 0]);
+  const titleY = useTransform(scrollYProgress, [0.2, 0.4], [50, 0]);
+  const ctaOpacity = useTransform(scrollYProgress, [0.35, 0.5, 0.7, 0.85], [0, 1, 1, 0]);
+  const ctaScale = useTransform(scrollYProgress, [0.35, 0.5], [0.9, 1]);
 
   return (
     <section 
       ref={containerRef}
-      className="relative"
-      style={{ minHeight: "280vh" }}
+      className="relative h-[200vh]"
     >
       {/* Sticky container - full screen */}
       <div className="sticky top-0 h-screen overflow-hidden bg-white">
@@ -130,7 +104,7 @@ function ProjectSection({ project, index }: { project: typeof projects[0]; index
           </motion.div>
         </motion.div>
 
-        {/* Title overlay - animates in after scroll starts */}
+        {/* Title overlay - animates in as you scroll */}
         <motion.div 
           className="absolute bottom-0 left-0 right-0 p-8 md:p-16 lg:p-20 z-10"
           style={{ 
@@ -154,46 +128,13 @@ function ProjectSection({ project, index }: { project: typeof projects[0]; index
           >
             <Link
               href={`/projects/${project.slug}`}
-              className="inline-flex items-center gap-3 px-8 py-4 bg-white text-primary-black text-[13px] tracking-[0.15em] uppercase hover:bg-off-white transition-all duration-300 group"
+              className="inline-flex items-center gap-3 px-8 py-4 bg-white text-primary-black text-[13px] tracking-[0.15em] uppercase hover:bg-off-white hover:scale-105 transition-all duration-300 group"
             >
               View Project
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </Link>
           </motion.div>
         </motion.div>
-      </div>
-
-      {/* Content section - scrolls up over the sticky image */}
-      <div className="relative z-10 bg-white -mt-[55vh]">
-        <div className="py-16 md:py-24 px-6 md:px-12 lg:px-20">
-          <div className="max-w-7xl mx-auto">
-            <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
-              {/* Left column - Large Title */}
-              <div>
-                <p className="text-[11px] tracking-[0.2em] text-warm-grey uppercase mb-6">
-                  {project.year}
-                </p>
-                <h3 className="text-4xl md:text-5xl lg:text-6xl font-display tracking-[0.05em] leading-[1.1]">
-                  {firstLine}
-                  <br />
-                  {secondLine}
-                </h3>
-              </div>
-
-              {/* Right column - Two columns of text */}
-              <div className="lg:pt-12">
-                <div className="grid md:grid-cols-2 gap-8">
-                  <p className="text-warm-grey leading-relaxed text-[15px]">
-                    {project.description}
-                  </p>
-                  <p className="text-warm-grey leading-relaxed text-[15px]">
-                    {project.secondaryText}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   );
@@ -257,7 +198,7 @@ export default function ProjectsPage() {
         </motion.div>
       </section>
 
-      {/* Project Sections */}
+      {/* Project Sections - Just images with framing animation */}
       {projects.map((project, index) => (
         <ProjectSection key={project.id} project={project} index={index} />
       ))}
