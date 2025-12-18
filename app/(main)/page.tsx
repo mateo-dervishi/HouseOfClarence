@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import { ArrowRight, ArrowDown, Phone } from "lucide-react";
+import { ArrowRight, Phone } from "lucide-react";
 
 // Collections data
 const collections = [
@@ -108,7 +108,7 @@ function HeroSection() {
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+              transition={{ duration: 1, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
               className="text-4xl md:text-6xl lg:text-7xl font-display tracking-[0.3em] mb-6"
             >
               REFINED FINISHING
@@ -116,7 +116,7 @@ function HeroSection() {
             <motion.p
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 1.1, ease: [0.25, 0.1, 0.25, 1] }}
+              transition={{ duration: 1, delay: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
               className="text-[13px] md:text-[15px] tracking-[0.2em] text-white/70 mb-8"
             >
               FOR DISCERNING SPACES
@@ -124,7 +124,7 @@ function HeroSection() {
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 1.8, ease: [0.25, 0.1, 0.25, 1] }}
+              transition={{ duration: 1, delay: 1.2, ease: [0.25, 0.1, 0.25, 1] }}
             >
               <Link
                 href="/bathroom"
@@ -153,20 +153,21 @@ function HeroSection() {
           </div>
         </motion.div>
 
-        {/* Scroll indicator */}
+        {/* Scroll indicator - pill/mouse shape */}
         <motion.div
           className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 2, duration: 0.5 }}
+          transition={{ delay: 1.8, duration: 0.5 }}
           style={{ opacity: textOpacity }}
         >
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-          >
-            <ArrowDown className="w-5 h-5 text-white/50" />
-          </motion.div>
+          <div className="w-6 h-10 border-2 border-white/50 rounded-full flex items-start justify-center p-2">
+            <motion.div
+              className="w-1 h-2.5 bg-white/70 rounded-full"
+              animate={{ y: [0, 12, 0] }}
+              transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+            />
+          </div>
         </motion.div>
       </div>
     </section>
