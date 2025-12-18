@@ -47,7 +47,9 @@ function HeroSection() {
   });
 
   // Framing effect like projects page
-  const padding = useTransform(scrollYProgress, [0, 0.4, 0.6], ["0px", "0px", "40px"]);
+  const paddingX = useTransform(scrollYProgress, [0, 0.4, 0.6], ["0px", "0px", "40px"]);
+  const paddingTop = useTransform(scrollYProgress, [0, 0.4, 0.6], ["0px", "0px", "120px"]); // Extra for header
+  const paddingBottom = useTransform(scrollYProgress, [0, 0.4, 0.6], ["0px", "0px", "40px"]);
   const borderRadius = useTransform(scrollYProgress, [0, 0.4, 0.6], [0, 0, 24]);
   const scale = useTransform(scrollYProgress, [0, 0.4, 0.6], [1, 1, 0.92]);
   const overlayOpacity = useTransform(scrollYProgress, [0, 0.6], [0.3, 0.5]);
@@ -71,7 +73,12 @@ function HeroSection() {
         {/* Animated framing wrapper */}
         <motion.div 
           className="h-full w-full"
-          style={{ padding }}
+          style={{ 
+            paddingLeft: paddingX, 
+            paddingRight: paddingX, 
+            paddingTop: paddingTop, 
+            paddingBottom: paddingBottom 
+          }}
         >
           <motion.div 
             className="relative h-full w-full overflow-hidden"
