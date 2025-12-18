@@ -70,9 +70,12 @@ function ProjectSection({ project, index }: { project: typeof projects[0]; index
   const titleY = useTransform(scrollYProgress, [0, 0.1], [40, 0]);
 
   // Framing effect - starts after text is visible
-  const padding = useTransform(scrollYProgress, [0, 0.3, 0.5], ["0px", "0px", "48px"]);
+  // Use different padding values for mobile (16px sides, 100px top for header) vs desktop
+  const paddingX = useTransform(scrollYProgress, [0, 0.3, 0.5], ["0px", "0px", "24px"]);
+  const paddingTop = useTransform(scrollYProgress, [0, 0.3, 0.5], ["0px", "0px", "100px"]); // Header clearance
+  const paddingBottom = useTransform(scrollYProgress, [0, 0.3, 0.5], ["0px", "0px", "24px"]);
   const borderRadius = useTransform(scrollYProgress, [0, 0.3, 0.5], [0, 0, 20]);
-  const scale = useTransform(scrollYProgress, [0, 0.3, 0.5], [1, 1, 0.9]);
+  const scale = useTransform(scrollYProgress, [0, 0.3, 0.5], [1, 1, 0.92]);
   
   // View Project button - fades in AFTER text fades out
   const ctaOpacity = useTransform(scrollYProgress, [0.4, 0.55, 0.7, 0.85], [0, 1, 1, 0]);
@@ -89,7 +92,12 @@ function ProjectSection({ project, index }: { project: typeof projects[0]; index
         {/* Animated padding wrapper for framing effect */}
         <motion.div 
           className="h-full w-full"
-          style={{ padding }}
+          style={{ 
+            paddingLeft: paddingX, 
+            paddingRight: paddingX, 
+            paddingTop: paddingTop, 
+            paddingBottom: paddingBottom 
+          }}
         >
           {/* Image container with scale and border-radius */}
           <motion.div 
@@ -129,21 +137,20 @@ function ProjectSection({ project, index }: { project: typeof projects[0]; index
           </h2>
         </motion.div>
 
-        {/* View Project button - appears AFTER text fades out */}
+        {/* View Project button - CENTERED, appears AFTER text fades out */}
         <motion.div 
-          className="absolute bottom-0 left-0 right-0 p-8 md:p-16 lg:p-20 z-10"
+          className="absolute inset-0 flex items-center justify-center z-10"
           style={{ 
             opacity: ctaOpacity,
-            y: ctaY,
             scale: ctaScale,
           }}
         >
           <Link
             href={`/projects/${project.slug}`}
-            className="inline-flex items-center gap-3 px-8 py-4 bg-white text-primary-black text-[13px] tracking-[0.15em] uppercase hover:bg-off-white hover:scale-105 transition-all duration-300 group"
+            className="inline-flex items-center gap-3 px-10 py-5 bg-white text-primary-black text-[14px] md:text-[15px] tracking-[0.2em] uppercase font-medium shadow-2xl hover:bg-off-white hover:scale-105 transition-all duration-300 group"
           >
             View Project
-            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+            <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
           </Link>
         </motion.div>
       </div>

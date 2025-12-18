@@ -165,10 +165,10 @@ export function Header() {
           {/* Spacer for desktop */}
           <div className="hidden lg:block w-24" />
 
-          {/* Logo - Centered */}
+          {/* Logo - Centered (absolute positioning on mobile for true center) */}
           <Link
             href="/"
-            className={`text-[12px] sm:text-[14px] md:text-xl lg:text-2xl tracking-[0.15em] sm:tracking-[0.2em] md:tracking-[0.35em] font-display uppercase font-light transition-colors duration-300 text-center flex-shrink-0 ${
+            className={`lg:static lg:translate-x-0 absolute left-1/2 -translate-x-1/2 text-[12px] sm:text-[14px] md:text-xl lg:text-2xl tracking-[0.15em] sm:tracking-[0.2em] md:tracking-[0.35em] font-display uppercase font-light transition-colors duration-300 text-center flex-shrink-0 ${
               showSolidHeader ? "text-primary-black" : "text-white"
             }`}
             onClick={closeDropdown}
@@ -176,8 +176,8 @@ export function Header() {
             HOUSE OF CLARENCE
           </Link>
 
-          {/* Right icons - Search, Profile, and Selection */}
-          <div className="flex items-center justify-end">
+          {/* Right icons - Hidden on mobile, shown on desktop */}
+          <div className="hidden lg:flex items-center justify-end">
             <button
               onClick={() => setSearchOpen(true)}
               className={`flex items-center justify-center w-10 h-10 transition-colors duration-300 ${
@@ -202,14 +202,14 @@ export function Header() {
             {/* Selection Icon */}
             <button
               onClick={openSelection}
-              className={`flex items-center justify-center w-10 h-10 -mr-1 md:mr-0 transition-colors duration-300 relative ${
+              className={`flex items-center justify-center w-10 h-10 transition-colors duration-300 relative ${
                 showSolidHeader ? "text-primary-black hover:opacity-60" : "text-white hover:opacity-70"
               }`}
               aria-label="Your selection"
             >
               <ClipboardList className="w-5 h-5" strokeWidth={1.5} />
               {selectionCount > 0 && (
-                <span className={`absolute top-1 right-1 md:top-0.5 md:right-0.5 w-4 h-4 md:w-5 md:h-5 rounded-full flex items-center justify-center text-[9px] md:text-[10px] font-medium ${
+                <span className={`absolute top-0.5 right-0.5 w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-medium ${
                   showSolidHeader 
                     ? "bg-primary-black text-white" 
                     : "bg-white text-primary-black"
@@ -219,6 +219,9 @@ export function Header() {
               )}
             </button>
           </div>
+          
+          {/* Empty spacer on mobile right side to balance hamburger menu */}
+          <div className="lg:hidden w-10" />
         </div>
 
         {/* Bottom Row - Categories centered */}
@@ -518,18 +521,38 @@ export function Header() {
               </nav>
               
               {/* Bottom Links */}
-              <div className="border-t border-light-grey p-4 mt-4">
+              <div className="border-t border-light-grey p-4 mt-4 space-y-1">
+                {/* Account */}
                 <Link
                   href={isLoggedIn ? "/account" : "/login"}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-3 py-3 text-[13px]"
+                  className="flex items-center gap-3 py-3 text-[13px] hover:bg-off-white -mx-4 px-4 transition-colors"
                 >
-                  <User className="w-4 h-4" />
+                  <User className="w-5 h-5 text-warm-grey" />
                   <span className="font-medium">{isLoggedIn ? "My Account" : "Sign In / Register"}</span>
                 </Link>
+                
+                {/* Your Selection */}
+                <button
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    openSelection();
+                  }}
+                  className="flex items-center gap-3 py-3 text-[13px] hover:bg-off-white -mx-4 px-4 transition-colors w-full text-left"
+                >
+                  <ClipboardList className="w-5 h-5 text-warm-grey" />
+                  <span className="font-medium">Your Selection</span>
+                  {selectionCount > 0 && (
+                    <span className="ml-auto bg-primary-black text-white text-[10px] px-2 py-0.5 rounded-full">
+                      {selectionCount}
+                    </span>
+                  )}
+                </button>
+                
+                {/* Call Us */}
                 <a
                   href="tel:+442037155892"
-                  className="flex items-center gap-3 py-3 text-[13px]"
+                  className="flex items-center gap-3 py-3 text-[13px] hover:bg-off-white -mx-4 px-4 transition-colors"
                 >
                   <span className="text-warm-grey">Call Us:</span>
                   <span className="font-medium">0203 715 5892</span>
