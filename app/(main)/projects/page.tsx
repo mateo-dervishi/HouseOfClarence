@@ -59,33 +59,31 @@ function ProjectSection({ project, index }: { project: typeof projects[0]; index
     offset: ["start start", "end start"],
   });
 
-  // PHASE 1: Title/location/date appear as image comes into view (0 - 0.15)
-  // PHASE 2: Text visible, then framing starts (0.15 - 0.35)
-  // PHASE 3: Text fades out during framing (0.35 - 0.45)
-  // PHASE 4: View Project button fades in (0.45 - 0.55)
-  // PHASE 5: Everything fades for next project (0.7 - 0.85)
+  // PHASE 1: Title/location/date appear as image comes into view (0 - 0.1)
+  // PHASE 2: Text visible, then framing starts (0.1 - 0.25)
+  // PHASE 3: Text fades out during framing (0.25 - 0.35)
+  // PHASE 4: View Project button fades in and STAYS VISIBLE (0.35 - 0.75)
+  // PHASE 5: Everything fades for next project (0.75 - 0.9)
 
   // Title/location/date - appears early, fades out when framing happens
-  const titleOpacity = useTransform(scrollYProgress, [0, 0.1, 0.35, 0.45], [0, 1, 1, 0]);
-  const titleY = useTransform(scrollYProgress, [0, 0.1], [40, 0]);
+  const titleOpacity = useTransform(scrollYProgress, [0, 0.08, 0.25, 0.35], [0, 1, 1, 0]);
+  const titleY = useTransform(scrollYProgress, [0, 0.08], [40, 0]);
 
   // Framing effect - starts after text is visible
-  // Use different padding values for mobile (16px sides, 100px top for header) vs desktop
-  const paddingX = useTransform(scrollYProgress, [0, 0.3, 0.5], ["0px", "0px", "24px"]);
-  const paddingTop = useTransform(scrollYProgress, [0, 0.3, 0.5], ["0px", "0px", "100px"]); // Header clearance
-  const paddingBottom = useTransform(scrollYProgress, [0, 0.3, 0.5], ["0px", "0px", "24px"]);
-  const borderRadius = useTransform(scrollYProgress, [0, 0.3, 0.5], [0, 0, 20]);
-  const scale = useTransform(scrollYProgress, [0, 0.3, 0.5], [1, 1, 0.92]);
+  const paddingX = useTransform(scrollYProgress, [0, 0.2, 0.35], ["0px", "0px", "24px"]);
+  const paddingTop = useTransform(scrollYProgress, [0, 0.2, 0.35], ["0px", "0px", "100px"]); // Header clearance
+  const paddingBottom = useTransform(scrollYProgress, [0, 0.2, 0.35], ["0px", "0px", "24px"]);
+  const borderRadius = useTransform(scrollYProgress, [0, 0.2, 0.35], [0, 0, 20]);
+  const scale = useTransform(scrollYProgress, [0, 0.2, 0.35], [1, 1, 0.92]);
   
-  // View Project button - appears exactly when framing animation completes (0.5)
-  // Framing finishes at 0.5, so button should be fully visible at 0.5
-  const ctaOpacity = useTransform(scrollYProgress, [0.45, 0.5, 0.7, 0.85], [0, 1, 1, 0]);
-  const ctaScale = useTransform(scrollYProgress, [0.45, 0.5], [0.9, 1]);
+  // View Project button - appears when framing completes, stays visible much longer
+  const ctaOpacity = useTransform(scrollYProgress, [0.32, 0.38, 0.75, 0.88], [0, 1, 1, 0]);
+  const ctaScale = useTransform(scrollYProgress, [0.32, 0.38], [0.9, 1]);
 
   return (
     <section 
       ref={containerRef}
-      className="relative h-[200vh]"
+      className="relative h-[280vh]"
     >
       {/* Sticky container - full screen */}
       <div className="sticky top-0 h-screen overflow-hidden bg-white">
