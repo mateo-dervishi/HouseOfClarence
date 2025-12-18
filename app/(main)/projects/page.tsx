@@ -11,138 +11,116 @@ const projects = [
   {
     id: "kensington-residence",
     title: "Kensington Residence",
-    subtitle: "Private Home",
     location: "London, UK",
     year: "2024",
     description:
       "A complete bathroom and kitchen renovation for a Georgian townhouse in Kensington. The project featured custom Italian marble throughout, bespoke brass fixtures, and handcrafted vanity units designed to complement the property's period features.",
-    scope: ["Bathroom Design", "Kitchen Fixtures", "Bespoke Vanities", "Marble Installation"],
+    secondaryText:
+      "Working closely with the client's architect, we sourced rare Calacatta Viola marble from Italy, paired with aged brass fixtures from our heritage collection. Every detail was considered to create a harmonious blend of contemporary luxury and Georgian elegance.",
     image: "/bathroom-hero.png",
     href: "/projects/kensington-residence",
   },
   {
     id: "mayfair-penthouse",
     title: "Mayfair Penthouse",
-    subtitle: "Luxury Apartment",
     location: "London, UK",
     year: "2024",
     description:
       "An opulent penthouse renovation featuring our exclusive Stone Sanctuary collection. Floor-to-ceiling Calacatta marble, freestanding natural stone baths, and designer lighting create an atmosphere of refined luxury throughout.",
-    scope: ["Stone Sanctuary Collection", "Designer Lighting", "Premium Tiling", "Electrical Finishes"],
+    secondaryText:
+      "The master bathroom features a sculptural freestanding bath carved from a single block of Carrara marble, positioned to capture the panoramic views of Hyde Park. Underfloor heating throughout ensures comfort meets aesthetics.",
     image: "/kitchen-hero.png",
     href: "/projects/mayfair-penthouse",
   },
   {
     id: "chelsea-townhouse",
     title: "Chelsea Townhouse",
-    subtitle: "Complete Renovation",
     location: "London, UK",
     year: "2023",
     description:
       "A comprehensive interior finishing project spanning five floors. We supplied all bathroom fixtures, kitchen hardware, lighting, and electrical finishes, creating a cohesive design language throughout this stunning Chelsea property.",
-    scope: ["Full Interior Finishing", "Bathroom Suites", "Kitchen Design", "Statement Lighting"],
+    secondaryText:
+      "From the basement cinema room to the rooftop terrace, every space received the same meticulous attention. Custom bronze hardware, hand-finished plaster walls, and our signature brushed brass electrical fittings unite the entire property.",
     image: "/furniture-hero.png",
     href: "/projects/chelsea-townhouse",
   },
   {
     id: "notting-hill-mews",
     title: "Notting Hill Mews",
-    subtitle: "Boutique Development",
     location: "London, UK",
     year: "2023",
     description:
       "Working with leading architects, we provided all finishing materials for this exclusive mews development. Contemporary bathroom design meets timeless quality, with each unit featuring unique material selections.",
-    scope: ["Multi-unit Development", "Contemporary Bathrooms", "Bespoke Solutions", "Premium Hardware"],
+    secondaryText:
+      "Four distinct residences, each with its own material palette yet unified by exceptional quality. Terrazzo flooring, fluted glass partitions, and our curated collection of minimalist sanitaryware define these exceptional homes.",
     image: "/tiling-hero.png",
     href: "/projects/notting-hill-mews",
   },
   {
     id: "belgravia-mansion",
     title: "Belgravia Mansion",
-    subtitle: "Heritage Restoration",
     location: "London, UK",
     year: "2023",
     description:
       "A sensitive restoration project that required sourcing authentic period-appropriate materials while incorporating modern luxuries. Our brass heritage collection was central to maintaining the property's historical character.",
-    scope: ["Heritage Materials", "Brass Heritage Collection", "Period Restoration", "Custom Fixtures"],
+    secondaryText:
+      "Listed building constraints demanded creative solutions. We collaborated with heritage consultants to source reclaimed marble and commissioned bespoke reproductions of Victorian-era fixtures, seamlessly blending old and new.",
     image: "/lighting-hero.png",
     href: "/projects/belgravia-mansion",
   },
 ];
 
-// Single project section component with scroll animation
+// Project section component
 function ProjectSection({ project, index }: { project: typeof projects[0]; index: number }) {
   const sectionRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ["start start", "end start"],
+    offset: ["start end", "end start"],
   });
 
-  // Transform values for the effect
-  const imageScale = useTransform(scrollYProgress, [0, 0.3, 0.5], [1, 1, 0.85]);
-  const imageBorderRadius = useTransform(scrollYProgress, [0, 0.3, 0.5], [0, 0, 12]);
-  const imageMargin = useTransform(scrollYProgress, [0, 0.3, 0.5], ["0%", "0%", "5%"]);
-  const overlayOpacity = useTransform(scrollYProgress, [0, 0.2, 0.4], [0.3, 0.4, 0.5]);
-  const titleY = useTransform(scrollYProgress, [0, 0.3], ["0%", "-20%"]);
-  const titleOpacity = useTransform(scrollYProgress, [0.3, 0.5], [1, 0]);
-  const contentOpacity = useTransform(scrollYProgress, [0.35, 0.5], [0, 1]);
-  const contentY = useTransform(scrollYProgress, [0.35, 0.5], ["30px", "0px"]);
+  // Subtle parallax on the image
+  const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
+
+  // Split title into two lines
+  const titleWords = project.title.split(" ");
+  const firstLine = titleWords[0];
+  const secondLine = titleWords.slice(1).join(" ");
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative"
-      style={{ height: "200vh" }} // Extra height for scroll room
-    >
-      {/* Sticky container for the image */}
-      <div className="sticky top-0 h-screen overflow-hidden">
-        {/* Image frame with animated margins */}
-        <motion.div
-          className="relative w-full h-full"
-          style={{
-            padding: imageMargin,
-          }}
+    <section ref={sectionRef}>
+      {/* Full-width Image with Overlay */}
+      <div className="relative h-[70vh] md:h-[85vh] overflow-hidden">
+        <motion.div 
+          className="absolute inset-0"
+          style={{ y: imageY }}
         >
-          <motion.div
-            className="relative w-full h-full overflow-hidden"
-            style={{
-              scale: imageScale,
-              borderRadius: imageBorderRadius,
-            }}
-          >
-            <Image
-              src={project.image}
-              alt={project.title}
-              fill
-              className="object-cover"
-              sizes="100vw"
-              priority={index === 0}
-            />
-            {/* Dark overlay */}
-            <motion.div
-              className="absolute inset-0 bg-black"
-              style={{ opacity: overlayOpacity }}
-            />
-          </motion.div>
+          <Image
+            src={project.image}
+            alt={project.title}
+            fill
+            className="object-cover scale-110"
+            sizes="100vw"
+            priority={index === 0}
+          />
         </motion.div>
-
-        {/* Title overlay on image */}
-        <motion.div
-          className="absolute bottom-0 left-0 right-0 p-8 md:p-16 lg:p-20 z-10"
-          style={{
-            y: titleY,
-            opacity: titleOpacity,
-          }}
+        
+        {/* Dark gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+        
+        {/* Title overlay at bottom */}
+        <motion.div 
+          className="absolute bottom-0 left-0 right-0 p-6 md:p-12 lg:p-16"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.2 }}
         >
-          <p className="text-[11px] md:text-[13px] tracking-[0.3em] text-white/70 uppercase mb-3">
-            {project.subtitle} · {project.location}
-          </p>
-          <h2 className="text-4xl md:text-6xl lg:text-7xl font-display tracking-[0.1em] text-white mb-6">
+          <h2 className="text-3xl md:text-5xl lg:text-6xl font-display tracking-[0.08em] text-white mb-4">
             {project.title}
           </h2>
           <Link
             href={project.href}
-            className="inline-flex items-center gap-2 text-white text-sm tracking-[0.15em] uppercase group"
+            className="inline-flex items-center gap-2 text-white/80 text-sm tracking-[0.15em] uppercase hover:text-white transition-colors group"
           >
             View Project
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -150,62 +128,47 @@ function ProjectSection({ project, index }: { project: typeof projects[0]; index
         </motion.div>
       </div>
 
-      {/* Content section that scrolls up over the image */}
-      <motion.div
-        className="relative z-20 bg-white -mt-[50vh]"
-        style={{
-          opacity: contentOpacity,
-          y: contentY,
-        }}
-      >
-        <div className="max-w-7xl mx-auto px-6 md:px-12 py-16 md:py-24">
+      {/* Content Section */}
+      <div className="bg-white py-16 md:py-24 px-6 md:px-12 lg:px-16">
+        <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
-            {/* Left column - Title repeat and description */}
-            <div>
-              <p className="text-[11px] tracking-[0.2em] text-warm-grey uppercase mb-4">
-                {project.year}
+            {/* Left column - Large Title */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <p className="text-[11px] tracking-[0.2em] text-warm-grey uppercase mb-6">
+                {project.year} · {project.location}
               </p>
-              <h3 className="text-3xl md:text-4xl lg:text-5xl font-display tracking-[0.08em] mb-8 leading-tight">
-                {project.title.split(" ")[0]}
+              <h3 className="text-4xl md:text-5xl lg:text-6xl font-display tracking-[0.05em] leading-[1.1]">
+                {firstLine}
                 <br />
-                {project.title.split(" ").slice(1).join(" ")}
+                {secondLine}
               </h3>
-              <p className="text-warm-grey leading-relaxed text-lg">
-                {project.description}
-              </p>
-            </div>
+            </motion.div>
 
-            {/* Right column - Project details */}
-            <div className="lg:pt-16">
-              <div className="mb-8">
-                <p className="text-[11px] tracking-[0.2em] text-warm-grey uppercase mb-4">
-                  Project Scope
+            {/* Right column - Two columns of text */}
+            <motion.div 
+              className="lg:pt-12"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+            >
+              <div className="grid md:grid-cols-2 gap-8">
+                <p className="text-warm-grey leading-relaxed text-[15px]">
+                  {project.description}
                 </p>
-                <ul className="space-y-2">
-                  {project.scope.map((item, i) => (
-                    <li key={i} className="text-primary-black tracking-wide">
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="mb-8">
-                <p className="text-[11px] tracking-[0.2em] text-warm-grey uppercase mb-4">
-                  Location
+                <p className="text-warm-grey leading-relaxed text-[15px]">
+                  {project.secondaryText}
                 </p>
-                <p className="text-primary-black tracking-wide">{project.location}</p>
               </div>
-              <Link
-                href={project.href}
-                className="inline-flex items-center gap-3 px-8 py-4 border border-primary-black text-primary-black text-[13px] tracking-[0.15em] uppercase hover:bg-primary-black hover:text-white transition-all duration-300 group"
-              >
-                View Full Project
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </Link>
-            </div>
+            </motion.div>
           </div>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }
@@ -214,65 +177,36 @@ export default function ProjectsPage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="h-screen relative flex items-center justify-center bg-primary-black overflow-hidden">
+      <section className="h-screen relative flex flex-col items-center justify-center bg-white overflow-hidden">
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.4 }}
-          transition={{ duration: 1.5 }}
-          className="absolute inset-0"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="text-center px-6"
         >
-          <Image
-            src="/bathroom-hero.png"
-            alt="Featured Projects"
-            fill
-            className="object-cover"
-            priority
-          />
-        </motion.div>
-
-        <div className="relative z-10 text-center text-white px-6">
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="text-[11px] md:text-[13px] tracking-[0.3em] uppercase mb-6 text-white/70"
-          >
+          <p className="text-[11px] md:text-[12px] tracking-[0.3em] uppercase mb-6 text-warm-grey">
             Our Portfolio
-          </motion.p>
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-            className="text-4xl md:text-6xl lg:text-7xl font-display tracking-[0.2em] mb-8"
-          >
+          </p>
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-display tracking-[0.15em]">
             FEATURED
             <br />
             PROJECTS
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
-            className="text-white/70 max-w-xl mx-auto tracking-wide"
-          >
-            A curated selection of our finest work, showcasing exceptional craftsmanship
-            and timeless design across London&apos;s most prestigious addresses.
-          </motion.p>
-        </div>
+          </h1>
+        </motion.div>
 
         {/* Scroll indicator */}
         <motion.div
-          className="absolute bottom-12 left-1/2 -translate-x-1/2 z-10"
+          className="absolute bottom-16 left-1/2 -translate-x-1/2"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.5, duration: 0.5 }}
+          transition={{ delay: 1, duration: 0.5 }}
         >
           <motion.div
-            className="w-12 h-12 rounded-full border border-white/50 flex items-center justify-center cursor-pointer hover:border-white transition-colors"
-            animate={{ y: [0, 8, 0] }}
+            className="w-12 h-12 rounded-full border border-primary-black/30 flex items-center justify-center cursor-pointer hover:border-primary-black transition-colors"
+            animate={{ y: [0, 6, 0] }}
             transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
           >
-            <ArrowDown className="w-5 h-5 text-white/70" />
+            <ArrowDown className="w-5 h-5 text-primary-black/50" />
           </motion.div>
         </motion.div>
       </section>
@@ -325,4 +259,3 @@ export default function ProjectsPage() {
     </>
   );
 }
-
