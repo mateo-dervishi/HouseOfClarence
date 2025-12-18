@@ -147,11 +147,13 @@ function ProjectSection({ project, index }: { project: typeof projects[0]; index
         >
           <Link
             href={`/projects/${project.slug}`}
-            className="group inline-flex items-center gap-4 px-8 py-4 md:px-12 md:py-5 bg-white/20 backdrop-blur-md border border-white/30 text-white text-[13px] md:text-[14px] tracking-[0.2em] uppercase font-medium rounded-full hover:bg-white/30 hover:border-white/50 hover:scale-105 transition-all duration-300"
+            className="group flex flex-col items-center gap-4"
           >
-            View Project
-            <span className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-              <ArrowRight className="w-4 h-4 md:w-5 md:h-5 text-primary-black" />
+            <span className="text-[12px] md:text-[13px] tracking-[0.25em] uppercase text-white/90 group-hover:text-white transition-colors">
+              View Project
+            </span>
+            <span className="w-14 h-14 rounded-full border border-white/40 flex items-center justify-center group-hover:border-white/70 group-hover:scale-110 transition-all duration-300">
+              <ArrowRight className="w-5 h-5 text-white" />
             </span>
           </Link>
         </motion.div>
