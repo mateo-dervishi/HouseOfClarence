@@ -50,7 +50,7 @@ const projects = [
   },
 ];
 
-// Project section - JUST the image with framing animation, no content section
+// Project section with refined animation sequence
 function ProjectSection({ project, index }: { project: typeof projects[0]; index: number }) {
   const containerRef = useRef<HTMLDivElement>(null);
   
@@ -59,16 +59,25 @@ function ProjectSection({ project, index }: { project: typeof projects[0]; index
     offset: ["start start", "end start"],
   });
 
-  // Framing effect: image starts full bleed, then gets framed
+  // PHASE 1: Title/location/date appear as image comes into view (0 - 0.15)
+  // PHASE 2: Text visible, then framing starts (0.15 - 0.35)
+  // PHASE 3: Text fades out during framing (0.35 - 0.45)
+  // PHASE 4: View Project button fades in (0.45 - 0.55)
+  // PHASE 5: Everything fades for next project (0.7 - 0.85)
+
+  // Title/location/date - appears early, fades out when framing happens
+  const titleOpacity = useTransform(scrollYProgress, [0, 0.1, 0.35, 0.45], [0, 1, 1, 0]);
+  const titleY = useTransform(scrollYProgress, [0, 0.1], [40, 0]);
+
+  // Framing effect - starts after text is visible
   const padding = useTransform(scrollYProgress, [0, 0.3, 0.5], ["0px", "0px", "48px"]);
   const borderRadius = useTransform(scrollYProgress, [0, 0.3, 0.5], [0, 0, 20]);
   const scale = useTransform(scrollYProgress, [0, 0.3, 0.5], [1, 1, 0.9]);
   
-  // Title and CTA animations - appear as framing happens
-  const titleOpacity = useTransform(scrollYProgress, [0.2, 0.4, 0.7, 0.85], [0, 1, 1, 0]);
-  const titleY = useTransform(scrollYProgress, [0.2, 0.4], [50, 0]);
-  const ctaOpacity = useTransform(scrollYProgress, [0.35, 0.5, 0.7, 0.85], [0, 1, 1, 0]);
-  const ctaScale = useTransform(scrollYProgress, [0.35, 0.5], [0.9, 1]);
+  // View Project button - fades in AFTER text fades out
+  const ctaOpacity = useTransform(scrollYProgress, [0.4, 0.55, 0.7, 0.85], [0, 1, 1, 0]);
+  const ctaY = useTransform(scrollYProgress, [0.4, 0.55], [30, 0]);
+  const ctaScale = useTransform(scrollYProgress, [0.4, 0.55], [0.95, 1]);
 
   return (
     <section 
@@ -104,7 +113,7 @@ function ProjectSection({ project, index }: { project: typeof projects[0]; index
           </motion.div>
         </motion.div>
 
-        {/* Title overlay - animates in as you scroll */}
+        {/* Title, location, date - appears first as you scroll */}
         <motion.div 
           className="absolute bottom-0 left-0 right-0 p-8 md:p-16 lg:p-20 z-10"
           style={{ 
@@ -115,25 +124,27 @@ function ProjectSection({ project, index }: { project: typeof projects[0]; index
           <p className="text-[11px] md:text-[13px] tracking-[0.25em] text-white/60 uppercase mb-3">
             {project.location} · {project.year}
           </p>
-          <h2 className="text-4xl md:text-6xl lg:text-7xl font-display tracking-[0.06em] text-white mb-8">
+          <h2 className="text-4xl md:text-6xl lg:text-7xl font-display tracking-[0.06em] text-white">
             {project.title}
           </h2>
-          
-          {/* View Project CTA - animates in with scale */}
-          <motion.div
-            style={{ 
-              opacity: ctaOpacity,
-              scale: ctaScale,
-            }}
+        </motion.div>
+
+        {/* View Project button - appears AFTER text fades out */}
+        <motion.div 
+          className="absolute bottom-0 left-0 right-0 p-8 md:p-16 lg:p-20 z-10"
+          style={{ 
+            opacity: ctaOpacity,
+            y: ctaY,
+            scale: ctaScale,
+          }}
+        >
+          <Link
+            href={`/projects/${project.slug}`}
+            className="inline-flex items-center gap-3 px-8 py-4 bg-white text-primary-black text-[13px] tracking-[0.15em] uppercase hover:bg-off-white hover:scale-105 transition-all duration-300 group"
           >
-            <Link
-              href={`/projects/${project.slug}`}
-              className="inline-flex items-center gap-3 px-8 py-4 bg-white text-primary-black text-[13px] tracking-[0.15em] uppercase hover:bg-off-white hover:scale-105 transition-all duration-300 group"
-            >
-              View Project
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-            </Link>
-          </motion.div>
+            View Project
+            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+          </Link>
         </motion.div>
       </div>
     </section>
@@ -198,7 +209,7 @@ export default function ProjectsPage() {
         </motion.div>
       </section>
 
-      {/* Project Sections - Just images with framing animation */}
+      {/* Project Sections */}
       {projects.map((project, index) => (
         <ProjectSection key={project.id} project={project} index={index} />
       ))}
