@@ -58,9 +58,9 @@ function HeroSection() {
   const textOpacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
   const textY = useTransform(scrollYProgress, [0, 0.3], ["0%", "15%"]);
   
-  // Brand intro text appears as hero shrinks
-  const introOpacity = useTransform(scrollYProgress, [0.5, 0.7], [0, 1]);
-  const introY = useTransform(scrollYProgress, [0.5, 0.7], [40, 0]);
+  // Brand intro text appears as hero shrinks - fully visible when framing completes at 0.6
+  const introOpacity = useTransform(scrollYProgress, [0.45, 0.6], [0, 1]);
+  const introY = useTransform(scrollYProgress, [0.45, 0.6], [40, 0]);
 
   return (
     <section 
