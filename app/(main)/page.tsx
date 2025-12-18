@@ -169,98 +169,6 @@ function HeroSection() {
   );
 }
 
-// Category showcase with framing animation
-function CategoryShowcase({ 
-  title, 
-  description, 
-  image, 
-  href, 
-  reverse = false,
-  links = []
-}: { 
-  title: string; 
-  description: string; 
-  image: string; 
-  href: string; 
-  reverse?: boolean;
-  links?: string[];
-}) {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
-
-  const imageY = useTransform(scrollYProgress, [0, 1], ["5%", "-5%"]);
-  const imageScale = useTransform(scrollYProgress, [0, 0.5], [1.1, 1]);
-
-  return (
-    <section ref={ref} className="relative">
-      <div className={`grid lg:grid-cols-2 min-h-[85vh] ${reverse ? '' : ''}`}>
-        {/* Image Side */}
-        <motion.div 
-          className={`relative h-[50vh] lg:h-auto overflow-hidden ${reverse ? 'lg:order-2' : ''}`}
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1 }}
-        >
-          <motion.div 
-            className="absolute inset-0"
-            style={{ y: imageY, scale: imageScale }}
-          >
-            <Image
-              src={image}
-              alt={title}
-              fill
-              className="object-cover"
-              sizes="(max-width: 1024px) 100vw, 50vw"
-            />
-          </motion.div>
-        </motion.div>
-
-        {/* Content Side */}
-        <div className={`flex items-center ${reverse ? 'lg:order-1 bg-white' : 'bg-off-white'}`}>
-          <motion.div
-            className="w-full px-8 md:px-16 lg:px-20 py-16"
-            initial={{ opacity: 0, x: reverse ? -30 : 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            <p className="text-[11px] tracking-[0.2em] text-warm-grey uppercase mb-4">Explore</p>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-display tracking-[0.15em] mb-6">
-              {title.toUpperCase()}
-            </h2>
-            <p className="text-warm-grey leading-relaxed mb-8 max-w-md">
-              {description}
-            </p>
-            {links.length > 0 && (
-              <div className="space-y-3 mb-8">
-                {links.map((link) => (
-                  <Link
-                    key={link}
-                    href={`${href}/${link.toLowerCase().replace(/ & /g, '-').replace(/ /g, '-')}`}
-                    className="block text-sm tracking-wide hover:text-warm-grey hover:translate-x-2 transition-all duration-300"
-                  >
-                    {link}
-                  </Link>
-                ))}
-              </div>
-            )}
-            <Link
-              href={href}
-              className="inline-flex items-center gap-3 px-8 py-4 border border-primary-black text-primary-black text-[12px] tracking-[0.15em] uppercase hover:bg-primary-black hover:text-white transition-all duration-500 group"
-            >
-              Shop {title}
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-            </Link>
-          </motion.div>
-        </div>
-      </div>
-    </section>
-  );
-}
 
 export default function HomePage() {
   return (
@@ -268,78 +176,72 @@ export default function HomePage() {
       {/* Hero with Framing Animation */}
       <HeroSection />
 
-      {/* Bathroom Category */}
-      <CategoryShowcase
-        title="Bathroom"
-        description="Transform your bathroom into a personal sanctuary with our curated collection of freestanding baths, stone basins, vanity units, and premium brassware."
-        image="/bathroom-hero.png"
-        href="/bathroom"
-        links={["Freestanding Baths", "Stone Basins", "Vanity Units", "Brassware & Taps"]}
-      />
-
-      {/* Kitchen Category */}
-      <CategoryShowcase
-        title="Kitchen"
-        description="Elevate your kitchen with premium sinks, designer taps, and quality hardware. From Belfast ceramic sinks to professional boiling water taps."
-        image="/kitchen-hero.png"
-        href="/kitchen"
-        reverse
-        links={["Kitchen Sinks", "Kitchen Taps", "Cabinet Hardware"]}
-      />
-
-      {/* Collections Section - Dark */}
-      <section className="py-24 px-6 bg-primary-black text-white">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-2xl md:text-3xl font-display tracking-[0.25em] mb-4">COLLECTIONS</h2>
-            <p className="text-warm-grey max-w-xl mx-auto">
-              Thoughtfully curated collections for your personal sanctuary
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-            {collections.map((collection, index) => (
-              <motion.div
-                key={collection.id}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-              >
-                <Link href={collection.href} className="group block">
-                  <div className="relative aspect-[3/4] overflow-hidden mb-4">
-                    <Image
-                      src={collection.image}
-                      alt={collection.name}
-                      fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-105"
-                      sizes="(max-width: 768px) 50vw, 25vw"
-                    />
-                    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-500" />
-                  </div>
-                  <h3 className="text-sm md:text-base tracking-[0.15em] uppercase mb-2">
-                    {collection.name}
-                  </h3>
-                  <p className="text-[12px] text-warm-grey leading-relaxed">
-                    {collection.description}
-                  </p>
-                </Link>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Tiling & Lighting Grid */}
+      {/* Categories Grid - Bathroom, Kitchen, Tiling, Lighting */}
       <section className="py-24 px-6 bg-off-white">
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-2 gap-6">
+            {/* Bathroom */}
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+            >
+              <Link href="/bathroom" className="group block relative aspect-[4/3] overflow-hidden rounded-lg">
+                <Image
+                  src="/bathroom-hero.png"
+                  alt="Luxury Bathroom"
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-8">
+                  <p className="text-[11px] tracking-[0.2em] text-white/70 uppercase mb-2">Explore</p>
+                  <h3 className="text-2xl md:text-3xl tracking-[0.15em] text-white font-display mb-3">
+                    BATHROOM
+                  </h3>
+                  <p className="text-white/80 text-sm mb-4 max-w-sm">
+                    Freestanding baths, stone basins & premium brassware
+                  </p>
+                  <span className="text-white text-sm tracking-wider opacity-80 group-hover:opacity-100 transition-opacity">
+                    Shop Bathroom →
+                  </span>
+                </div>
+              </Link>
+            </motion.div>
+
+            {/* Kitchen */}
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.15 }}
+            >
+              <Link href="/kitchen" className="group block relative aspect-[4/3] overflow-hidden rounded-lg">
+                <Image
+                  src="/kitchen-hero.png"
+                  alt="Designer Kitchen"
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-8">
+                  <p className="text-[11px] tracking-[0.2em] text-white/70 uppercase mb-2">Explore</p>
+                  <h3 className="text-2xl md:text-3xl tracking-[0.15em] text-white font-display mb-3">
+                    KITCHEN
+                  </h3>
+                  <p className="text-white/80 text-sm mb-4 max-w-sm">
+                    Premium sinks, designer taps & quality hardware
+                  </p>
+                  <span className="text-white text-sm tracking-wider opacity-80 group-hover:opacity-100 transition-opacity">
+                    Shop Kitchen →
+                  </span>
+                </div>
+              </Link>
+            </motion.div>
+
             {/* Tiling */}
             <motion.div
               initial={{ opacity: 0, y: 40 }}
@@ -401,6 +303,55 @@ export default function HomePage() {
                 </div>
               </Link>
             </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Collections Section - Dark */}
+      <section className="py-24 px-6 bg-primary-black text-white">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-2xl md:text-3xl font-display tracking-[0.25em] mb-4">COLLECTIONS</h2>
+            <p className="text-warm-grey max-w-xl mx-auto">
+              Thoughtfully curated collections for your personal sanctuary
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+            {collections.map((collection, index) => (
+              <motion.div
+                key={collection.id}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+              >
+                <Link href={collection.href} className="group block">
+                  <div className="relative aspect-[3/4] overflow-hidden mb-4">
+                    <Image
+                      src={collection.image}
+                      alt={collection.name}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      sizes="(max-width: 768px) 50vw, 25vw"
+                    />
+                    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-500" />
+                  </div>
+                  <h3 className="text-sm md:text-base tracking-[0.15em] uppercase mb-2">
+                    {collection.name}
+                  </h3>
+                  <p className="text-[12px] text-warm-grey leading-relaxed">
+                    {collection.description}
+                  </p>
+                </Link>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
