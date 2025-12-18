@@ -59,31 +59,31 @@ function ProjectSection({ project, index }: { project: typeof projects[0]; index
     offset: ["start start", "end start"],
   });
 
-  // PHASE 1: Title/location/date appear as image comes into view (0 - 0.1)
-  // PHASE 2: Text visible, then framing starts (0.1 - 0.25)
-  // PHASE 3: Text fades out during framing (0.25 - 0.35)
-  // PHASE 4: View Project button fades in and STAYS VISIBLE (0.35 - 0.75)
-  // PHASE 5: Everything fades for next project (0.75 - 0.9)
+  // PHASE 1: Title/location/date appear as image comes into view (0 - 0.15)
+  // PHASE 2: Text visible, then framing starts (0.15 - 0.35)
+  // PHASE 3: Text fades out during framing (0.35 - 0.45)
+  // PHASE 4: View Project button fades in (0.45 - 0.55)
+  // PHASE 5: Everything fades for next project (0.7 - 0.85)
 
   // Title/location/date - appears early, fades out when framing happens
-  const titleOpacity = useTransform(scrollYProgress, [0, 0.08, 0.25, 0.35], [0, 1, 1, 0]);
-  const titleY = useTransform(scrollYProgress, [0, 0.08], [40, 0]);
+  const titleOpacity = useTransform(scrollYProgress, [0, 0.1, 0.35, 0.45], [0, 1, 1, 0]);
+  const titleY = useTransform(scrollYProgress, [0, 0.1], [40, 0]);
 
   // Framing effect - starts after text is visible
-  const paddingX = useTransform(scrollYProgress, [0, 0.2, 0.35], ["0px", "0px", "24px"]);
-  const paddingTop = useTransform(scrollYProgress, [0, 0.2, 0.35], ["0px", "0px", "100px"]); // Header clearance
-  const paddingBottom = useTransform(scrollYProgress, [0, 0.2, 0.35], ["0px", "0px", "24px"]);
-  const borderRadius = useTransform(scrollYProgress, [0, 0.2, 0.35], [0, 0, 20]);
-  const scale = useTransform(scrollYProgress, [0, 0.2, 0.35], [1, 1, 0.92]);
+  const paddingX = useTransform(scrollYProgress, [0, 0.3, 0.5], ["0px", "0px", "24px"]);
+  const paddingTop = useTransform(scrollYProgress, [0, 0.3, 0.5], ["0px", "0px", "100px"]); // Header clearance
+  const paddingBottom = useTransform(scrollYProgress, [0, 0.3, 0.5], ["0px", "0px", "24px"]);
+  const borderRadius = useTransform(scrollYProgress, [0, 0.3, 0.5], [0, 0, 20]);
+  const scale = useTransform(scrollYProgress, [0, 0.3, 0.5], [1, 1, 0.92]);
   
-  // View Project button - appears when framing completes, stays visible much longer
-  const ctaOpacity = useTransform(scrollYProgress, [0.32, 0.38, 0.75, 0.88], [0, 1, 1, 0]);
-  const ctaScale = useTransform(scrollYProgress, [0.32, 0.38], [0.9, 1]);
+  // View Project button - appears exactly when framing animation completes (0.5)
+  const ctaOpacity = useTransform(scrollYProgress, [0.45, 0.5, 0.7, 0.85], [0, 1, 1, 0]);
+  const ctaScale = useTransform(scrollYProgress, [0.45, 0.5], [0.9, 1]);
 
   return (
     <section 
       ref={containerRef}
-      className="relative h-[280vh]"
+      className="relative h-[200vh]"
     >
       {/* Sticky container - full screen */}
       <div className="sticky top-0 h-screen overflow-hidden bg-white">
@@ -135,9 +135,9 @@ function ProjectSection({ project, index }: { project: typeof projects[0]; index
           </h2>
         </motion.div>
 
-        {/* View Project button - CENTERED, appears when framing animation completes */}
+        {/* View Project button - LOWER position, appears when framing animation completes */}
         <motion.div 
-          className="absolute inset-0 flex items-center justify-center z-10"
+          className="absolute inset-x-0 bottom-24 md:bottom-32 flex justify-center z-10"
           style={{ 
             opacity: ctaOpacity,
             scale: ctaScale,
@@ -145,13 +145,13 @@ function ProjectSection({ project, index }: { project: typeof projects[0]; index
         >
           <Link
             href={`/projects/${project.slug}`}
-            className="group flex flex-col items-center gap-4"
+            className="group flex flex-col items-center gap-5"
           >
-            <span className="text-[12px] md:text-[13px] tracking-[0.25em] uppercase text-white/90 group-hover:text-white transition-colors">
+            <span className="text-[13px] md:text-[14px] tracking-[0.3em] uppercase text-white font-medium">
               View Project
             </span>
-            <span className="w-14 h-14 rounded-full border border-white/40 flex items-center justify-center group-hover:border-white/70 group-hover:scale-110 transition-all duration-300">
-              <ArrowRight className="w-5 h-5 text-white" />
+            <span className="w-16 h-16 md:w-18 md:h-18 rounded-full border-2 border-white/60 flex items-center justify-center group-hover:border-white group-hover:scale-110 transition-all duration-300">
+              <ArrowRight className="w-6 h-6 text-white" />
             </span>
           </Link>
         </motion.div>
