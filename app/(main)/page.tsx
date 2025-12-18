@@ -99,25 +99,25 @@ function HeroSection() {
         >
           <div className="text-center text-white px-6">
             <motion.h1
-              initial={{ opacity: 0, y: 40 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1.2, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-              className="text-4xl md:text-6xl lg:text-7xl font-display tracking-[0.25em] mb-6"
+              transition={{ duration: 1, delay: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+              className="text-4xl md:text-6xl lg:text-7xl font-display tracking-[0.3em] mb-6"
             >
               REFINED FINISHING
             </motion.h1>
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-              className="text-[13px] md:text-[15px] tracking-[0.3em] text-white/70 mb-10"
+              transition={{ duration: 1, delay: 1.1, ease: [0.25, 0.1, 0.25, 1] }}
+              className="text-[13px] md:text-[15px] tracking-[0.2em] text-white/70 mb-8"
             >
               FOR DISCERNING SPACES
             </motion.p>
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 1.2, ease: [0.25, 0.1, 0.25, 1] }}
+              transition={{ duration: 1, delay: 1.8, ease: [0.25, 0.1, 0.25, 1] }}
             >
               <Link
                 href="/bathroom"
