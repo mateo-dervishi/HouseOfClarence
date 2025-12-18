@@ -77,9 +77,9 @@ export default function SubcategoryPage({ params }: SubcategoryPageProps) {
   }
 
   return (
-    <main className="pt-14">
-      {/* Hero Banner */}
-      <section className="relative h-[40vh] min-h-[300px] bg-[#f5f5f5] overflow-hidden">
+    <main>
+      {/* Hero Banner - extends under header */}
+      <section className="relative h-[50vh] min-h-[380px] bg-[#f5f5f5] overflow-hidden">
         <motion.div
           initial={{ opacity: 0, scale: 1.1 }}
           animate={{ opacity: 1, scale: 1 }}

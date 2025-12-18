@@ -277,16 +277,16 @@ export function Header() {
             <div className="max-w-[1400px] mx-auto px-12 py-10 relative">
               <div className="flex gap-12">
                 {/* LEFT: Subcategories */}
-                <div className="w-56 flex-shrink-0">
-                  <ul className="space-y-4">
+                <div className="w-64 flex-shrink-0">
+                  <ul className="space-y-1">
                     {activeCategory.subcategories.map((sub: Subcategory) => (
                       <li key={sub.slug}>
                         <button
                           onMouseEnter={() => setHoveredSubcategory(sub)}
-                          className={`flex items-center justify-between w-full text-left text-[13px] tracking-[0.1em] uppercase transition-colors ${
+                          className={`flex items-center justify-between w-full text-left text-[13px] tracking-[0.1em] uppercase transition-colors px-3 py-2.5 -mx-3 rounded ${
                             hoveredSubcategory?.slug === sub.slug
-                              ? "text-primary-black font-medium"
-                              : "text-warm-grey hover:text-primary-black"
+                              ? "text-primary-black font-medium bg-off-white"
+                              : "text-warm-grey hover:text-primary-black hover:bg-off-white/50"
                           }`}
                         >
                           <span>{sub.name}</span>
@@ -294,11 +294,11 @@ export function Header() {
                         </button>
                       </li>
                     ))}
-                    <li className="pt-6 border-t border-light-grey">
+                    <li className="pt-4 mt-2 border-t border-light-grey">
                       <Link
                         href={`/${activeCategory.slug}`}
                         onClick={closeDropdown}
-                        className="text-[13px] tracking-[0.1em] uppercase font-medium text-primary-black hover:opacity-60 transition-opacity"
+                        className="block px-3 py-2.5 -mx-3 text-[13px] tracking-[0.1em] uppercase font-medium text-primary-black hover:bg-off-white/50 rounded transition-colors"
                       >
                         Shop All {activeCategory.name}
                       </Link>
@@ -307,7 +307,7 @@ export function Header() {
                 </div>
 
                 {/* MIDDLE: Types for hovered subcategory */}
-                <div className="w-48 flex-shrink-0">
+                <div className="w-56 flex-shrink-0">
                   <AnimatePresence mode="wait">
                     {hoveredSubcategory && (
                       <motion.div
@@ -317,23 +317,23 @@ export function Header() {
                         exit={{ opacity: 0, x: -10 }}
                         transition={{ duration: 0.15 }}
                       >
-                        <ul className="space-y-3">
+                        <ul className="space-y-1">
                           {hoveredSubcategory.types.map((type: { name: string; slug: string }) => (
                             <li key={type.slug}>
                               <Link
                                 href={`/${activeCategory.slug}/${hoveredSubcategory.slug}/${type.slug}`}
                                 onClick={closeDropdown}
-                                className="text-[13px] tracking-[0.05em] uppercase text-warm-grey hover:text-primary-black transition-colors"
+                                className="block px-3 py-2 -mx-3 text-[13px] tracking-[0.05em] uppercase text-warm-grey hover:text-primary-black hover:bg-off-white/50 rounded transition-colors"
                               >
                                 {type.name}
                               </Link>
                             </li>
                           ))}
-                          <li className="pt-4">
+                          <li className="pt-3 mt-1 border-t border-light-grey">
                             <Link
                               href={`/${activeCategory.slug}/${hoveredSubcategory.slug}`}
                               onClick={closeDropdown}
-                              className="text-[13px] tracking-[0.1em] uppercase font-medium text-primary-black hover:opacity-60 transition-opacity"
+                              className="block px-3 py-2 -mx-3 text-[13px] tracking-[0.1em] uppercase font-medium text-primary-black hover:bg-off-white/50 rounded transition-colors"
                             >
                               Shop All {hoveredSubcategory.name}
                             </Link>
