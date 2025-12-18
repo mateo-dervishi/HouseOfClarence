@@ -78,7 +78,7 @@ export function Header() {
 
   // Pages that have dark hero backgrounds (transparent header with white text)
   const darkHeroPages = ["/"];
-  const hasDarkHero = darkHeroPages.includes(pathname) || pathname.startsWith("/bathroom") || pathname.startsWith("/kitchen") || pathname.startsWith("/furniture") || pathname.startsWith("/tiling") || pathname.startsWith("/lighting") || pathname.startsWith("/electrical") || pathname.startsWith("/bespoke");
+  const hasDarkHero = darkHeroPages.includes(pathname) || pathname.startsWith("/bathroom") || pathname.startsWith("/kitchen") || pathname.startsWith("/furniture") || pathname.startsWith("/tiling") || pathname.startsWith("/lighting") || pathname.startsWith("/electrical") || pathname.startsWith("/bespoke") || pathname.startsWith("/projects");
 
   // Scroll detection
   useEffect(() => {
@@ -257,6 +257,18 @@ export function Header() {
                 } opacity-80 hover:opacity-100`}
               >
                 BESPOKE
+              </Link>
+            </li>
+            {/* Projects - Portfolio link */}
+            <li>
+              <Link
+                href="/projects"
+                onClick={closeDropdown}
+                className={`relative text-[11px] tracking-[0.12em] uppercase py-2 transition-all duration-300 hover:scale-110 origin-center ${
+                  showSolidHeader ? "text-primary-black" : "text-white"
+                } opacity-80 hover:opacity-100`}
+              >
+                PROJECTS
               </Link>
             </li>
           </ul>
@@ -490,6 +502,16 @@ export function Header() {
                       className="block py-3 text-[14px] tracking-[0.1em] uppercase"
                     >
                       Bespoke
+                    </Link>
+                  </li>
+                  {/* Projects */}
+                  <li>
+                    <Link
+                      href="/projects"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="block py-3 text-[14px] tracking-[0.1em] uppercase"
+                    >
+                      Projects
                     </Link>
                   </li>
                 </ul>
