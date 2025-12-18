@@ -2,9 +2,15 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import { useRef } from "react";
 import { ArrowRight, Phone } from "lucide-react";
+
+// Simplified animation variant for better performance
+const fadeInUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0 }
+};
 
 // Collections data
 const collections = [
@@ -41,38 +47,38 @@ const collections = [
 // Hero section with scroll-driven framing animation (like projects page)
 function HeroSection() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const prefersReducedMotion = useReducedMotion();
+  
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end start"],
   });
 
-  // Framing effect like projects page - smaller padding on mobile
-  const paddingX = useTransform(scrollYProgress, [0, 0.4, 0.6], ["0px", "0px", "24px"]);
-  const paddingTop = useTransform(scrollYProgress, [0, 0.4, 0.6], ["0px", "0px", "120px"]); // Extra clearance for header
-  const paddingBottom = useTransform(scrollYProgress, [0, 0.4, 0.6], ["0px", "0px", "24px"]);
-  const borderRadius = useTransform(scrollYProgress, [0, 0.4, 0.6], [0, 0, 24]);
-  const scale = useTransform(scrollYProgress, [0, 0.4, 0.6], [1, 1, 0.92]);
-  const overlayOpacity = useTransform(scrollYProgress, [0, 0.6], [0.3, 0.5]);
+  // Simplified framing effect - fewer keyframes for better performance
+  const paddingX = useTransform(scrollYProgress, [0, 0.5], ["0px", "24px"]);
+  const paddingTop = useTransform(scrollYProgress, [0, 0.5], ["0px", "120px"]);
+  const paddingBottom = useTransform(scrollYProgress, [0, 0.5], ["0px", "24px"]);
+  const borderRadius = useTransform(scrollYProgress, [0, 0.5], [0, 24]);
+  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.95]);
+  const overlayOpacity = useTransform(scrollYProgress, [0, 0.5], [0.3, 0.5]);
   
-  // Text animations
-  const textOpacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
-  const textY = useTransform(scrollYProgress, [0, 0.3], ["0%", "15%"]);
+  // Text animations - simplified
+  const textOpacity = useTransform(scrollYProgress, [0, 0.25], [1, 0]);
   
-  // Brand intro text appears as hero shrinks - fully visible when framing completes at 0.6
-  const introOpacity = useTransform(scrollYProgress, [0.45, 0.6], [0, 1]);
-  const introY = useTransform(scrollYProgress, [0.45, 0.6], [40, 0]);
+  // Brand intro text appears as hero shrinks
+  const introOpacity = useTransform(scrollYProgress, [0.4, 0.55], [0, 1]);
 
   return (
     <section 
       ref={containerRef}
-      className="relative bg-white"
-      style={{ height: "250vh" }}
+      className="relative bg-white will-change-transform"
+      style={{ height: prefersReducedMotion ? "100vh" : "200vh" }}
     >
       {/* Sticky hero container */}
       <div className="sticky top-0 h-screen overflow-hidden">
         {/* Animated framing wrapper */}
         <motion.div 
-          className="h-full w-full"
+          className="h-full w-full will-change-[padding]"
           style={{ 
             paddingLeft: paddingX, 
             paddingRight: paddingX, 
@@ -81,7 +87,7 @@ function HeroSection() {
           }}
         >
           <motion.div 
-            className="relative h-full w-full overflow-hidden"
+            className="relative h-full w-full overflow-hidden will-change-transform"
             style={{ borderRadius, scale }}
           >
             <Image
@@ -101,8 +107,8 @@ function HeroSection() {
 
         {/* Hero text - fades out as you scroll */}
         <motion.div 
-          className="absolute inset-0 flex items-center justify-center z-10"
-          style={{ opacity: textOpacity, y: textY }}
+          className="absolute inset-0 flex items-center justify-center z-10 will-change-opacity"
+          style={{ opacity: textOpacity }}
         >
           <div className="text-center text-white px-4 sm:px-6">
             <h1
@@ -134,8 +140,8 @@ function HeroSection() {
 
         {/* Brand intro - appears as hero frames, centered in image */}
         <motion.div 
-          className="absolute inset-x-8 sm:inset-x-0 inset-y-0 flex items-center justify-center z-10"
-          style={{ opacity: introOpacity, y: introY }}
+          className="absolute inset-x-8 sm:inset-x-0 inset-y-0 flex items-center justify-center z-10 will-change-opacity"
+          style={{ opacity: introOpacity }}
         >
           <div className="max-w-4xl mx-auto text-center px-2 sm:px-8">
             <h2 className="text-xl sm:text-3xl md:text-4xl lg:text-5xl font-display tracking-[0.12em] sm:tracking-[0.2em] md:tracking-[0.25em] text-white mb-3 sm:mb-6">
@@ -184,10 +190,11 @@ export default function HomePage() {
           <div className="grid md:grid-cols-3 gap-3 sm:gap-6">
             {/* Bathroom - PRIORITY: Full width large on mobile */}
             <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              variants={fadeInUp}
+              transition={{ duration: 0.5 }}
               className="md:col-span-2"
             >
               <Link href="/bathroom" className="group block relative aspect-[16/10] sm:aspect-[16/9] overflow-hidden rounded-lg">
@@ -195,7 +202,7 @@ export default function HomePage() {
                   src="/bathroom-hero.png"
                   alt="Luxury Bathroom"
                   fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                   sizes="(max-width: 768px) 100vw, 66vw"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
@@ -216,10 +223,11 @@ export default function HomePage() {
 
             {/* Tiling - Hidden on mobile, shown on desktop */}
             <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.15 }}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              variants={fadeInUp}
+              transition={{ duration: 0.5 }}
               className="hidden md:block md:col-span-1"
             >
               <Link href="/tiling" className="group block relative h-full overflow-hidden rounded-lg">
@@ -227,7 +235,7 @@ export default function HomePage() {
                   src="/tiling-hero.png"
                   alt="Premium Tiling"
                   fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                   sizes="33vw"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
@@ -251,17 +259,18 @@ export default function HomePage() {
           <div className="grid md:grid-cols-2 gap-3 sm:gap-6">
             {/* Kitchen - PRIORITY: Full width large on mobile */}
             <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              variants={fadeInUp}
+              transition={{ duration: 0.5 }}
             >
               <Link href="/kitchen" className="group block relative aspect-[16/10] sm:aspect-[4/3] overflow-hidden rounded-lg">
                 <Image
                   src="/kitchen-hero.png"
                   alt="Designer Kitchen"
                   fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                   sizes="(max-width: 768px) 100vw, 50vw"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
@@ -282,10 +291,11 @@ export default function HomePage() {
 
             {/* Lighting - Hidden on mobile, shown on desktop */}
             <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.15 }}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              variants={fadeInUp}
+              transition={{ duration: 0.5 }}
               className="hidden md:block"
             >
               <Link href="/lighting" className="group block relative aspect-[4/3] overflow-hidden rounded-lg">
@@ -293,7 +303,7 @@ export default function HomePage() {
                   src="/lighting-hero.png"
                   alt="Designer Lighting"
                   fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                   sizes="50vw"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
@@ -317,17 +327,18 @@ export default function HomePage() {
           <div className="grid grid-cols-2 gap-3 md:hidden">
             {/* Tiling - Small on mobile */}
             <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              variants={fadeInUp}
+              transition={{ duration: 0.5 }}
             >
               <Link href="/tiling" className="group block relative aspect-square overflow-hidden rounded-lg">
                 <Image
                   src="/tiling-hero.png"
                   alt="Premium Tiling"
                   fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                   sizes="50vw"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
@@ -345,17 +356,18 @@ export default function HomePage() {
 
             {/* Lighting - Small on mobile */}
             <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.1 }}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              variants={fadeInUp}
+              transition={{ duration: 0.5 }}
             >
               <Link href="/lighting" className="group block relative aspect-square overflow-hidden rounded-lg">
                 <Image
                   src="/lighting-hero.png"
                   alt="Designer Lighting"
                   fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                   sizes="50vw"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
@@ -376,10 +388,11 @@ export default function HomePage() {
           <div className="grid md:grid-cols-3 gap-3 sm:gap-6">
             {/* Furniture - PRIORITY: Full width large on mobile */}
             <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              variants={fadeInUp}
+              transition={{ duration: 0.5 }}
               className="md:col-span-2"
             >
               <Link href="/furniture" className="group block relative aspect-[16/10] sm:aspect-[16/9] overflow-hidden rounded-lg">
@@ -387,7 +400,7 @@ export default function HomePage() {
                   src="/furniture-hero.png"
                   alt="Designer Furniture"
                   fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                   sizes="(max-width: 768px) 100vw, 66vw"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
@@ -408,10 +421,11 @@ export default function HomePage() {
 
             {/* Electrical - Hidden on mobile, shown on desktop */}
             <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.15 }}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              variants={fadeInUp}
+              transition={{ duration: 0.5 }}
               className="hidden md:block md:col-span-1"
             >
               <Link href="/electrical" className="group block relative h-full overflow-hidden rounded-lg">
@@ -419,7 +433,7 @@ export default function HomePage() {
                   src="/electrical-hero.png"
                   alt="Premium Electrical"
                   fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                   sizes="33vw"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
@@ -452,7 +466,7 @@ export default function HomePage() {
                 src="/electrical-hero.png"
                 alt="Premium Electrical"
                 fill
-                className="object-cover transition-transform duration-700 group-hover:scale-105"
+                className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                 sizes="100vw"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
@@ -474,10 +488,11 @@ export default function HomePage() {
       <section className="py-14 sm:py-16 md:py-24 px-4 sm:px-6 bg-primary-black text-white">
         <div className="max-w-7xl mx-auto">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            variants={fadeInUp}
+            transition={{ duration: 0.4 }}
             className="text-center mb-10 sm:mb-12 md:mb-16"
           >
             <h2 className="text-xl sm:text-2xl md:text-3xl font-display tracking-[0.12em] sm:tracking-[0.25em] mb-3 sm:mb-4">COLLECTIONS</h2>
@@ -490,10 +505,11 @@ export default function HomePage() {
             {collections.map((collection, index) => (
               <motion.div
                 key={collection.id}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-30px" }}
+                variants={fadeInUp}
+                transition={{ duration: 0.4 }}
               >
                 <Link href={collection.href} className="group block">
                   <div className="relative aspect-[3/4] overflow-hidden mb-3 sm:mb-4 rounded-lg">
@@ -501,7 +517,7 @@ export default function HomePage() {
                       src={collection.image}
                       alt={collection.name}
                       fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                       sizes="(max-width: 768px) 50vw, 25vw"
                     />
                     <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-500" />
@@ -523,10 +539,10 @@ export default function HomePage() {
       <section className="py-12 sm:py-16 md:py-24 px-4 sm:px-6 bg-white">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-20 items-center">
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.5 }}
             className="order-2 lg:order-1"
           >
             <p className="text-[10px] sm:text-[11px] tracking-[0.15em] sm:tracking-[0.2em] text-warm-grey uppercase mb-3 sm:mb-4">About House of Clarence</p>
@@ -560,10 +576,10 @@ export default function HomePage() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.5 }}
             className="relative aspect-[4/3] sm:aspect-[4/5] order-1 lg:order-2 overflow-hidden rounded-lg"
           >
             <Image
@@ -581,10 +597,10 @@ export default function HomePage() {
       <section className="relative h-[60vh] sm:h-[70vh] md:h-[80vh] overflow-hidden">
         <motion.div 
           className="absolute inset-0"
-          initial={{ scale: 1.1 }}
+          initial={{ scale: 1.05 }}
           whileInView={{ scale: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 1.5 }}
+          transition={{ duration: 0.8 }}
         >
           <Image
             src="/marble-elegance.png"
