@@ -653,9 +653,7 @@ export default function HomePage() {
           <p className="text-warm-grey mb-6 sm:mb-8 max-w-xl mx-auto text-sm sm:text-base px-2">
             Our team is available to discuss your project requirements and provide personalised quotes.
           </p>
-
-          {/* Contact Buttons */}
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-12 sm:mb-16">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
             <a
               href="tel:+442033704057"
               className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-primary-black text-white text-[11px] sm:text-[12px] tracking-[0.15em] uppercase hover:bg-charcoal transition-all duration-500"
@@ -671,34 +669,35 @@ export default function HomePage() {
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </Link>
           </div>
-
-          {/* Divider */}
-          <div className="w-16 h-px bg-light-grey mx-auto mb-8 sm:mb-10" />
-
-          {/* Newsletter Signup */}
-          <div>
-            <p className="text-[11px] sm:text-[12px] tracking-[0.15em] uppercase text-warm-grey mb-2">
-              Stay Updated
-            </p>
-            <p className="text-warm-grey text-sm mb-5 max-w-md mx-auto">
-              Subscribe to our newsletter for new arrivals and exclusive offers.
-            </p>
-            <form className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 px-5 py-3 sm:py-4 border border-light-grey bg-white text-primary-black text-[12px] sm:text-[13px] tracking-wide placeholder:text-warm-grey focus:outline-none focus:border-primary-black transition-colors"
-                required
-              />
-              <button
-                type="submit"
-                className="px-6 sm:px-8 py-3 sm:py-4 bg-primary-black text-white text-[11px] sm:text-[12px] tracking-[0.15em] uppercase hover:bg-charcoal transition-all duration-300"
-              >
-                Subscribe
-              </button>
-            </form>
-          </div>
         </motion.div>
+      </section>
+
+      {/* Newsletter Section */}
+      <section className="py-10 sm:py-12 px-4 sm:px-6 bg-primary-black">
+        <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="text-center md:text-left">
+            <h3 className="text-white text-sm sm:text-base font-display tracking-[0.15em] mb-1">
+              STAY UPDATED
+            </h3>
+            <p className="text-warm-grey text-[12px] sm:text-sm">
+              Subscribe for new arrivals and exclusive offers.
+            </p>
+          </div>
+          <form className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+            <input
+              type="email"
+              placeholder="Enter your email"
+              className="px-5 py-3 bg-white/10 border border-white/20 text-white text-[12px] sm:text-[13px] tracking-wide placeholder:text-white/50 focus:outline-none focus:border-white/50 transition-colors w-full sm:w-64"
+              required
+            />
+            <button
+              type="submit"
+              className="px-6 py-3 bg-white text-primary-black text-[11px] sm:text-[12px] tracking-[0.15em] uppercase hover:bg-off-white transition-all duration-300 whitespace-nowrap"
+            >
+              Subscribe
+            </button>
+          </form>
+        </div>
       </section>
     </>
   );
