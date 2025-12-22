@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useScroll, useTransform, useMotionValueEvent } from "framer-motion";
@@ -65,248 +65,141 @@ function StackedCard({
   project, 
   index,
   totalProjects,
-  activeIndex,
+  progress,
 }: { 
   project: typeof projects[0]; 
   index: number;
   totalProjects: number;
-  activeIndex: number;
+  progress: number;
 }) {
-  const cardRef = useRef<HTMLDivElement>(null);
+  // Calculate this card's progress (0 = not yet, 0.5 = active, 1 = passed)
+  const cardProgress = progress * totalProjects - index;
+  const isVisible = cardProgress > -1 && cardProgress < 1.5;
+  const isActive = cardProgress >= 0 && cardProgress < 1;
   
-  const { scrollYProgress } = useScroll({
-    target: cardRef,
-    offset: ["start start", "end start"],
-  });
-
-  // Card stacking transforms
-  const isActive = index === activeIndex;
-  const isPast = index < activeIndex;
-  const stackOffset = Math.max(0, activeIndex - index);
+  // Scale: starts at 1, shrinks to 0.9 as next card comes
+  const scale = isActive ? 1 - (cardProgress * 0.1) : cardProgress < 0 ? 1 : 0.9;
   
-  // Scale down slightly for stacked cards
-  const scale = useTransform(
-    scrollYProgress,
-    [0, 1],
-    [1, 0.9]
-  );
-  
-  // Move up as you scroll
-  const y = useTransform(
-    scrollYProgress,
-    [0, 1],
-    [0, -100]
-  );
+  // Opacity: fades as it gets covered
+  const opacity = cardProgress < 0 ? 1 : cardProgress > 1 ? 0.3 : 1 - (cardProgress * 0.7);
 
-  // Opacity for transition
-  const opacity = useTransform(
-    scrollYProgress,
-    [0, 0.5, 1],
-    [1, 1, 0.3]
-  );
-
-  // Image zoom effect
-  const imageScale = useTransform(
-    scrollYProgress,
-    [0, 1],
-    [1, 1.1]
-  );
+  // Y position: moves up slightly as covered
+  const yOffset = isActive ? -cardProgress * 50 : 0;
 
   return (
-    <div
-      ref={cardRef}
-      className="h-screen sticky top-0"
+    <motion.div
+      className="h-screen w-full absolute top-0 left-0"
       style={{ 
         zIndex: totalProjects - index,
+        opacity: isVisible ? opacity : 0,
+        scale: scale,
+        y: yOffset,
+        pointerEvents: isActive ? 'auto' : 'none',
       }}
     >
-      <motion.div
-        className="absolute inset-0 overflow-hidden"
-        style={{ 
-          scale,
-          y,
-          opacity,
-        }}
-      >
-        {/* Background image with zoom */}
-        <motion.div 
-          className="absolute inset-0"
-          style={{ scale: imageScale }}
-        >
-          <Image
-            src={project.image}
-            alt={project.title}
-            fill
-            className="object-cover"
-            sizes="100vw"
-            priority={index < 2}
-          />
-        </motion.div>
-
-        {/* Dark overlay with gradient */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-black/30" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
-
-        {/* Film grain overlay */}
-        <div 
-          className="absolute inset-0 opacity-[0.015] pointer-events-none mix-blend-overlay"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-          }}
+      {/* Background image */}
+      <div className="absolute inset-0">
+        <Image
+          src={project.image}
+          alt={project.title}
+          fill
+          className="object-cover"
+          sizes="100vw"
+          priority={index < 2}
         />
+      </div>
 
-        {/* Content */}
-        <div className="relative h-full flex items-end">
-          <div className="w-full max-w-7xl mx-auto px-8 md:px-16 pb-20 md:pb-28">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-end">
-              
-              {/* Left - Main content */}
-              <div>
-                {/* Project number */}
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6 }}
-                  className="flex items-center gap-4 mb-6"
-                >
-                  <span className="text-7xl md:text-8xl font-display font-extralight text-white/20">
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
-                  <span className="text-[11px] tracking-[0.4em] uppercase text-white/50">
-                    / {String(totalProjects).padStart(2, '0')}
-                  </span>
-                </motion.div>
+      {/* Dark overlay with gradient */}
+      <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-black/30" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
 
-                {/* Category */}
-                <motion.p
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.1 }}
-                  className="text-[11px] tracking-[0.35em] uppercase text-amber-200/70 mb-4"
-                >
-                  {project.category}
-                </motion.p>
+      {/* Film grain overlay */}
+      <div 
+        className="absolute inset-0 opacity-[0.02] pointer-events-none mix-blend-overlay"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+        }}
+      />
 
-                {/* Title */}
-                <motion.h2
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: 0.2 }}
-                  className="text-4xl md:text-5xl lg:text-6xl font-display tracking-[0.02em] text-white mb-6 leading-[1.1]"
-                >
-                  {project.title}
-                </motion.h2>
-
-                {/* Description */}
-                <motion.p
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.3 }}
-                  className="text-white/60 text-base md:text-lg leading-relaxed max-w-md mb-8"
-                >
-                  {project.description}
-                </motion.p>
-
-                {/* Meta info */}
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.4 }}
-                  className="flex items-center gap-8 text-[12px] tracking-[0.2em] text-white/40 uppercase"
-                >
-                  <span>{project.location}</span>
-                  <span className="w-1 h-1 rounded-full bg-white/30" />
-                  <span>{project.year}</span>
-                </motion.div>
+      {/* Content */}
+      <div className="relative h-full flex items-end">
+        <div className="w-full max-w-7xl mx-auto px-8 md:px-16 pb-20 md:pb-28">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-end">
+            
+            {/* Left - Main content */}
+            <div>
+              {/* Project number */}
+              <div className="flex items-center gap-4 mb-6">
+                <span className="text-7xl md:text-8xl font-display font-extralight text-white/20">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <span className="text-[11px] tracking-[0.4em] uppercase text-white/50">
+                  / {String(totalProjects).padStart(2, '0')}
+                </span>
               </div>
 
-              {/* Right - CTA */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.5 }}
-                className="lg:text-right"
+              {/* Category */}
+              <p className="text-[11px] tracking-[0.35em] uppercase text-amber-200/70 mb-4">
+                {project.category}
+              </p>
+
+              {/* Title */}
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-display tracking-[0.02em] text-white mb-6 leading-[1.1]">
+                {project.title}
+              </h2>
+
+              {/* Description */}
+              <p className="text-white/60 text-base md:text-lg leading-relaxed max-w-md mb-8">
+                {project.description}
+              </p>
+
+              {/* Meta info */}
+              <div className="flex items-center gap-8 text-[12px] tracking-[0.2em] text-white/40 uppercase">
+                <span>{project.location}</span>
+                <span className="w-1 h-1 rounded-full bg-white/30" />
+                <span>{project.year}</span>
+              </div>
+            </div>
+
+            {/* Right - CTA */}
+            <div className="lg:text-right">
+              <Link
+                href={`/projects/${project.slug}`}
+                className="group inline-flex items-center gap-6"
               >
-                <Link
-                  href={`/projects/${project.slug}`}
-                  className="group inline-flex items-center gap-6"
-                >
-                  <span className="text-[13px] md:text-[14px] tracking-[0.25em] uppercase text-white/80 group-hover:text-white transition-colors">
-                    View Project
-                  </span>
-                  <span className="relative w-16 h-16 md:w-20 md:h-20">
-                    {/* Animated border */}
-                    <svg className="absolute inset-0 w-full h-full -rotate-90">
-                      <circle
-                        cx="50%"
-                        cy="50%"
-                        r="48%"
-                        fill="none"
-                        stroke="rgba(255,255,255,0.2)"
-                        strokeWidth="1"
-                      />
-                      <circle
-                        cx="50%"
-                        cy="50%"
-                        r="48%"
-                        fill="none"
-                        stroke="rgba(255,255,255,0.8)"
-                        strokeWidth="1"
-                        strokeDasharray="301.59"
-                        strokeDashoffset="301.59"
-                        className="group-hover:animate-circle-draw"
-                        style={{
-                          transition: 'stroke-dashoffset 0.6s ease-out',
-                        }}
-                      />
-                    </svg>
-                    <span className="absolute inset-0 flex items-center justify-center">
-                      <ExternalLink className="w-5 h-5 md:w-6 md:h-6 text-white/70 group-hover:text-white group-hover:scale-110 transition-all duration-300" />
-                    </span>
-                  </span>
-                </Link>
-              </motion.div>
+                <span className="text-[13px] md:text-[14px] tracking-[0.25em] uppercase text-white/80 group-hover:text-white transition-colors">
+                  View Project
+                </span>
+                <span className="relative w-16 h-16 md:w-20 md:h-20 rounded-full border border-white/30 flex items-center justify-center group-hover:border-white/60 transition-colors">
+                  <ExternalLink className="w-5 h-5 md:w-6 md:h-6 text-white/70 group-hover:text-white group-hover:scale-110 transition-all duration-300" />
+                </span>
+              </Link>
             </div>
           </div>
         </div>
-
-        {/* Top gradient for depth */}
-        <div 
-          className="absolute top-0 left-0 right-0 h-32 pointer-events-none"
-          style={{
-            background: 'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, transparent 100%)',
-          }}
-        />
-      </motion.div>
-    </div>
+      </div>
+    </motion.div>
   );
 }
 
 export default function ProjectsPage() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [progress, setProgress] = useState(0);
   
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
   });
 
-  // Track active card
+  // Track scroll progress
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    const newIndex = Math.min(
-      Math.floor(latest * projects.length),
-      projects.length - 1
-    );
-    if (newIndex !== activeIndex) {
-      setActiveIndex(newIndex);
-    }
+    setProgress(latest);
   });
+
+  const activeIndex = Math.min(
+    Math.floor(progress * projects.length),
+    projects.length - 1
+  );
 
   return (
     <div className="bg-black">
@@ -424,31 +317,31 @@ export default function ProjectsPage() {
       <div 
         ref={containerRef}
         className="relative"
-        style={{ height: `${100 * projects.length}vh` }}
+        style={{ height: `${100 * (projects.length + 0.5)}vh` }}
       >
-        {projects.map((project, index) => (
-          <StackedCard
-            key={project.id}
-            project={project}
-            index={index}
-            totalProjects={projects.length}
-            activeIndex={activeIndex}
-          />
-        ))}
+        {/* Sticky wrapper */}
+        <div className="sticky top-0 h-screen overflow-hidden">
+          {projects.map((project, index) => (
+            <StackedCard
+              key={project.id}
+              project={project}
+              index={index}
+              totalProjects={projects.length}
+              progress={progress}
+            />
+          ))}
+        </div>
 
         {/* Progress indicator - side */}
         <div className="fixed right-8 top-1/2 -translate-y-1/2 z-50 hidden lg:flex flex-col gap-4">
           {projects.map((_, i) => (
-            <motion.div
+            <div
               key={i}
               className="relative"
-              animate={{
-                scale: activeIndex === i ? 1 : 0.8,
-              }}
             >
               <div 
                 className={`w-2 h-2 rounded-full transition-all duration-500 ${
-                  activeIndex === i ? 'bg-white' : 'bg-white/20'
+                  activeIndex === i ? 'bg-white scale-125' : 'bg-white/20'
                 }`}
               />
               {activeIndex === i && (
@@ -457,20 +350,15 @@ export default function ProjectsPage() {
                   className="absolute -inset-2 border border-white/30 rounded-full"
                 />
               )}
-            </motion.div>
+            </div>
           ))}
         </div>
 
         {/* Current project label - bottom */}
         <div className="fixed bottom-8 left-8 z-50 hidden md:block">
-          <motion.p
-            key={activeIndex}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-[11px] tracking-[0.3em] uppercase text-white/50"
-          >
+          <p className="text-[11px] tracking-[0.3em] uppercase text-white/50">
             {projects[activeIndex]?.category}
-          </motion.p>
+          </p>
         </div>
       </div>
 
