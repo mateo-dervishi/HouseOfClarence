@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useScroll, useTransform, useMotionValueEvent } from "framer-motion";
+import { motion, useScroll, useMotionValueEvent, AnimatePresence } from "framer-motion";
 import { ArrowRight, ArrowDown, ExternalLink } from "lucide-react";
 
 // Project data
@@ -60,109 +60,110 @@ const projects = [
   },
 ];
 
-// Stacked card component
-function StackedCard({ 
+// Single project card - only rendered when active
+function ProjectCard({ 
   project, 
   index,
   totalProjects,
-  progress,
 }: { 
   project: typeof projects[0]; 
   index: number;
   totalProjects: number;
-  progress: number;
 }) {
-  // Calculate this card's progress (0 = not yet, 0.5 = active, 1 = passed)
-  const cardProgress = progress * totalProjects - index;
-  const isVisible = cardProgress > -1 && cardProgress < 1.5;
-  const isActive = cardProgress >= 0 && cardProgress < 1;
-  
-  // Scale: starts at 1, shrinks to 0.9 as next card comes
-  const scale = isActive ? 1 - (cardProgress * 0.1) : cardProgress < 0 ? 1 : 0.9;
-  
-  // Opacity: fades as it gets covered
-  const opacity = cardProgress < 0 ? 1 : cardProgress > 1 ? 0.3 : 1 - (cardProgress * 0.7);
-
-  // Y position: moves up slightly as covered
-  const yOffset = isActive ? -cardProgress * 50 : 0;
-
   return (
     <motion.div
-      className="h-screen w-full absolute top-0 left-0"
-      style={{ 
-        zIndex: totalProjects - index,
-        opacity: isVisible ? opacity : 0,
-        scale: scale,
-        y: yOffset,
-        pointerEvents: isActive ? 'auto' : 'none',
-      }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+      className="absolute inset-0"
     >
       {/* Background image */}
-      <div className="absolute inset-0">
-        <Image
-          src={project.image}
-          alt={project.title}
-          fill
-          className="object-cover"
-          sizes="100vw"
-          priority={index < 2}
-        />
-      </div>
+      <Image
+        src={project.image}
+        alt={project.title}
+        fill
+        className="object-cover"
+        sizes="100vw"
+        priority
+      />
 
       {/* Dark overlay with gradient */}
       <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-black/30" />
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
 
-      {/* Film grain overlay */}
-      <div 
-        className="absolute inset-0 opacity-[0.02] pointer-events-none mix-blend-overlay"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-        }}
-      />
-
       {/* Content */}
-      <div className="relative h-full flex items-end">
+      <div className="absolute inset-0 flex items-end">
         <div className="w-full max-w-7xl mx-auto px-8 md:px-16 pb-20 md:pb-28">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-end">
             
             {/* Left - Main content */}
             <div>
               {/* Project number */}
-              <div className="flex items-center gap-4 mb-6">
+              <motion.div 
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className="flex items-center gap-4 mb-6"
+              >
                 <span className="text-7xl md:text-8xl font-display font-extralight text-white/20">
                   {String(index + 1).padStart(2, '0')}
                 </span>
                 <span className="text-[11px] tracking-[0.4em] uppercase text-white/50">
                   / {String(totalProjects).padStart(2, '0')}
                 </span>
-              </div>
+              </motion.div>
 
               {/* Category */}
-              <p className="text-[11px] tracking-[0.35em] uppercase text-amber-200/70 mb-4">
+              <motion.p 
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="text-[11px] tracking-[0.35em] uppercase text-amber-200/70 mb-4"
+              >
                 {project.category}
-              </p>
+              </motion.p>
 
               {/* Title */}
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-display tracking-[0.02em] text-white mb-6 leading-[1.1]">
+              <motion.h2 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+                className="text-4xl md:text-5xl lg:text-6xl font-display tracking-[0.02em] text-white mb-6 leading-[1.1]"
+              >
                 {project.title}
-              </h2>
+              </motion.h2>
 
               {/* Description */}
-              <p className="text-white/60 text-base md:text-lg leading-relaxed max-w-md mb-8">
+              <motion.p 
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+                className="text-white/60 text-base md:text-lg leading-relaxed max-w-md mb-8"
+              >
                 {project.description}
-              </p>
+              </motion.p>
 
               {/* Meta info */}
-              <div className="flex items-center gap-8 text-[12px] tracking-[0.2em] text-white/40 uppercase">
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.5 }}
+                className="flex items-center gap-8 text-[12px] tracking-[0.2em] text-white/40 uppercase"
+              >
                 <span>{project.location}</span>
                 <span className="w-1 h-1 rounded-full bg-white/30" />
                 <span>{project.year}</span>
-              </div>
+              </motion.div>
             </div>
 
             {/* Right - CTA */}
-            <div className="lg:text-right">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.6 }}
+              className="lg:text-right"
+            >
               <Link
                 href={`/projects/${project.slug}`}
                 className="group inline-flex items-center gap-6"
@@ -174,7 +175,7 @@ function StackedCard({
                   <ExternalLink className="w-5 h-5 md:w-6 md:h-6 text-white/70 group-hover:text-white group-hover:scale-110 transition-all duration-300" />
                 </span>
               </Link>
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>
@@ -184,22 +185,23 @@ function StackedCard({
 
 export default function ProjectsPage() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [progress, setProgress] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(0);
   
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
   });
 
-  // Track scroll progress
+  // Track active project - only one at a time
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    setProgress(latest);
+    const newIndex = Math.min(
+      Math.floor(latest * projects.length),
+      projects.length - 1
+    );
+    if (newIndex !== activeIndex && newIndex >= 0) {
+      setActiveIndex(newIndex);
+    }
   });
-
-  const activeIndex = Math.min(
-    Math.floor(progress * projects.length),
-    projects.length - 1
-  );
 
   return (
     <div className="bg-black">
@@ -313,32 +315,29 @@ export default function ProjectsPage() {
         <div className="absolute bottom-8 right-8 w-16 h-16 border-r border-b border-white/10" />
       </section>
 
-      {/* Stacked Cards Section */}
+      {/* Projects Section - Clean crossfade */}
       <div 
         ref={containerRef}
         className="relative"
         style={{ height: `${100 * (projects.length + 0.5)}vh` }}
       >
-        {/* Sticky wrapper */}
-        <div className="sticky top-0 h-screen overflow-hidden">
-          {projects.map((project, index) => (
-            <StackedCard
-              key={project.id}
-              project={project}
-              index={index}
+        {/* Sticky viewport */}
+        <div className="sticky top-0 h-screen overflow-hidden bg-black">
+          {/* Only render the active project - clean crossfade */}
+          <AnimatePresence mode="wait">
+            <ProjectCard
+              key={projects[activeIndex].id}
+              project={projects[activeIndex]}
+              index={activeIndex}
               totalProjects={projects.length}
-              progress={progress}
             />
-          ))}
+          </AnimatePresence>
         </div>
 
         {/* Progress indicator - side */}
         <div className="fixed right-8 top-1/2 -translate-y-1/2 z-50 hidden lg:flex flex-col gap-4">
           {projects.map((_, i) => (
-            <div
-              key={i}
-              className="relative"
-            >
+            <div key={i} className="relative">
               <div 
                 className={`w-2 h-2 rounded-full transition-all duration-500 ${
                   activeIndex === i ? 'bg-white scale-125' : 'bg-white/20'
@@ -348,6 +347,7 @@ export default function ProjectsPage() {
                 <motion.div
                   layoutId="activeIndicator"
                   className="absolute -inset-2 border border-white/30 rounded-full"
+                  transition={{ duration: 0.3 }}
                 />
               )}
             </div>
@@ -356,9 +356,18 @@ export default function ProjectsPage() {
 
         {/* Current project label - bottom */}
         <div className="fixed bottom-8 left-8 z-50 hidden md:block">
-          <p className="text-[11px] tracking-[0.3em] uppercase text-white/50">
-            {projects[activeIndex]?.category}
-          </p>
+          <AnimatePresence mode="wait">
+            <motion.p
+              key={activeIndex}
+              initial={{ opacity: 0, y: 5 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -5 }}
+              transition={{ duration: 0.3 }}
+              className="text-[11px] tracking-[0.3em] uppercase text-white/50"
+            >
+              {projects[activeIndex]?.category}
+            </motion.p>
+          </AnimatePresence>
         </div>
       </div>
 
