@@ -673,30 +673,39 @@ export default function HomePage() {
       </section>
 
       {/* Newsletter Section */}
-      <section className="py-10 sm:py-12 px-4 sm:px-6 bg-primary-black">
-        <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="text-center md:text-left">
-            <h3 className="text-white text-sm sm:text-base font-display tracking-[0.15em] mb-1">
-              STAY UPDATED
-            </h3>
-            <p className="text-warm-grey text-[12px] sm:text-sm">
-              Subscribe for new arrivals and exclusive offers.
-            </p>
-          </div>
-          <form className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+      <section className="relative py-16 sm:py-20 md:py-24 px-4 sm:px-6 bg-[#1a1a1a] overflow-hidden">
+        {/* Subtle gradient accent */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-amber-900/5 rounded-full blur-[150px] pointer-events-none" />
+        
+        <div className="relative max-w-2xl mx-auto text-center">
+          <p className="text-[10px] sm:text-[11px] tracking-[0.4em] uppercase text-white/40 mb-4">
+            Newsletter
+          </p>
+          <h3 className="text-2xl sm:text-3xl md:text-4xl font-display tracking-[0.1em] text-white mb-4">
+            STAY IN THE KNOW
+          </h3>
+          <p className="text-white/50 text-sm sm:text-base mb-8 max-w-md mx-auto leading-relaxed">
+            Be the first to discover new collections, exclusive offers, and design inspiration.
+          </p>
+          
+          <form className="flex flex-col sm:flex-row gap-0 max-w-lg mx-auto">
             <input
               type="email"
-              placeholder="Enter your email"
-              className="px-5 py-3 bg-white/10 border border-white/20 text-white text-[12px] sm:text-[13px] tracking-wide placeholder:text-white/50 focus:outline-none focus:border-white/50 transition-colors w-full sm:w-64"
+              placeholder="Your email address"
+              className="flex-1 px-6 py-4 bg-white/5 border border-white/10 sm:border-r-0 text-white text-[13px] tracking-wide placeholder:text-white/30 focus:outline-none focus:bg-white/10 transition-colors"
               required
             />
             <button
               type="submit"
-              className="px-6 py-3 bg-white text-primary-black text-[11px] sm:text-[12px] tracking-[0.15em] uppercase hover:bg-off-white transition-all duration-300 whitespace-nowrap"
+              className="px-8 py-4 bg-white text-primary-black text-[11px] sm:text-[12px] tracking-[0.2em] uppercase hover:bg-off-white transition-all duration-300 font-medium"
             >
               Subscribe
             </button>
           </form>
+          
+          <p className="text-white/30 text-[10px] sm:text-[11px] mt-4 tracking-wide">
+            We respect your privacy. Unsubscribe at any time.
+          </p>
         </div>
       </section>
     </>
