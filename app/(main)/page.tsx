@@ -653,6 +653,35 @@ export default function HomePage() {
           <p className="text-warm-grey mb-6 sm:mb-8 max-w-xl mx-auto text-sm sm:text-base px-2">
             Our team is available to discuss your project requirements and provide personalised quotes.
           </p>
+
+          {/* Newsletter Signup */}
+          <div className="mb-10 sm:mb-12">
+            <p className="text-[11px] sm:text-[12px] tracking-[0.15em] uppercase text-warm-grey mb-4">
+              Join our newsletter for exclusive updates
+            </p>
+            <form className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="flex-1 px-5 py-3 sm:py-4 border border-light-grey bg-white text-primary-black text-[12px] sm:text-[13px] tracking-wide placeholder:text-warm-grey focus:outline-none focus:border-primary-black transition-colors"
+                required
+              />
+              <button
+                type="submit"
+                className="px-6 sm:px-8 py-3 sm:py-4 bg-primary-black text-white text-[11px] sm:text-[12px] tracking-[0.15em] uppercase hover:bg-charcoal transition-all duration-300"
+              >
+                Subscribe
+              </button>
+            </form>
+          </div>
+
+          {/* Divider */}
+          <div className="w-16 h-px bg-light-grey mx-auto mb-8 sm:mb-10" />
+
+          <p className="text-[11px] sm:text-[12px] tracking-[0.1em] uppercase text-warm-grey mb-4">
+            Or contact us directly
+          </p>
+
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
             <a
               href="tel:+442033704057"
