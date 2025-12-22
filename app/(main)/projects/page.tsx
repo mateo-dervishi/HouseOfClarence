@@ -1,9 +1,9 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useScroll, useMotionValueEvent } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, ArrowDown, ExternalLink } from "lucide-react";
 
 // Project data
@@ -60,8 +60,8 @@ const projects = [
   },
 ];
 
-// Single project card
-function ProjectCard({ 
+// Each project as its own scrollable section
+function ProjectSection({ 
   project, 
   index,
   totalProjects,
@@ -71,7 +71,7 @@ function ProjectCard({
   totalProjects: number;
 }) {
   return (
-    <div className="absolute inset-0">
+    <section className="h-screen relative overflow-hidden">
       {/* Background image */}
       <Image
         src={project.image}
@@ -79,7 +79,7 @@ function ProjectCard({
         fill
         className="object-cover"
         sizes="100vw"
-        priority
+        priority={index < 2}
       />
 
       {/* Dark overlay with gradient */}
@@ -143,34 +143,29 @@ function ProjectCard({
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 
 export default function ProjectsPage() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const heroRef = useRef<HTMLDivElement>(null);
   
   const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
+    target: heroRef,
+    offset: ["start start", "end start"],
   });
 
-  // Track active project
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    const newIndex = Math.min(
-      Math.floor(latest * projects.length),
-      projects.length - 1
-    );
-    if (newIndex !== activeIndex && newIndex >= 0) {
-      setActiveIndex(newIndex);
-    }
-  });
+  // Hero parallax as it scrolls away
+  const heroY = useTransform(scrollYProgress, [0, 1], [0, 150]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
   return (
     <div className="bg-black">
-      {/* Hero Section - scrolls away naturally */}
-      <section className="h-screen relative flex items-center justify-center overflow-hidden bg-black">
+      {/* Hero Section */}
+      <section 
+        ref={heroRef}
+        className="h-screen relative flex items-center justify-center overflow-hidden bg-black"
+      >
         {/* Ambient gradient background */}
         <div className="absolute inset-0">
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-amber-900/10 rounded-full blur-[120px]" />
@@ -191,7 +186,10 @@ export default function ProjectsPage() {
           />
         </div>
 
-        <div className="text-center px-6 relative z-10">
+        <motion.div 
+          className="text-center px-6 relative z-10"
+          style={{ y: heroY, opacity: heroOpacity }}
+        >
           {/* Top line decoration */}
           <motion.div
             initial={{ scaleY: 0 }}
@@ -251,7 +249,7 @@ export default function ProjectsPage() {
               </div>
             ))}
           </motion.div>
-        </div>
+        </motion.div>
 
         {/* Scroll indicator */}
         <motion.div
@@ -259,6 +257,7 @@ export default function ProjectsPage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.8 }}
+          style={{ opacity: heroOpacity }}
         >
           <motion.div
             className="flex flex-col items-center gap-3 cursor-pointer"
@@ -279,49 +278,15 @@ export default function ProjectsPage() {
         <div className="absolute bottom-8 right-8 w-16 h-16 border-r border-b border-white/10" />
       </section>
 
-      {/* Projects Section - sticky with scroll-driven switching */}
-      <div 
-        ref={containerRef}
-        className="relative"
-        style={{ height: `${100 * (projects.length + 0.5)}vh` }}
-      >
-        {/* Sticky viewport */}
-        <div className="sticky top-0 h-screen overflow-hidden bg-black">
-          <ProjectCard
-            key={projects[activeIndex].id}
-            project={projects[activeIndex]}
-            index={activeIndex}
-            totalProjects={projects.length}
-          />
-        </div>
-
-        {/* Progress indicator - side */}
-        <div className="fixed right-8 top-1/2 -translate-y-1/2 z-50 hidden lg:flex flex-col gap-4">
-          {projects.map((_, i) => (
-            <div key={i} className="relative">
-              <div 
-                className={`w-2 h-2 rounded-full transition-all duration-500 ${
-                  activeIndex === i ? 'bg-white scale-125' : 'bg-white/20'
-                }`}
-              />
-              {activeIndex === i && (
-                <motion.div
-                  layoutId="activeIndicator"
-                  className="absolute -inset-2 border border-white/30 rounded-full"
-                  transition={{ duration: 0.3 }}
-                />
-              )}
-            </div>
-          ))}
-        </div>
-
-        {/* Current project label - bottom */}
-        <div className="fixed bottom-8 left-8 z-50 hidden md:block">
-          <p className="text-[11px] tracking-[0.3em] uppercase text-white/50">
-            {projects[activeIndex]?.category}
-          </p>
-        </div>
-      </div>
+      {/* Project Sections - each scrolls naturally */}
+      {projects.map((project, index) => (
+        <ProjectSection
+          key={project.id}
+          project={project}
+          index={index}
+          totalProjects={projects.length}
+        />
+      ))}
 
       {/* Final CTA */}
       <section className="min-h-screen relative flex items-center justify-center bg-black overflow-hidden">
