@@ -1,9 +1,8 @@
 "use client";
 
-import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { ArrowRight, ArrowDown, ExternalLink } from "lucide-react";
 
 // Project data
@@ -71,7 +70,7 @@ function ProjectSection({
   totalProjects: number;
 }) {
   return (
-    <section className="h-screen relative overflow-hidden">
+    <section className="h-screen relative overflow-hidden snap-start snap-always">
       {/* Background image */}
       <Image
         src={project.image}
@@ -148,23 +147,11 @@ function ProjectSection({
 }
 
 export default function ProjectsPage() {
-  const heroRef = useRef<HTMLDivElement>(null);
-  
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
-
-  // Hero parallax as it scrolls away
-  const heroY = useTransform(scrollYProgress, [0, 1], [0, 150]);
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
-
   return (
-    <div className="bg-black">
+    <div className="bg-black h-screen overflow-y-auto snap-y snap-mandatory scroll-smooth">
       {/* Hero Section */}
       <section 
-        ref={heroRef}
-        className="h-screen relative flex items-center justify-center overflow-hidden bg-black"
+        className="h-screen relative flex items-center justify-center overflow-hidden bg-black snap-start snap-always"
       >
         {/* Ambient gradient background */}
         <div className="absolute inset-0">
@@ -186,10 +173,7 @@ export default function ProjectsPage() {
           />
         </div>
 
-        <motion.div 
-          className="text-center px-6 relative z-10"
-          style={{ y: heroY, opacity: heroOpacity }}
-        >
+        <div className="text-center px-6 relative z-10">
           {/* Top line decoration */}
           <motion.div
             initial={{ scaleY: 0 }}
@@ -249,7 +233,7 @@ export default function ProjectsPage() {
               </div>
             ))}
           </motion.div>
-        </motion.div>
+        </div>
 
         {/* Scroll indicator */}
         <motion.div
@@ -257,7 +241,6 @@ export default function ProjectsPage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.8 }}
-          style={{ opacity: heroOpacity }}
         >
           <motion.div
             className="flex flex-col items-center gap-3 cursor-pointer"
@@ -289,7 +272,7 @@ export default function ProjectsPage() {
       ))}
 
       {/* Final CTA */}
-      <section className="min-h-screen relative flex items-center justify-center bg-black overflow-hidden">
+      <section className="h-screen relative flex items-center justify-center bg-black overflow-hidden snap-start snap-always">
         {/* Background texture */}
         <div className="absolute inset-0 opacity-[0.02]">
           <div 
