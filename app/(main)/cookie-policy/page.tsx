@@ -57,7 +57,7 @@ export default function CookiePolicyPage() {
             <section>
               <h2 className="text-xl tracking-[0.1em] uppercase font-display mb-4">2. How We Use Cookies</h2>
               <p className="text-warm-grey leading-relaxed mb-4">
-                House of Clarence uses cookies and similar technologies for the following purposes:
+                House of Clarence Ltd (Company Number: 16501627) uses cookies and similar technologies for the following purposes:
               </p>
               <ul className="list-disc pl-6 text-warm-grey space-y-2">
                 <li>To enable essential website functionality</li>
@@ -295,8 +295,10 @@ export default function CookiePolicyPage() {
                 If you have any questions about our use of cookies, please contact us:
               </p>
               <div className="bg-off-white p-6">
-                <p className="text-primary-black font-medium mb-2">House of Clarence</p>
-                <p className="text-warm-grey">Email: privacy@houseofclarence.com</p>
+                <p className="text-primary-black font-medium mb-2">House of Clarence Ltd</p>
+                <p className="text-warm-grey">Company Number: 16501627</p>
+                <p className="text-warm-grey">Registered Address: 320 High Street, Harlington, Hayes, England, UB3 5DU</p>
+                <p className="text-warm-grey mt-2">Email: privacy@houseofclarence.com</p>
                 <p className="text-warm-grey">Phone: 020 3370 4057</p>
               </div>
             </section>

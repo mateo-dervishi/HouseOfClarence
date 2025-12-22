@@ -50,8 +50,17 @@ export default function TermsConditionsPage() {
                 by these Terms.
               </p>
               <p className="text-warm-grey leading-relaxed mt-4">
-                House of Clarence is a trading name of House of Clarence Ltd, a company registered in 
-                England and Wales. References to &quot;we&quot;, &quot;us&quot;, or &quot;our&quot; refer to House of Clarence Ltd.
+                House of Clarence Ltd is a private limited company registered in England and Wales.
+              </p>
+              <div className="bg-off-white p-6 mt-4">
+                <p className="text-primary-black font-medium mb-2">Company Information</p>
+                <p className="text-warm-grey">Company Name: House of Clarence Ltd</p>
+                <p className="text-warm-grey">Company Number: 16501627</p>
+                <p className="text-warm-grey">Registered Address: 320 High Street, Harlington, Hayes, England, UB3 5DU</p>
+                <p className="text-warm-grey">Incorporated: 6 June 2025</p>
+              </div>
+              <p className="text-warm-grey leading-relaxed mt-4">
+                References to &quot;we&quot;, &quot;us&quot;, or &quot;our&quot; throughout these Terms refer to House of Clarence Ltd.
               </p>
             </section>
 
@@ -271,8 +280,10 @@ export default function TermsConditionsPage() {
                 If you have any questions about these Terms, please contact us:
               </p>
               <div className="bg-off-white p-6">
-                <p className="text-primary-black font-medium mb-2">House of Clarence</p>
-                <p className="text-warm-grey">Email: legal@houseofclarence.com</p>
+                <p className="text-primary-black font-medium mb-2">House of Clarence Ltd</p>
+                <p className="text-warm-grey">Company Number: 16501627</p>
+                <p className="text-warm-grey">Registered Address: 320 High Street, Harlington, Hayes, England, UB3 5DU</p>
+                <p className="text-warm-grey mt-2">Email: legal@houseofclarence.com</p>
                 <p className="text-warm-grey">Phone: 020 3370 4057</p>
               </div>
             </section>

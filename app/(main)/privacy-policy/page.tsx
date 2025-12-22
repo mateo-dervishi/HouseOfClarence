@@ -44,11 +44,17 @@ export default function PrivacyPolicyPage() {
             <section>
               <h2 className="text-xl tracking-[0.1em] uppercase font-display mb-4">1. Introduction</h2>
               <p className="text-warm-grey leading-relaxed">
-                House of Clarence (&quot;we&quot;, &quot;our&quot;, or &quot;us&quot;) is committed to protecting your privacy. 
+                House of Clarence Ltd (&quot;we&quot;, &quot;our&quot;, or &quot;us&quot;) is committed to protecting your privacy. 
                 This Privacy Policy explains how we collect, use, disclose, and safeguard your information 
                 when you visit our website houseofclarence.com (the &quot;Website&quot;) or make enquiries about our 
                 products and services.
               </p>
+              <div className="bg-off-white p-6 mt-4">
+                <p className="text-primary-black font-medium mb-2">Data Controller</p>
+                <p className="text-warm-grey">House of Clarence Ltd</p>
+                <p className="text-warm-grey">Company Number: 16501627</p>
+                <p className="text-warm-grey">Registered Address: 320 High Street, Harlington, Hayes, England, UB3 5DU</p>
+              </div>
               <p className="text-warm-grey leading-relaxed mt-4">
                 Please read this privacy policy carefully. If you do not agree with the terms of this 
                 privacy policy, please do not access the Website.
@@ -205,13 +211,18 @@ export default function PrivacyPolicyPage() {
                 If you have any questions about this Privacy Policy or our data practices, please contact us:
               </p>
               <div className="bg-off-white p-6">
-                <p className="text-primary-black font-medium mb-2">House of Clarence</p>
-                <p className="text-warm-grey">Email: privacy@houseofclarence.com</p>
+                <p className="text-primary-black font-medium mb-2">House of Clarence Ltd</p>
+                <p className="text-warm-grey">Company Number: 16501627</p>
+                <p className="text-warm-grey">Registered Address: 320 High Street, Harlington, Hayes, England, UB3 5DU</p>
+                <p className="text-warm-grey mt-2">Email: privacy@houseofclarence.com</p>
                 <p className="text-warm-grey">Phone: 020 3370 4057</p>
               </div>
               <p className="text-warm-grey leading-relaxed mt-4">
                 You also have the right to lodge a complaint with the Information Commissioner&apos;s Office (ICO) 
-                if you believe your data protection rights have been violated.
+                if you believe your data protection rights have been violated. You can contact the ICO at{" "}
+                <a href="https://ico.org.uk" target="_blank" rel="noopener noreferrer" className="underline hover:text-primary-black">
+                  ico.org.uk
+                </a>.
               </p>
             </section>
           </div>
