@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useScroll, useMotionValueEvent, AnimatePresence } from "framer-motion";
+import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 import { ArrowRight, ArrowDown, ExternalLink } from "lucide-react";
 
 // Project data
@@ -65,31 +65,13 @@ function ProjectCard({
   project, 
   index,
   totalProjects,
-  direction,
 }: { 
   project: typeof projects[0]; 
   index: number;
   totalProjects: number;
-  direction: number;
 }) {
   return (
-    <motion.div
-      initial={{ 
-        clipPath: direction > 0 
-          ? "inset(100% 0 0 0)" 
-          : "inset(0 0 100% 0)",
-      }}
-      animate={{ 
-        clipPath: "inset(0 0 0 0)",
-      }}
-      exit={{ 
-        clipPath: direction > 0 
-          ? "inset(0 0 100% 0)" 
-          : "inset(100% 0 0 0)",
-      }}
-      transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
-      className="absolute inset-0"
-    >
+    <div className="absolute inset-0">
       {/* Background image */}
       <Image
         src={project.image}
@@ -161,14 +143,13 @@ function ProjectCard({
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
 export default function ProjectsPage() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [direction, setDirection] = useState(1); // 1 = scrolling down, -1 = scrolling up
   
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -182,7 +163,6 @@ export default function ProjectsPage() {
       projects.length - 1
     );
     if (newIndex !== activeIndex && newIndex >= 0) {
-      setDirection(newIndex > activeIndex ? 1 : -1);
       setActiveIndex(newIndex);
     }
   });
@@ -307,16 +287,13 @@ export default function ProjectsPage() {
       >
         {/* Sticky viewport */}
         <div className="sticky top-0 h-screen overflow-hidden bg-black">
-          {/* Only render the active project - cinematic wipe */}
-          <AnimatePresence initial={false} mode="wait">
-            <ProjectCard
-              key={projects[activeIndex].id}
-              project={projects[activeIndex]}
-              index={activeIndex}
-              totalProjects={projects.length}
-              direction={direction}
-            />
-          </AnimatePresence>
+          {/* Only render the active project - instant cut */}
+          <ProjectCard
+            key={projects[activeIndex].id}
+            project={projects[activeIndex]}
+            index={activeIndex}
+            totalProjects={projects.length}
+          />
         </div>
 
         {/* Progress indicator - side */}
