@@ -318,18 +318,9 @@ export default function ProjectsPage() {
 
         {/* Current project label - bottom */}
         <div className="fixed bottom-8 left-8 z-50 hidden md:block">
-          <AnimatePresence mode="wait">
-            <motion.p
-              key={activeIndex}
-              initial={{ opacity: 0, y: 5 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -5 }}
-              transition={{ duration: 0.3 }}
-              className="text-[11px] tracking-[0.3em] uppercase text-white/50"
-            >
-              {projects[activeIndex]?.category}
-            </motion.p>
-          </AnimatePresence>
+          <p className="text-[11px] tracking-[0.3em] uppercase text-white/50">
+            {projects[activeIndex]?.category}
+          </p>
         </div>
       </div>
 
