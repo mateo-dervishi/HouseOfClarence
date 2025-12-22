@@ -3,524 +3,533 @@
 import { useRef, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { motion, useScroll, useTransform, useMotionValueEvent } from "framer-motion";
+import { ArrowRight, ArrowDown, ExternalLink } from "lucide-react";
 
 // Project data
 const projects = [
   {
     id: "kensington-residence",
-    title: "Kensington",
-    subtitle: "Residence",
-    location: "London",
+    title: "Kensington Residence",
+    location: "London, UK",
     year: "2024",
     category: "Private Residence",
+    description: "A symphony of marble, brass, and bespoke joinery creating timeless luxury.",
     image: "/bathroom-hero.png",
     slug: "kensington-residence",
   },
   {
     id: "mayfair-penthouse",
-    title: "Mayfair",
-    subtitle: "Penthouse",
-    location: "London",
+    title: "Mayfair Penthouse",
+    location: "London, UK",
     year: "2024",
-    category: "Luxury Penthouse",
+    category: "Penthouse",
+    description: "Sky-high elegance with panoramic views and exquisite finishing details.",
     image: "/kitchen-hero.png",
     slug: "mayfair-penthouse",
   },
   {
     id: "chelsea-townhouse",
-    title: "Chelsea",
-    subtitle: "Townhouse",
-    location: "London",
+    title: "Chelsea Townhouse",
+    location: "London, UK",
     year: "2023",
-    category: "Georgian Townhouse",
+    category: "Townhouse",
+    description: "Georgian heritage meets contemporary sophistication in this complete restoration.",
     image: "/furniture-hero.png",
     slug: "chelsea-townhouse",
   },
   {
     id: "notting-hill-mews",
-    title: "Notting Hill",
-    subtitle: "Mews",
-    location: "London",
+    title: "Notting Hill Mews",
+    location: "London, UK",
     year: "2023",
-    category: "Mews Conversion",
+    category: "Mews House",
+    description: "A hidden gem transformed with artisanal tiles and designer lighting.",
     image: "/tiling-hero.png",
     slug: "notting-hill-mews",
   },
   {
     id: "belgravia-mansion",
-    title: "Belgravia",
-    subtitle: "Mansion",
-    location: "London",
+    title: "Belgravia Mansion",
+    location: "London, UK",
     year: "2023",
-    category: "Historic Mansion",
+    category: "Mansion",
+    description: "Grand proportions demand extraordinary materials and meticulous execution.",
     image: "/lighting-hero.png",
     slug: "belgravia-mansion",
   },
 ];
 
-// Staggered text reveal component
-function RevealText({ 
-  text, 
-  isVisible, 
-  className,
-  delay = 0 
-}: { 
-  text: string; 
-  isVisible: boolean;
-  className?: string;
-  delay?: number;
-}) {
-  return (
-    <span className={`inline-block overflow-hidden ${className}`}>
-      <motion.span
-        className="inline-block"
-        initial={{ y: "100%" }}
-        animate={{ y: isVisible ? "0%" : "100%" }}
-        transition={{ 
-          duration: 0.8, 
-          delay,
-          ease: [0.16, 1, 0.3, 1] 
-        }}
-      >
-        {text}
-      </motion.span>
-    </span>
-  );
-}
-
-// Individual project section with 3D perspective
-function ProjectSection({ 
+// Stacked card component
+function StackedCard({ 
   project, 
   index,
+  totalProjects,
+  activeIndex,
 }: { 
   project: typeof projects[0]; 
   index: number;
+  totalProjects: number;
+  activeIndex: number;
 }) {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const [isInView, setIsInView] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
   
   const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
+    target: cardRef,
+    offset: ["start start", "end start"],
   });
 
-  // Clip path for dramatic reveal
-  const clipProgress = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [100, 0, 0, 100]);
+  // Card stacking transforms
+  const isActive = index === activeIndex;
+  const isPast = index < activeIndex;
+  const stackOffset = Math.max(0, activeIndex - index);
   
-  // 3D perspective transforms
-  const rotateX = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [15, 0, 0, -15]);
-  const scale = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.85, 1, 1, 0.85]);
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
-  const y = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [100, 0, 0, -100]);
+  // Scale down slightly for stacked cards
+  const scale = useTransform(
+    scrollYProgress,
+    [0, 1],
+    [1, 0.9]
+  );
+  
+  // Move up as you scroll
+  const y = useTransform(
+    scrollYProgress,
+    [0, 1],
+    [0, -100]
+  );
 
-  // Track when in center view
-  useEffect(() => {
-    const unsubscribe = scrollYProgress.on("change", (latest) => {
-      setIsInView(latest > 0.25 && latest < 0.75);
-    });
-    return () => unsubscribe();
-  }, [scrollYProgress]);
+  // Opacity for transition
+  const opacity = useTransform(
+    scrollYProgress,
+    [0, 0.5, 1],
+    [1, 1, 0.3]
+  );
 
-  const isEven = index % 2 === 0;
+  // Image zoom effect
+  const imageScale = useTransform(
+    scrollYProgress,
+    [0, 1],
+    [1, 1.1]
+  );
 
   return (
-    <section
-      ref={sectionRef}
-      className="min-h-[120vh] relative flex items-center justify-center py-20 md:py-32"
-      style={{ perspective: "1200px" }}
+    <div
+      ref={cardRef}
+      className="h-screen sticky top-0"
+      style={{ 
+        zIndex: totalProjects - index,
+      }}
     >
       <motion.div
-        className="w-full max-w-7xl mx-auto px-6 md:px-12"
+        className="absolute inset-0 overflow-hidden"
         style={{ 
-          rotateX,
           scale,
-          opacity,
           y,
-          transformStyle: "preserve-3d",
+          opacity,
         }}
       >
-        <div className={`grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center ${isEven ? '' : 'lg:flex-row-reverse'}`}>
-          
-          {/* Image side */}
-          <motion.div 
-            className={`relative ${isEven ? 'lg:order-1' : 'lg:order-2'}`}
-          >
-            {/* Frame decoration */}
-            <motion.div
-              className="absolute -inset-4 md:-inset-6 border border-primary-black/10 rounded-2xl"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: isInView ? 1 : 0, scale: isInView ? 1 : 0.9 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-            />
-            
-            {/* Main image with clip reveal */}
-            <div className="relative aspect-[4/5] overflow-hidden rounded-xl">
-              <motion.div
-                className="absolute inset-0"
-                style={{
-                  clipPath: clipProgress.get() !== undefined 
-                    ? `inset(${clipProgress.get()}% 0 0 0)`
-                    : 'inset(100% 0 0 0)',
-                }}
-              >
-                <Image
-                  src={project.image}
-                  alt={project.title}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  priority={index < 2}
-                />
-                
-                {/* Gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-              </motion.div>
+        {/* Background image with zoom */}
+        <motion.div 
+          className="absolute inset-0"
+          style={{ scale: imageScale }}
+        >
+          <Image
+            src={project.image}
+            alt={project.title}
+            fill
+            className="object-cover"
+            sizes="100vw"
+            priority={index < 2}
+          />
+        </motion.div>
 
-              {/* Project number overlay */}
-              <motion.div
-                className="absolute top-6 right-6 z-10"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: isInView ? 1 : 0, x: isInView ? 0 : 20 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-              >
-                <span className="text-6xl md:text-7xl font-display font-light text-white/20">
-                  {String(index + 1).padStart(2, '0')}
-                </span>
-              </motion.div>
+        {/* Dark overlay with gradient */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-black/30" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
 
-              {/* View button overlay */}
+        {/* Film grain overlay */}
+        <div 
+          className="absolute inset-0 opacity-[0.015] pointer-events-none mix-blend-overlay"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+          }}
+        />
+
+        {/* Content */}
+        <div className="relative h-full flex items-end">
+          <div className="w-full max-w-7xl mx-auto px-8 md:px-16 pb-20 md:pb-28">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-end">
+              
+              {/* Left - Main content */}
+              <div>
+                {/* Project number */}
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6 }}
+                  className="flex items-center gap-4 mb-6"
+                >
+                  <span className="text-7xl md:text-8xl font-display font-extralight text-white/20">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                  <span className="text-[11px] tracking-[0.4em] uppercase text-white/50">
+                    / {String(totalProjects).padStart(2, '0')}
+                  </span>
+                </motion.div>
+
+                {/* Category */}
+                <motion.p
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0.1 }}
+                  className="text-[11px] tracking-[0.35em] uppercase text-amber-200/70 mb-4"
+                >
+                  {project.category}
+                </motion.p>
+
+                {/* Title */}
+                <motion.h2
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                  className="text-4xl md:text-5xl lg:text-6xl font-display tracking-[0.02em] text-white mb-6 leading-[1.1]"
+                >
+                  {project.title}
+                </motion.h2>
+
+                {/* Description */}
+                <motion.p
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0.3 }}
+                  className="text-white/60 text-base md:text-lg leading-relaxed max-w-md mb-8"
+                >
+                  {project.description}
+                </motion.p>
+
+                {/* Meta info */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0.4 }}
+                  className="flex items-center gap-8 text-[12px] tracking-[0.2em] text-white/40 uppercase"
+                >
+                  <span>{project.location}</span>
+                  <span className="w-1 h-1 rounded-full bg-white/30" />
+                  <span>{project.year}</span>
+                </motion.div>
+              </div>
+
+              {/* Right - CTA */}
               <motion.div
-                className="absolute bottom-6 left-6 right-6 z-10"
                 initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.5 }}
+                className="lg:text-right"
               >
                 <Link
                   href={`/projects/${project.slug}`}
-                  className="group flex items-center justify-between w-full px-6 py-4 bg-white/10 backdrop-blur-md rounded-full border border-white/20 hover:bg-white/20 transition-all duration-300"
+                  className="group inline-flex items-center gap-6"
                 >
-                  <span className="text-[12px] md:text-[13px] tracking-[0.2em] uppercase text-white">
+                  <span className="text-[13px] md:text-[14px] tracking-[0.25em] uppercase text-white/80 group-hover:text-white transition-colors">
                     View Project
                   </span>
-                  <ArrowUpRight className="w-5 h-5 text-white group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                  <span className="relative w-16 h-16 md:w-20 md:h-20">
+                    {/* Animated border */}
+                    <svg className="absolute inset-0 w-full h-full -rotate-90">
+                      <circle
+                        cx="50%"
+                        cy="50%"
+                        r="48%"
+                        fill="none"
+                        stroke="rgba(255,255,255,0.2)"
+                        strokeWidth="1"
+                      />
+                      <circle
+                        cx="50%"
+                        cy="50%"
+                        r="48%"
+                        fill="none"
+                        stroke="rgba(255,255,255,0.8)"
+                        strokeWidth="1"
+                        strokeDasharray="301.59"
+                        strokeDashoffset="301.59"
+                        className="group-hover:animate-circle-draw"
+                        style={{
+                          transition: 'stroke-dashoffset 0.6s ease-out',
+                        }}
+                      />
+                    </svg>
+                    <span className="absolute inset-0 flex items-center justify-center">
+                      <ExternalLink className="w-5 h-5 md:w-6 md:h-6 text-white/70 group-hover:text-white group-hover:scale-110 transition-all duration-300" />
+                    </span>
+                  </span>
                 </Link>
               </motion.div>
             </div>
-          </motion.div>
-
-          {/* Content side */}
-          <div className={`relative ${isEven ? 'lg:order-2' : 'lg:order-1'} ${isEven ? 'lg:pl-8' : 'lg:pr-8'}`}>
-            {/* Category */}
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: isInView ? 1 : 0, x: isInView ? 0 : -20 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="mb-6"
-            >
-              <span className="inline-flex items-center gap-2 text-[11px] tracking-[0.3em] uppercase text-warm-grey">
-                <span className="w-8 h-[1px] bg-warm-grey" />
-                {project.category}
-              </span>
-            </motion.div>
-
-            {/* Title */}
-            <h2 className="mb-2">
-              <RevealText
-                text={project.title}
-                isVisible={isInView}
-                className="text-5xl md:text-6xl lg:text-7xl font-display tracking-[0.02em]"
-                delay={0.3}
-              />
-            </h2>
-            <h2 className="mb-8">
-              <RevealText
-                text={project.subtitle}
-                isVisible={isInView}
-                className="text-5xl md:text-6xl lg:text-7xl font-display tracking-[0.02em] text-warm-grey"
-                delay={0.4}
-              />
-            </h2>
-
-            {/* Divider */}
-            <motion.div
-              className="w-full h-[1px] bg-light-grey mb-8"
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: isInView ? 1 : 0 }}
-              transition={{ duration: 0.8, delay: 0.5 }}
-              style={{ transformOrigin: isEven ? 'left' : 'right' }}
-            />
-
-            {/* Details */}
-            <motion.div
-              className="grid grid-cols-2 gap-8 mb-8"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 20 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-            >
-              <div>
-                <p className="text-[10px] tracking-[0.3em] uppercase text-warm-grey mb-2">Location</p>
-                <p className="text-lg font-display">{project.location}</p>
-              </div>
-              <div>
-                <p className="text-[10px] tracking-[0.3em] uppercase text-warm-grey mb-2">Year</p>
-                <p className="text-lg font-display">{project.year}</p>
-              </div>
-            </motion.div>
-
-            {/* Description placeholder */}
-            <motion.p
-              className="text-warm-grey leading-relaxed mb-8 max-w-md"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 20 }}
-              transition={{ duration: 0.6, delay: 0.7 }}
-            >
-              A meticulous restoration and redesign bringing together heritage 
-              architecture with contemporary luxury finishing materials.
-            </motion.p>
-
-            {/* CTA */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 20 }}
-              transition={{ duration: 0.6, delay: 0.8 }}
-            >
-              <Link
-                href={`/projects/${project.slug}`}
-                className="group inline-flex items-center gap-4"
-              >
-                <span className="text-[13px] tracking-[0.2em] uppercase font-medium">
-                  Explore Project
-                </span>
-                <span className="w-12 h-12 rounded-full border-2 border-primary-black flex items-center justify-center group-hover:bg-primary-black group-hover:text-white transition-all duration-300">
-                  <ArrowRight className="w-5 h-5" />
-                </span>
-              </Link>
-            </motion.div>
           </div>
         </div>
-      </motion.div>
 
-      {/* Background number */}
-      <motion.div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-0"
-        style={{ opacity: useTransform(scrollYProgress, [0.3, 0.5, 0.7], [0, 0.03, 0]) }}
-      >
-        <span className="text-[300px] md:text-[500px] font-display font-light text-primary-black">
-          {String(index + 1).padStart(2, '0')}
-        </span>
+        {/* Top gradient for depth */}
+        <div 
+          className="absolute top-0 left-0 right-0 h-32 pointer-events-none"
+          style={{
+            background: 'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, transparent 100%)',
+          }}
+        />
       </motion.div>
-    </section>
+    </div>
   );
 }
 
 export default function ProjectsPage() {
-  const heroRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress: heroProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"],
   });
 
-  const heroOpacity = useTransform(heroProgress, [0, 0.5], [1, 0]);
-  const heroScale = useTransform(heroProgress, [0, 0.5], [1, 0.9]);
-  const heroY = useTransform(heroProgress, [0, 0.5], [0, -50]);
-
-  // Line drawing animation
-  const [linesVisible, setLinesVisible] = useState(false);
-  useEffect(() => {
-    const timer = setTimeout(() => setLinesVisible(true), 500);
-    return () => clearTimeout(timer);
-  }, []);
+  // Track active card
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    const newIndex = Math.min(
+      Math.floor(latest * projects.length),
+      projects.length - 1
+    );
+    if (newIndex !== activeIndex) {
+      setActiveIndex(newIndex);
+    }
+  });
 
   return (
-    <div className="bg-off-white">
+    <div className="bg-black">
       {/* Hero Section */}
-      <section 
-        ref={heroRef}
-        className="h-screen relative flex items-center justify-center overflow-hidden"
-      >
-        {/* Animated lines background */}
-        <div className="absolute inset-0 overflow-hidden">
-          {[...Array(5)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute h-[1px] bg-primary-black/5"
-              style={{
-                top: `${20 + i * 15}%`,
-                left: 0,
-                right: 0,
-              }}
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: linesVisible ? 1 : 0 }}
-              transition={{ duration: 1.5, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
-            />
-          ))}
-          {[...Array(5)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-[1px] bg-primary-black/5"
-              style={{
-                left: `${20 + i * 15}%`,
-                top: 0,
-                bottom: 0,
-              }}
-              initial={{ scaleY: 0 }}
-              animate={{ scaleY: linesVisible ? 1 : 0 }}
-              transition={{ duration: 1.5, delay: 0.3 + i * 0.1, ease: [0.16, 1, 0.3, 1] }}
-            />
-          ))}
+      <section className="h-screen relative flex items-center justify-center overflow-hidden bg-black">
+        {/* Ambient gradient background */}
+        <div className="absolute inset-0">
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-amber-900/10 rounded-full blur-[120px]" />
+          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-stone-700/10 rounded-full blur-[120px]" />
         </div>
 
-        <motion.div
-          style={{ opacity: heroOpacity, scale: heroScale, y: heroY }}
-          className="text-center px-6 relative z-10"
-        >
-          {/* Small intro text */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
-            className="flex items-center justify-center gap-4 mb-12"
-          >
-            <motion.span 
-              className="h-[1px] bg-primary-black/30"
-              initial={{ width: 0 }}
-              animate={{ width: 40 }}
-              transition={{ duration: 0.8, delay: 1 }}
-            />
-            <span className="text-[11px] tracking-[0.4em] uppercase text-warm-grey">
-              Selected Works
-            </span>
-            <motion.span 
-              className="h-[1px] bg-primary-black/30"
-              initial={{ width: 0 }}
-              animate={{ width: 40 }}
-              transition={{ duration: 0.8, delay: 1 }}
-            />
-          </motion.div>
+        {/* Grid overlay */}
+        <div className="absolute inset-0 opacity-[0.03]">
+          <div 
+            className="w-full h-full"
+            style={{
+              backgroundImage: `
+                linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)
+              `,
+              backgroundSize: '80px 80px',
+            }}
+          />
+        </div>
 
-          {/* Main title with staggered reveal */}
+        <div className="text-center px-6 relative z-10">
+          {/* Top line decoration */}
+          <motion.div
+            initial={{ scaleY: 0 }}
+            animate={{ scaleY: 1 }}
+            transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="w-[1px] h-20 bg-gradient-to-b from-transparent via-white/30 to-white/50 mx-auto mb-12"
+            style={{ transformOrigin: 'top' }}
+          />
+
+          {/* Intro text */}
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+            className="text-[11px] tracking-[0.5em] uppercase text-white/40 mb-8"
+          >
+            House of Clarence Presents
+          </motion.p>
+
+          {/* Main title */}
           <div className="overflow-hidden mb-4">
             <motion.h1
               initial={{ y: "100%" }}
               animate={{ y: "0%" }}
-              transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="text-6xl md:text-8xl lg:text-9xl font-display tracking-[0.04em]"
+              transition={{ duration: 1, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              className="text-6xl md:text-8xl lg:text-[10rem] font-display tracking-[0.08em] text-white font-extralight"
             >
               PROJECTS
             </motion.h1>
           </div>
 
-          {/* Year range */}
+          {/* Subtitle */}
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 1.2 }}
-            className="text-[13px] tracking-[0.3em] text-warm-grey"
+            className="text-[13px] tracking-[0.3em] text-white/30 mb-16"
           >
-            2023 — 2024
+            A CURATED SELECTION OF OUR FINEST WORK
           </motion.p>
 
-          {/* Project count */}
+          {/* Stats row */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.4 }}
-            className="mt-16 flex items-center justify-center gap-8"
+            transition={{ duration: 0.6, delay: 1.4 }}
+            className="flex items-center justify-center gap-12 md:gap-16"
           >
-            <div className="text-center">
-              <p className="text-4xl md:text-5xl font-display mb-2">{projects.length}</p>
-              <p className="text-[10px] tracking-[0.3em] uppercase text-warm-grey">Projects</p>
-            </div>
-            <div className="w-[1px] h-12 bg-primary-black/10" />
-            <div className="text-center">
-              <p className="text-4xl md:text-5xl font-display mb-2">∞</p>
-              <p className="text-[10px] tracking-[0.3em] uppercase text-warm-grey">Possibilities</p>
-            </div>
+            {[
+              { value: projects.length.toString(), label: "Projects" },
+              { value: "2023-24", label: "Timeline" },
+              { value: "London", label: "Location" },
+            ].map((stat, i) => (
+              <div key={i} className="text-center">
+                <p className="text-2xl md:text-3xl font-display text-white/90 mb-1">{stat.value}</p>
+                <p className="text-[9px] tracking-[0.3em] uppercase text-white/30">{stat.label}</p>
+              </div>
+            ))}
           </motion.div>
-        </motion.div>
+        </div>
 
-        {/* Scroll prompt */}
+        {/* Scroll indicator */}
         <motion.div
-          className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4"
+          className="absolute bottom-12 left-1/2 -translate-x-1/2"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.8 }}
         >
-          <span className="text-[10px] tracking-[0.3em] uppercase text-warm-grey">
-            Scroll to explore
-          </span>
           <motion.div
-            className="w-[1px] h-12 bg-primary-black/30"
-            animate={{ scaleY: [1, 0.5, 1] }}
-            transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
-            style={{ transformOrigin: "top" }}
-          />
+            className="flex flex-col items-center gap-3 cursor-pointer"
+            animate={{ y: [0, 8, 0] }}
+            transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+          >
+            <span className="text-[10px] tracking-[0.3em] uppercase text-white/30">
+              Scroll
+            </span>
+            <ArrowDown className="w-4 h-4 text-white/30" />
+          </motion.div>
         </motion.div>
+
+        {/* Corner decorations */}
+        <div className="absolute top-8 left-8 w-16 h-16 border-l border-t border-white/10" />
+        <div className="absolute top-8 right-8 w-16 h-16 border-r border-t border-white/10" />
+        <div className="absolute bottom-8 left-8 w-16 h-16 border-l border-b border-white/10" />
+        <div className="absolute bottom-8 right-8 w-16 h-16 border-r border-b border-white/10" />
       </section>
 
-      {/* Project Sections */}
-      {projects.map((project, index) => (
-        <ProjectSection
-          key={project.id}
-          project={project}
-          index={index}
-        />
-      ))}
+      {/* Stacked Cards Section */}
+      <div 
+        ref={containerRef}
+        className="relative"
+        style={{ height: `${100 * projects.length}vh` }}
+      >
+        {projects.map((project, index) => (
+          <StackedCard
+            key={project.id}
+            project={project}
+            index={index}
+            totalProjects={projects.length}
+            activeIndex={activeIndex}
+          />
+        ))}
+
+        {/* Progress indicator - side */}
+        <div className="fixed right-8 top-1/2 -translate-y-1/2 z-50 hidden lg:flex flex-col gap-4">
+          {projects.map((_, i) => (
+            <motion.div
+              key={i}
+              className="relative"
+              animate={{
+                scale: activeIndex === i ? 1 : 0.8,
+              }}
+            >
+              <div 
+                className={`w-2 h-2 rounded-full transition-all duration-500 ${
+                  activeIndex === i ? 'bg-white' : 'bg-white/20'
+                }`}
+              />
+              {activeIndex === i && (
+                <motion.div
+                  layoutId="activeIndicator"
+                  className="absolute -inset-2 border border-white/30 rounded-full"
+                />
+              )}
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Current project label - bottom */}
+        <div className="fixed bottom-8 left-8 z-50 hidden md:block">
+          <motion.p
+            key={activeIndex}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-[11px] tracking-[0.3em] uppercase text-white/50"
+          >
+            {projects[activeIndex]?.category}
+          </motion.p>
+        </div>
+      </div>
 
       {/* Final CTA */}
-      <section className="py-32 md:py-48 relative overflow-hidden">
-        {/* Background pattern */}
+      <section className="min-h-screen relative flex items-center justify-center bg-black overflow-hidden">
+        {/* Background texture */}
         <div className="absolute inset-0 opacity-[0.02]">
           <div 
             className="w-full h-full"
             style={{
-              backgroundImage: `radial-gradient(circle at 1px 1px, #1a1a1a 1px, transparent 0)`,
-              backgroundSize: '32px 32px',
+              backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 0)`,
+              backgroundSize: '48px 48px',
             }}
           />
         </div>
 
-        <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
+        <div className="max-w-4xl mx-auto px-8 text-center relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.5 }}
             transition={{ duration: 0.8 }}
           >
-            <p className="text-[11px] tracking-[0.4em] uppercase text-warm-grey mb-8">
-              Your Vision, Realized
+            {/* Decorative element */}
+            <div className="w-px h-16 bg-gradient-to-b from-transparent to-white/30 mx-auto mb-12" />
+            
+            <p className="text-[11px] tracking-[0.5em] uppercase text-white/30 mb-8">
+              Ready to Begin?
             </p>
             
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-display tracking-[0.04em] mb-8">
-              Let&apos;s Create Your
-              <br />
-              <span className="text-warm-grey">Next Masterpiece</span>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-display tracking-[0.04em] text-white font-extralight mb-6">
+              Your Project Awaits
             </h2>
 
-            <p className="text-warm-grey max-w-lg mx-auto mb-12 leading-relaxed">
-              From concept to completion, we partner with architects and designers
-              to source the world&apos;s finest finishing materials.
+            <p className="text-white/40 max-w-lg mx-auto mb-12 leading-relaxed">
+              Let&apos;s discuss how we can transform your space with the world&apos;s 
+              finest finishing materials.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <Link
                 href="/contact"
-                className="inline-flex items-center justify-center gap-3 px-10 py-5 bg-primary-black text-white text-[13px] tracking-[0.15em] uppercase hover:bg-primary-black/90 transition-all duration-300 rounded-full"
+                className="group inline-flex items-center justify-center gap-3 px-12 py-5 bg-white text-black text-[12px] tracking-[0.2em] uppercase hover:bg-white/90 transition-all duration-300"
               >
-                Start a Project
-                <ArrowRight className="w-4 h-4" />
+                Start a Conversation
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
                 href="/bespoke"
-                className="inline-flex items-center justify-center gap-3 px-10 py-5 border-2 border-primary-black text-primary-black text-[13px] tracking-[0.15em] uppercase hover:bg-primary-black hover:text-white transition-all duration-300 rounded-full"
+                className="inline-flex items-center justify-center gap-3 px-12 py-5 border border-white/20 text-white text-[12px] tracking-[0.2em] uppercase hover:border-white/50 hover:bg-white/5 transition-all duration-300"
               >
                 Bespoke Services
               </Link>
             </div>
           </motion.div>
         </div>
+
+        {/* Bottom line */}
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
       </section>
     </div>
   );
