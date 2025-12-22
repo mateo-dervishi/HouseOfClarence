@@ -1,9 +1,9 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 import { ArrowRight, ArrowDown, ExternalLink } from "lucide-react";
 
 // Project data
@@ -60,8 +60,8 @@ const projects = [
   },
 ];
 
-// Project section with parallax
-function ProjectSection({ 
+// Single project card
+function ProjectCard({ 
   project, 
   index,
   totalProjects,
@@ -70,47 +70,24 @@ function ProjectSection({
   index: number;
   totalProjects: number;
 }) {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  });
-
-  // Subtle parallax on image
-  const imageY = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"]);
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0]);
-  const contentY = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [50, 0, 0, -50]);
-
   return (
-    <section
-      ref={sectionRef}
-      className="h-screen w-full snap-start snap-always relative overflow-hidden"
-    >
-      {/* Background image with parallax */}
-      <motion.div 
-        className="absolute inset-0"
-        style={{ y: imageY }}
-      >
-        <Image
-          src={project.image}
-          alt={project.title}
-          fill
-          className="object-cover scale-110"
-          sizes="100vw"
-          priority={index < 2}
-        />
-      </motion.div>
+    <div className="absolute inset-0">
+      {/* Background image */}
+      <Image
+        src={project.image}
+        alt={project.title}
+        fill
+        className="object-cover"
+        sizes="100vw"
+        priority
+      />
 
-      {/* Dark overlay */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/50 to-black/30" />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20" />
+      {/* Dark overlay with gradient */}
+      <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-black/30" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
 
       {/* Content */}
-      <motion.div 
-        className="absolute inset-0 flex items-end"
-        style={{ opacity: contentOpacity, y: contentY }}
-      >
+      <div className="absolute inset-0 flex items-end">
         <div className="w-full max-w-7xl mx-auto px-8 md:px-16 pb-20 md:pb-28">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-end">
             
@@ -158,23 +135,42 @@ function ProjectSection({
                 <span className="text-[13px] md:text-[14px] tracking-[0.25em] uppercase text-white/80 group-hover:text-white transition-colors">
                   View Project
                 </span>
-                <span className="relative w-16 h-16 md:w-20 md:h-20 rounded-full border border-white/30 flex items-center justify-center group-hover:border-white/60 group-hover:bg-white/10 transition-all duration-300">
-                  <ExternalLink className="w-5 h-5 md:w-6 md:h-6 text-white/70 group-hover:text-white transition-all duration-300" />
+                <span className="relative w-16 h-16 md:w-20 md:h-20 rounded-full border border-white/30 flex items-center justify-center group-hover:border-white/60 transition-colors">
+                  <ExternalLink className="w-5 h-5 md:w-6 md:h-6 text-white/70 group-hover:text-white group-hover:scale-110 transition-all duration-300" />
                 </span>
               </Link>
             </div>
           </div>
         </div>
-      </motion.div>
-    </section>
+      </div>
+    </div>
   );
 }
 
 export default function ProjectsPage() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"],
+  });
+
+  // Track active project
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    const newIndex = Math.min(
+      Math.floor(latest * projects.length),
+      projects.length - 1
+    );
+    if (newIndex !== activeIndex && newIndex >= 0) {
+      setActiveIndex(newIndex);
+    }
+  });
+
   return (
     <div className="bg-black">
-      {/* Hero Section */}
-      <section className="h-screen snap-start snap-always relative flex items-center justify-center overflow-hidden bg-black">
+      {/* Hero Section - scrolls away naturally */}
+      <section className="h-screen relative flex items-center justify-center overflow-hidden bg-black">
         {/* Ambient gradient background */}
         <div className="absolute inset-0">
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-amber-900/10 rounded-full blur-[120px]" />
@@ -283,75 +279,107 @@ export default function ProjectsPage() {
         <div className="absolute bottom-8 right-8 w-16 h-16 border-r border-b border-white/10" />
       </section>
 
-      {/* Snap scroll container for projects */}
-      <div className="snap-y snap-mandatory h-screen overflow-y-auto scroll-smooth">
-        {projects.map((project, index) => (
-          <ProjectSection
-            key={project.id}
-            project={project}
-            index={index}
+      {/* Projects Section - sticky with scroll-driven switching */}
+      <div 
+        ref={containerRef}
+        className="relative"
+        style={{ height: `${100 * (projects.length + 0.5)}vh` }}
+      >
+        {/* Sticky viewport */}
+        <div className="sticky top-0 h-screen overflow-hidden bg-black">
+          <ProjectCard
+            key={projects[activeIndex].id}
+            project={projects[activeIndex]}
+            index={activeIndex}
             totalProjects={projects.length}
           />
-        ))}
+        </div>
 
-        {/* Final CTA */}
-        <section className="h-screen snap-start snap-always relative flex items-center justify-center bg-black overflow-hidden">
-          {/* Background texture */}
-          <div className="absolute inset-0 opacity-[0.02]">
-            <div 
-              className="w-full h-full"
-              style={{
-                backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 0)`,
-                backgroundSize: '48px 48px',
-              }}
-            />
-          </div>
+        {/* Progress indicator - side */}
+        <div className="fixed right-8 top-1/2 -translate-y-1/2 z-50 hidden lg:flex flex-col gap-4">
+          {projects.map((_, i) => (
+            <div key={i} className="relative">
+              <div 
+                className={`w-2 h-2 rounded-full transition-all duration-500 ${
+                  activeIndex === i ? 'bg-white scale-125' : 'bg-white/20'
+                }`}
+              />
+              {activeIndex === i && (
+                <motion.div
+                  layoutId="activeIndicator"
+                  className="absolute -inset-2 border border-white/30 rounded-full"
+                  transition={{ duration: 0.3 }}
+                />
+              )}
+            </div>
+          ))}
+        </div>
 
-          <div className="max-w-4xl mx-auto px-8 text-center relative z-10">
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.5 }}
-              transition={{ duration: 0.8 }}
-            >
-              {/* Decorative element */}
-              <div className="w-px h-16 bg-gradient-to-b from-transparent to-white/30 mx-auto mb-12" />
-              
-              <p className="text-[11px] tracking-[0.5em] uppercase text-white/30 mb-8">
-                Ready to Begin?
-              </p>
-              
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-display tracking-[0.04em] text-white font-extralight mb-6">
-                Your Project Awaits
-              </h2>
-
-              <p className="text-white/40 max-w-lg mx-auto mb-12 leading-relaxed">
-                Let&apos;s discuss how we can transform your space with the world&apos;s 
-                finest finishing materials.
-              </p>
-
-              <div className="flex flex-col sm:flex-row gap-6 justify-center">
-                <Link
-                  href="/contact"
-                  className="group inline-flex items-center justify-center gap-3 px-12 py-5 bg-white text-black text-[12px] tracking-[0.2em] uppercase hover:bg-white/90 transition-all duration-300"
-                >
-                  Start a Conversation
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </Link>
-                <Link
-                  href="/bespoke"
-                  className="inline-flex items-center justify-center gap-3 px-12 py-5 border border-white/20 text-white text-[12px] tracking-[0.2em] uppercase hover:border-white/50 hover:bg-white/5 transition-all duration-300"
-                >
-                  Bespoke Services
-                </Link>
-              </div>
-            </motion.div>
-          </div>
-
-          {/* Bottom line */}
-          <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-        </section>
+        {/* Current project label - bottom */}
+        <div className="fixed bottom-8 left-8 z-50 hidden md:block">
+          <p className="text-[11px] tracking-[0.3em] uppercase text-white/50">
+            {projects[activeIndex]?.category}
+          </p>
+        </div>
       </div>
+
+      {/* Final CTA */}
+      <section className="min-h-screen relative flex items-center justify-center bg-black overflow-hidden">
+        {/* Background texture */}
+        <div className="absolute inset-0 opacity-[0.02]">
+          <div 
+            className="w-full h-full"
+            style={{
+              backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 0)`,
+              backgroundSize: '48px 48px',
+            }}
+          />
+        </div>
+
+        <div className="max-w-4xl mx-auto px-8 text-center relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.8 }}
+          >
+            {/* Decorative element */}
+            <div className="w-px h-16 bg-gradient-to-b from-transparent to-white/30 mx-auto mb-12" />
+            
+            <p className="text-[11px] tracking-[0.5em] uppercase text-white/30 mb-8">
+              Ready to Begin?
+            </p>
+            
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-display tracking-[0.04em] text-white font-extralight mb-6">
+              Your Project Awaits
+            </h2>
+
+            <p className="text-white/40 max-w-lg mx-auto mb-12 leading-relaxed">
+              Let&apos;s discuss how we can transform your space with the world&apos;s 
+              finest finishing materials.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-6 justify-center">
+              <Link
+                href="/contact"
+                className="group inline-flex items-center justify-center gap-3 px-12 py-5 bg-white text-black text-[12px] tracking-[0.2em] uppercase hover:bg-white/90 transition-all duration-300"
+              >
+                Start a Conversation
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
+              <Link
+                href="/bespoke"
+                className="inline-flex items-center justify-center gap-3 px-12 py-5 border border-white/20 text-white text-[12px] tracking-[0.2em] uppercase hover:border-white/50 hover:bg-white/5 transition-all duration-300"
+              >
+                Bespoke Services
+              </Link>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Bottom line */}
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+      </section>
     </div>
   );
 }
