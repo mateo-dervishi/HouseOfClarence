@@ -654,10 +654,34 @@ export default function HomePage() {
             Our team is available to discuss your project requirements and provide personalised quotes.
           </p>
 
+          {/* Contact Buttons */}
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-12 sm:mb-16">
+            <a
+              href="tel:+442033704057"
+              className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-primary-black text-white text-[11px] sm:text-[12px] tracking-[0.15em] uppercase hover:bg-charcoal transition-all duration-500"
+            >
+              <Phone className="w-4 h-4" />
+              020 3370 4057
+            </a>
+            <Link
+              href="/contact"
+              className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 border border-primary-black text-primary-black text-[11px] sm:text-[12px] tracking-[0.15em] uppercase hover:bg-primary-black hover:text-white transition-all duration-500 group"
+            >
+              Send Enquiry
+              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+            </Link>
+          </div>
+
+          {/* Divider */}
+          <div className="w-16 h-px bg-light-grey mx-auto mb-8 sm:mb-10" />
+
           {/* Newsletter Signup */}
-          <div className="mb-10 sm:mb-12">
-            <p className="text-[11px] sm:text-[12px] tracking-[0.15em] uppercase text-warm-grey mb-4">
-              Join our newsletter for exclusive updates
+          <div>
+            <p className="text-[11px] sm:text-[12px] tracking-[0.15em] uppercase text-warm-grey mb-2">
+              Stay Updated
+            </p>
+            <p className="text-warm-grey text-sm mb-5 max-w-md mx-auto">
+              Subscribe to our newsletter for new arrivals and exclusive offers.
             </p>
             <form className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
               <input
@@ -673,30 +697,6 @@ export default function HomePage() {
                 Subscribe
               </button>
             </form>
-          </div>
-
-          {/* Divider */}
-          <div className="w-16 h-px bg-light-grey mx-auto mb-8 sm:mb-10" />
-
-          <p className="text-[11px] sm:text-[12px] tracking-[0.1em] uppercase text-warm-grey mb-4">
-            Or contact us directly
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
-            <a
-              href="tel:+442033704057"
-              className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-primary-black text-white text-[11px] sm:text-[12px] tracking-[0.15em] uppercase hover:bg-charcoal transition-all duration-500"
-            >
-              <Phone className="w-4 h-4" />
-              020 3370 4057
-            </a>
-            <Link
-              href="/contact"
-              className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 border border-primary-black text-primary-black text-[11px] sm:text-[12px] tracking-[0.15em] uppercase hover:bg-primary-black hover:text-white transition-all duration-500 group"
-            >
-              Send Enquiry
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-            </Link>
           </div>
         </motion.div>
       </section>
