@@ -2,9 +2,15 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import { useRef } from "react";
 import { ArrowRight, Phone } from "lucide-react";
+
+// Simplified animation variant for better performance
+const fadeInUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0 }
+};
 
 // Collections data
 const collections = [
@@ -38,209 +44,130 @@ const collections = [
   },
 ];
 
-// Dramatic split reveal hero
+// Hero section with scroll-driven framing animation (like projects page)
 function HeroSection() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const prefersReducedMotion = useReducedMotion();
   
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end start"],
   });
 
-  // Split reveal - top half moves up, bottom moves down
-  const topY = useTransform(scrollYProgress, [0, 0.6], ["0%", "-100%"]);
-  const bottomY = useTransform(scrollYProgress, [0, 0.6], ["0%", "100%"]);
+  // Simplified framing effect - fewer keyframes for better performance
+  const paddingX = useTransform(scrollYProgress, [0, 0.5], ["0px", "24px"]);
+  const paddingTop = useTransform(scrollYProgress, [0, 0.5], ["0px", "120px"]);
+  const paddingBottom = useTransform(scrollYProgress, [0, 0.5], ["0px", "24px"]);
+  const borderRadius = useTransform(scrollYProgress, [0, 0.5], [0, 24]);
+  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.95]);
+  const overlayOpacity = useTransform(scrollYProgress, [0, 0.5], [0.3, 0.5]);
   
-  // Image zoom on scroll
-  const imageScale = useTransform(scrollYProgress, [0, 0.6], [1, 1.2]);
+  // Text animations - simplified
+  const textOpacity = useTransform(scrollYProgress, [0, 0.25], [1, 0]);
   
-  // Text reveal - staggered appearance
-  const textOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
-  const textY = useTransform(scrollYProgress, [0, 0.15], [0, -50]);
-  
-  // Reveal content opacity
-  const revealOpacity = useTransform(scrollYProgress, [0.3, 0.6], [0, 1]);
-  const revealScale = useTransform(scrollYProgress, [0.3, 0.6], [0.9, 1]);
+  // Brand intro text appears as hero shrinks
+  const introOpacity = useTransform(scrollYProgress, [0.4, 0.55], [0, 1]);
 
   return (
     <section 
       ref={containerRef}
-      className="relative bg-black"
-      style={{ height: "250vh" }}
+      className="relative bg-white will-change-transform"
+      style={{ height: prefersReducedMotion ? "100vh" : "200vh" }}
     >
-      {/* Sticky container */}
+      {/* Sticky hero container */}
       <div className="sticky top-0 h-screen overflow-hidden">
-        
-        {/* Split image - TOP HALF */}
+        {/* Animated framing wrapper */}
         <motion.div 
-          className="absolute inset-x-0 top-0 h-1/2 overflow-hidden"
-          style={{ y: topY }}
+          className="h-full w-full will-change-[padding]"
+          style={{ 
+            paddingLeft: paddingX, 
+            paddingRight: paddingX, 
+            paddingTop: paddingTop, 
+            paddingBottom: paddingBottom 
+          }}
         >
           <motion.div 
-            className="absolute inset-0 origin-bottom"
-            style={{ scale: imageScale }}
+            className="relative h-full w-full overflow-hidden will-change-transform"
+            style={{ borderRadius, scale }}
           >
             <Image
               src="/images/sloane-12.webp"
               alt="House of Clarence"
               fill
-              className="object-cover object-bottom"
+              className="object-cover"
               priority
               sizes="100vw"
             />
-            <div className="absolute inset-0 bg-black/30" />
-          </motion.div>
-        </motion.div>
-
-        {/* Split image - BOTTOM HALF */}
-        <motion.div 
-          className="absolute inset-x-0 bottom-0 h-1/2 overflow-hidden"
-          style={{ y: bottomY }}
-        >
-          <motion.div 
-            className="absolute inset-0 origin-top"
-            style={{ scale: imageScale }}
-          >
-            <Image
-              src="/images/sloane-12.webp"
-              alt="House of Clarence"
-              fill
-              className="object-cover object-top"
-              priority
-              sizes="100vw"
+            <motion.div 
+              className="absolute inset-0 bg-black"
+              style={{ opacity: overlayOpacity }}
             />
-            <div className="absolute inset-0 bg-black/30" />
           </motion.div>
         </motion.div>
 
-        {/* Center line that splits */}
-        <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-px bg-white/20 z-20" />
-
-        {/* Hero text - fades out as split happens */}
+        {/* Hero text - fades out as you scroll */}
         <motion.div 
-          className="absolute inset-0 flex items-center justify-center z-30"
-          style={{ opacity: textOpacity, y: textY }}
+          className="absolute inset-0 flex items-center justify-center z-10 will-change-opacity"
+          style={{ opacity: textOpacity }}
         >
-          <div className="text-center text-white px-6">
-            {/* Tagline */}
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="text-[11px] md:text-[13px] tracking-[0.4em] uppercase text-white/60 mb-6"
+          <div className="text-center text-white px-4 sm:px-6">
+            <h1
+              className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-display tracking-[0.15em] sm:tracking-[0.2em] md:tracking-[0.3em] mb-4 sm:mb-6 animate-fade-in-up"
+              style={{ animationDelay: '0ms' }}
             >
-              Luxury Finishing Materials
-            </motion.p>
-            
-            {/* Main title - split lines */}
-            <div className="overflow-hidden mb-2">
-              <motion.h1
-                initial={{ y: "100%" }}
-                animate={{ y: "0%" }}
-                transition={{ duration: 1, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-display tracking-[0.1em] md:tracking-[0.15em]"
-              >
-                HOUSE OF
-              </motion.h1>
-            </div>
-            <div className="overflow-hidden mb-8">
-              <motion.h1
-                initial={{ y: "100%" }}
-                animate={{ y: "0%" }}
-                transition={{ duration: 1, delay: 0.65, ease: [0.16, 1, 0.3, 1] }}
-                className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-display tracking-[0.1em] md:tracking-[0.15em]"
-              >
-                CLARENCE
-              </motion.h1>
-            </div>
-
-            {/* Subtitle */}
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 1 }}
-              className="text-[12px] md:text-[14px] tracking-[0.2em] text-white/70 mb-10"
+              REFINED FINISHING
+            </h1>
+            <p
+              className="text-[11px] sm:text-[13px] md:text-[15px] tracking-[0.15em] sm:tracking-[0.2em] text-white/70 mb-6 sm:mb-8 animate-fade-in-up"
+              style={{ animationDelay: '200ms' }}
             >
               FOR DISCERNING SPACES
-            </motion.p>
-
-            {/* CTA */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 1.2 }}
+            </p>
+            <div
+              className="animate-fade-in-up"
+              style={{ animationDelay: '400ms' }}
             >
               <Link
                 href="/bathroom"
-                className="inline-flex items-center gap-3 px-8 md:px-12 py-4 md:py-5 border border-white/40 text-white text-[11px] md:text-[12px] tracking-[0.2em] uppercase backdrop-blur-sm bg-white/5 hover:bg-white/15 hover:border-white/70 transition-all duration-500 group"
+                className="inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-10 py-4 sm:py-5 border border-white/40 text-white text-[11px] sm:text-[12px] tracking-[0.15em] sm:tracking-[0.2em] uppercase backdrop-blur-sm bg-white/5 hover:bg-white/15 hover:border-white/70 transition-all duration-500 group"
               >
                 Explore Collections
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </Link>
-            </motion.div>
+            </div>
           </div>
         </motion.div>
 
-        {/* Scroll indicator */}
-        <motion.div
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 z-30"
-          style={{ opacity: textOpacity }}
+        {/* Brand intro - appears as hero frames, centered in image */}
+        <motion.div 
+          className="absolute inset-x-8 sm:inset-x-0 inset-y-0 flex items-center justify-center z-10 will-change-opacity"
+          style={{ opacity: introOpacity }}
         >
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.5 }}
-            className="flex flex-col items-center gap-3"
-          >
-            <span className="text-[10px] tracking-[0.3em] uppercase text-white/40">
-              Scroll to explore
-            </span>
-            <motion.div
-              className="w-6 h-10 border border-white/30 rounded-full flex items-start justify-center p-2"
-              animate={{ borderColor: ["rgba(255,255,255,0.3)", "rgba(255,255,255,0.6)", "rgba(255,255,255,0.3)"] }}
-              transition={{ repeat: Infinity, duration: 2 }}
-            >
-              <motion.div
-                className="w-1 h-2 bg-white/60 rounded-full"
-                animate={{ y: [0, 12, 0] }}
-                transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
-              />
-            </motion.div>
-          </motion.div>
+          <div className="max-w-4xl mx-auto text-center px-2 sm:px-8">
+            <h2 className="text-xl sm:text-3xl md:text-4xl lg:text-5xl font-display tracking-[0.12em] sm:tracking-[0.2em] md:tracking-[0.25em] text-white mb-3 sm:mb-6">
+              CURATED EXCELLENCE
+            </h2>
+            <p className="text-white/70 text-[11px] sm:text-base md:text-lg leading-relaxed max-w-2xl mx-auto">
+              House of Clarence brings together the finest bathroom, kitchen, and interior 
+              finishing materials from around the world.
+            </p>
+          </div>
         </motion.div>
 
-        {/* Revealed content behind split */}
-        <motion.div 
-          className="absolute inset-0 flex items-center justify-center z-10 bg-off-white"
-          style={{ opacity: revealOpacity, scale: revealScale }}
+        {/* Scroll indicator - pill/mouse shape */}
+        <motion.div
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
+          style={{ opacity: textOpacity }}
         >
-          <div className="text-center px-6 max-w-4xl">
-            <p className="text-[11px] md:text-[13px] tracking-[0.4em] uppercase text-warm-grey mb-6">
-              Curated Excellence
-            </p>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display tracking-[0.1em] text-primary-black mb-6">
-              REFINED FINISHING
-            </h2>
-            <p className="text-warm-grey text-sm md:text-base lg:text-lg leading-relaxed max-w-2xl mx-auto mb-10">
-              House of Clarence brings together the finest bathroom, kitchen, and interior 
-              finishing materials from around the world. Each piece is selected for its 
-              exceptional quality, timeless design, and superior craftsmanship.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href="/bathroom"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-primary-black text-white text-[11px] md:text-[12px] tracking-[0.15em] uppercase hover:bg-charcoal transition-all duration-300"
-              >
-                Shop Bathroom
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-              <Link
-                href="/kitchen"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 border border-primary-black text-primary-black text-[11px] md:text-[12px] tracking-[0.15em] uppercase hover:bg-primary-black hover:text-white transition-all duration-300"
-              >
-                Shop Kitchen
-              </Link>
-            </div>
+          <div 
+            className="w-6 h-10 border-2 border-white/50 rounded-full flex items-start justify-center p-2 animate-fade-in-up"
+            style={{ animationDelay: '600ms' }}
+          >
+            <motion.div
+              className="w-1 h-2.5 bg-white/70 rounded-full"
+              animate={{ y: [0, 12, 0] }}
+              transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+            />
           </div>
         </motion.div>
       </div>
@@ -252,263 +179,353 @@ function HeroSection() {
 export default function HomePage() {
   return (
     <>
-      {/* Hero with Split Reveal */}
+      {/* Hero with Framing Animation */}
       <HeroSection />
 
       {/* All Categories - Bento Grid Layout */}
-      <section className="py-16 md:py-24 px-4 sm:px-6 bg-off-white">
-        <div className="max-w-7xl mx-auto">
-          {/* Section header */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12 md:mb-16"
-          >
-            <p className="text-[11px] tracking-[0.3em] uppercase text-warm-grey mb-4">Our Categories</p>
-            <h2 className="text-2xl md:text-3xl font-display tracking-[0.15em]">EXPLORE BY ROOM</h2>
-          </motion.div>
-
-          <div className="space-y-4 md:space-y-6">
-            {/* Row 1: Bathroom (large) + Tiling */}
-            <div className="grid md:grid-cols-3 gap-4 md:gap-6">
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5 }}
-                className="md:col-span-2"
-              >
-                <Link href="/bathroom" className="group block relative aspect-[16/10] md:aspect-[16/9] overflow-hidden rounded-xl">
-                  <Image
-                    src="/bathroom-hero.png"
-                    alt="Luxury Bathroom"
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
-                    sizes="(max-width: 768px) 100vw, 66vw"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-                    <p className="text-[10px] md:text-[11px] tracking-[0.2em] text-white/70 uppercase mb-2">Explore</p>
-                    <h3 className="text-2xl md:text-3xl tracking-[0.1em] text-white font-display mb-3">BATHROOM</h3>
-                    <p className="text-white/70 text-sm hidden sm:block mb-4 max-w-md">
-                      Freestanding baths, stone basins & premium brassware
-                    </p>
-                    <span className="text-white text-sm tracking-wider flex items-center gap-2 group-hover:gap-3 transition-all">
-                      Shop Now <ArrowRight className="w-4 h-4" />
-                    </span>
-                  </div>
-                </Link>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                className="hidden md:block"
-              >
-                <Link href="/tiling" className="group block relative h-full overflow-hidden rounded-xl">
-                  <Image
-                    src="/tiling-hero.png"
-                    alt="Premium Tiling"
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
-                    sizes="33vw"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-                    <p className="text-[11px] tracking-[0.2em] text-white/70 uppercase mb-2">Explore</p>
-                    <h3 className="text-xl md:text-2xl tracking-[0.1em] text-white font-display mb-3">TILING</h3>
-                    <span className="text-white text-sm tracking-wider flex items-center gap-2 group-hover:gap-3 transition-all">
-                      Shop Now <ArrowRight className="w-4 h-4" />
-                    </span>
-                  </div>
-                </Link>
-              </motion.div>
-            </div>
-
-            {/* Row 2: Kitchen + Lighting */}
-            <div className="grid grid-cols-2 md:grid-cols-2 gap-4 md:gap-6">
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5 }}
-              >
-                <Link href="/kitchen" className="group block relative aspect-[4/5] md:aspect-[4/3] overflow-hidden rounded-xl">
-                  <Image
-                    src="/kitchen-hero.png"
-                    alt="Designer Kitchen"
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
-                    sizes="(max-width: 768px) 50vw, 50vw"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 p-4 md:p-8">
-                    <p className="text-[9px] md:text-[11px] tracking-[0.2em] text-white/70 uppercase mb-1 md:mb-2">Explore</p>
-                    <h3 className="text-lg md:text-2xl tracking-[0.1em] text-white font-display mb-2 md:mb-3">KITCHEN</h3>
-                    <span className="text-white text-xs md:text-sm tracking-wider flex items-center gap-2 group-hover:gap-3 transition-all">
-                      Shop <ArrowRight className="w-3 h-3 md:w-4 md:h-4" />
-                    </span>
-                  </div>
-                </Link>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-              >
-                <Link href="/lighting" className="group block relative aspect-[4/5] md:aspect-[4/3] overflow-hidden rounded-xl">
-                  <Image
-                    src="/lighting-hero.png"
-                    alt="Designer Lighting"
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
-                    sizes="(max-width: 768px) 50vw, 50vw"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 p-4 md:p-8">
-                    <p className="text-[9px] md:text-[11px] tracking-[0.2em] text-white/70 uppercase mb-1 md:mb-2">Explore</p>
-                    <h3 className="text-lg md:text-2xl tracking-[0.1em] text-white font-display mb-2 md:mb-3">LIGHTING</h3>
-                    <span className="text-white text-xs md:text-sm tracking-wider flex items-center gap-2 group-hover:gap-3 transition-all">
-                      Shop <ArrowRight className="w-3 h-3 md:w-4 md:h-4" />
-                    </span>
-                  </div>
-                </Link>
-              </motion.div>
-            </div>
-
-            {/* Row 3: Furniture (large) + Electrical */}
-            <div className="grid md:grid-cols-3 gap-4 md:gap-6">
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5 }}
-                className="md:col-span-2"
-              >
-                <Link href="/furniture" className="group block relative aspect-[16/10] md:aspect-[16/9] overflow-hidden rounded-xl">
-                  <Image
-                    src="/furniture-hero.png"
-                    alt="Designer Furniture"
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
-                    sizes="(max-width: 768px) 100vw, 66vw"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-                    <p className="text-[10px] md:text-[11px] tracking-[0.2em] text-white/70 uppercase mb-2">Explore</p>
-                    <h3 className="text-2xl md:text-3xl tracking-[0.1em] text-white font-display mb-3">FURNITURE</h3>
-                    <p className="text-white/70 text-sm hidden sm:block mb-4 max-w-md">
-                      Living, dining, bedroom & study furniture
-                    </p>
-                    <span className="text-white text-sm tracking-wider flex items-center gap-2 group-hover:gap-3 transition-all">
-                      Shop Now <ArrowRight className="w-4 h-4" />
-                    </span>
-                  </div>
-                </Link>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-              >
-                <Link href="/electrical" className="group block relative aspect-[16/10] md:aspect-auto md:h-full overflow-hidden rounded-xl">
-                  <Image
-                    src="/electrical-hero.png"
-                    alt="Premium Electrical"
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-                    <p className="text-[10px] md:text-[11px] tracking-[0.2em] text-white/70 uppercase mb-2">Explore</p>
-                    <h3 className="text-xl md:text-2xl tracking-[0.1em] text-white font-display mb-3">ELECTRICAL</h3>
-                    <span className="text-white text-sm tracking-wider flex items-center gap-2 group-hover:gap-3 transition-all">
-                      Shop Now <ArrowRight className="w-4 h-4" />
-                    </span>
-                  </div>
-                </Link>
-              </motion.div>
-            </div>
-
-            {/* Mobile only: Tiling card */}
+      <section className="py-12 sm:py-16 md:py-24 px-4 sm:px-6 bg-off-white">
+        <div className="max-w-7xl mx-auto space-y-3 sm:space-y-6">
+          
+          {/* MOBILE: Bathroom (large) | DESKTOP: Bathroom + Tiling */}
+          <div className="grid md:grid-cols-3 gap-3 sm:gap-6">
+            {/* Bathroom - PRIORITY: Full width large on mobile */}
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              variants={fadeInUp}
               transition={{ duration: 0.5 }}
-              className="md:hidden"
+              className="md:col-span-2"
             >
-              <Link href="/tiling" className="group block relative aspect-[2/1] overflow-hidden rounded-xl">
+              <Link href="/bathroom" className="group block relative aspect-[16/10] sm:aspect-[16/9] overflow-hidden rounded-lg">
+                <Image
+                  src="/bathroom-hero.png"
+                  alt="Luxury Bathroom"
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                  sizes="(max-width: 768px) 100vw, 66vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6 md:p-8">
+                  <p className="text-[10px] sm:text-[11px] tracking-[0.15em] sm:tracking-[0.2em] text-white/70 uppercase mb-1 sm:mb-2">Explore</p>
+                  <h3 className="text-xl sm:text-2xl md:text-3xl tracking-[0.12em] sm:tracking-[0.15em] text-white font-display mb-2 sm:mb-3">
+                    BATHROOM
+                  </h3>
+                  <p className="text-white/80 text-xs sm:text-sm mb-2 sm:mb-4 max-w-sm hidden sm:block">
+                    Freestanding baths, stone basins & premium brassware
+                  </p>
+                  <span className="text-white text-xs sm:text-sm tracking-wider opacity-80 group-hover:opacity-100 transition-opacity">
+                    Shop Bathroom →
+                  </span>
+                </div>
+              </Link>
+            </motion.div>
+
+            {/* Tiling - Hidden on mobile, shown on desktop */}
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              variants={fadeInUp}
+              transition={{ duration: 0.5 }}
+              className="hidden md:block md:col-span-1"
+            >
+              <Link href="/tiling" className="group block relative h-full overflow-hidden rounded-lg">
                 <Image
                   src="/tiling-hero.png"
                   alt="Premium Tiling"
                   fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
-                  sizes="100vw"
+                  className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                  sizes="33vw"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-5">
-                  <p className="text-[10px] tracking-[0.2em] text-white/70 uppercase mb-1">Explore</p>
-                  <h3 className="text-lg tracking-[0.1em] text-white font-display mb-2">TILING</h3>
-                  <span className="text-white text-xs tracking-wider flex items-center gap-2">
-                    Shop Now <ArrowRight className="w-3 h-3" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+                  <p className="text-[11px] tracking-[0.2em] text-white/70 uppercase mb-2">Explore</p>
+                  <h3 className="text-xl md:text-2xl tracking-[0.15em] text-white font-display mb-3">
+                    TILING
+                  </h3>
+                  <p className="text-white/80 text-sm mb-4">
+                    Marble & porcelain tiles
+                  </p>
+                  <span className="text-white text-sm tracking-wider opacity-80 group-hover:opacity-100 transition-opacity">
+                    Shop Tiling →
                   </span>
                 </div>
               </Link>
             </motion.div>
           </div>
+
+          {/* MOBILE: Kitchen (large) | DESKTOP: Kitchen + Lighting */}
+          <div className="grid md:grid-cols-2 gap-3 sm:gap-6">
+            {/* Kitchen - PRIORITY: Full width large on mobile */}
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              variants={fadeInUp}
+              transition={{ duration: 0.5 }}
+            >
+              <Link href="/kitchen" className="group block relative aspect-[16/10] sm:aspect-[4/3] overflow-hidden rounded-lg">
+                <Image
+                  src="/kitchen-hero.png"
+                  alt="Designer Kitchen"
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6 md:p-8">
+                  <p className="text-[10px] sm:text-[11px] tracking-[0.15em] sm:tracking-[0.2em] text-white/70 uppercase mb-1 sm:mb-2">Explore</p>
+                  <h3 className="text-xl sm:text-2xl md:text-3xl tracking-[0.12em] sm:tracking-[0.15em] text-white font-display mb-2 sm:mb-3">
+                    KITCHEN
+                  </h3>
+                  <p className="text-white/80 text-xs sm:text-sm mb-2 sm:mb-4 max-w-sm hidden sm:block">
+                    Premium sinks, designer taps & quality hardware
+                  </p>
+                  <span className="text-white text-xs sm:text-sm tracking-wider opacity-80 group-hover:opacity-100 transition-opacity">
+                    Shop Kitchen →
+                  </span>
+                </div>
+              </Link>
+            </motion.div>
+
+            {/* Lighting - Hidden on mobile, shown on desktop */}
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              variants={fadeInUp}
+              transition={{ duration: 0.5 }}
+              className="hidden md:block"
+            >
+              <Link href="/lighting" className="group block relative aspect-[4/3] overflow-hidden rounded-lg">
+                <Image
+                  src="/lighting-hero.png"
+                  alt="Designer Lighting"
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                  sizes="50vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+                  <p className="text-[11px] tracking-[0.2em] text-white/70 uppercase mb-2">Explore</p>
+                  <h3 className="text-2xl md:text-3xl tracking-[0.15em] text-white font-display mb-3">
+                    LIGHTING
+                  </h3>
+                  <p className="text-white/80 text-sm mb-4 max-w-sm">
+                    Pendant, wall & statement lighting
+                  </p>
+                  <span className="text-white text-sm tracking-wider opacity-80 group-hover:opacity-100 transition-opacity">
+                    Shop Lighting →
+                  </span>
+                </div>
+              </Link>
+            </motion.div>
+          </div>
+
+          {/* MOBILE ONLY: Tiling + Lighting (smaller, side by side) */}
+          <div className="grid grid-cols-2 gap-3 md:hidden">
+            {/* Tiling - Small on mobile */}
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              variants={fadeInUp}
+              transition={{ duration: 0.5 }}
+            >
+              <Link href="/tiling" className="group block relative aspect-square overflow-hidden rounded-lg">
+                <Image
+                  src="/tiling-hero.png"
+                  alt="Premium Tiling"
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                  sizes="50vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-4">
+                  <p className="text-[9px] tracking-[0.15em] text-white/70 uppercase mb-1">Explore</p>
+                  <h3 className="text-base tracking-[0.1em] text-white font-display mb-1">
+                    TILING
+                  </h3>
+                  <span className="text-white text-[10px] tracking-wider opacity-80">
+                    Shop →
+                  </span>
+                </div>
+              </Link>
+            </motion.div>
+
+            {/* Lighting - Small on mobile */}
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              variants={fadeInUp}
+              transition={{ duration: 0.5 }}
+            >
+              <Link href="/lighting" className="group block relative aspect-square overflow-hidden rounded-lg">
+                <Image
+                  src="/lighting-hero.png"
+                  alt="Designer Lighting"
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                  sizes="50vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-4">
+                  <p className="text-[9px] tracking-[0.15em] text-white/70 uppercase mb-1">Explore</p>
+                  <h3 className="text-base tracking-[0.1em] text-white font-display mb-1">
+                    LIGHTING
+                  </h3>
+                  <span className="text-white text-[10px] tracking-wider opacity-80">
+                    Shop →
+                  </span>
+                </div>
+              </Link>
+            </motion.div>
+          </div>
+
+          {/* MOBILE: Furniture (large) | DESKTOP: Furniture + Electrical */}
+          <div className="grid md:grid-cols-3 gap-3 sm:gap-6">
+            {/* Furniture - PRIORITY: Full width large on mobile */}
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              variants={fadeInUp}
+              transition={{ duration: 0.5 }}
+              className="md:col-span-2"
+            >
+              <Link href="/furniture" className="group block relative aspect-[16/10] sm:aspect-[16/9] overflow-hidden rounded-lg">
+                <Image
+                  src="/furniture-hero.png"
+                  alt="Designer Furniture"
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                  sizes="(max-width: 768px) 100vw, 66vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6 md:p-8">
+                  <p className="text-[10px] sm:text-[11px] tracking-[0.15em] sm:tracking-[0.2em] text-white/70 uppercase mb-1 sm:mb-2">Explore</p>
+                  <h3 className="text-xl sm:text-2xl md:text-3xl tracking-[0.12em] sm:tracking-[0.15em] text-white font-display mb-2 sm:mb-3">
+                    FURNITURE
+                  </h3>
+                  <p className="text-white/80 text-xs sm:text-sm mb-2 sm:mb-4 max-w-sm hidden sm:block">
+                    Living, dining, bedroom & study furniture
+                  </p>
+                  <span className="text-white text-xs sm:text-sm tracking-wider opacity-80 group-hover:opacity-100 transition-opacity">
+                    Shop Furniture →
+                  </span>
+                </div>
+              </Link>
+            </motion.div>
+
+            {/* Electrical - Hidden on mobile, shown on desktop */}
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              variants={fadeInUp}
+              transition={{ duration: 0.5 }}
+              className="hidden md:block md:col-span-1"
+            >
+              <Link href="/electrical" className="group block relative h-full overflow-hidden rounded-lg">
+                <Image
+                  src="/electrical-hero.png"
+                  alt="Premium Electrical"
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                  sizes="33vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+                  <p className="text-[11px] tracking-[0.2em] text-white/70 uppercase mb-2">Explore</p>
+                  <h3 className="text-xl md:text-2xl tracking-[0.15em] text-white font-display mb-3">
+                    ELECTRICAL
+                  </h3>
+                  <p className="text-white/80 text-sm mb-4">
+                    Designer switches & sockets
+                  </p>
+                  <span className="text-white text-sm tracking-wider opacity-80 group-hover:opacity-100 transition-opacity">
+                    Shop Electrical →
+                  </span>
+                </div>
+              </Link>
+            </motion.div>
+          </div>
+
+          {/* MOBILE ONLY: Electrical (smaller) */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="md:hidden"
+          >
+            <Link href="/electrical" className="group block relative aspect-[2/1] overflow-hidden rounded-lg">
+              <Image
+                src="/electrical-hero.png"
+                alt="Premium Electrical"
+                fill
+                className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                sizes="100vw"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+              <div className="absolute bottom-0 left-0 right-0 p-5">
+                <p className="text-[10px] tracking-[0.15em] text-white/70 uppercase mb-1">Explore</p>
+                <h3 className="text-lg tracking-[0.12em] text-white font-display mb-2">
+                  ELECTRICAL
+                </h3>
+                <span className="text-white text-xs tracking-wider opacity-80 group-hover:opacity-100 transition-opacity">
+                  Shop Electrical →
+                </span>
+              </div>
+            </Link>
+          </motion.div>
         </div>
       </section>
 
-      {/* Collections Section */}
-      <section className="py-16 md:py-24 px-4 sm:px-6 bg-primary-black text-white">
+      {/* Collections Section - Dark */}
+      <section className="py-14 sm:py-16 md:py-24 px-4 sm:px-6 bg-primary-black text-white">
         <div className="max-w-7xl mx-auto">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12 md:mb-16"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            variants={fadeInUp}
+            transition={{ duration: 0.4 }}
+            className="text-center mb-10 sm:mb-12 md:mb-16"
           >
-            <h2 className="text-2xl md:text-3xl font-display tracking-[0.2em] mb-4">COLLECTIONS</h2>
-            <p className="text-warm-grey max-w-xl mx-auto">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-display tracking-[0.12em] sm:tracking-[0.25em] mb-3 sm:mb-4">COLLECTIONS</h2>
+            <p className="text-warm-grey max-w-xl mx-auto text-sm sm:text-base">
               Thoughtfully curated collections for your personal sanctuary
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-6">
             {collections.map((collection, index) => (
               <motion.div
                 key={collection.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-30px" }}
+                variants={fadeInUp}
+                transition={{ duration: 0.4 }}
               >
                 <Link href={collection.href} className="group block">
-                  <div className="relative aspect-[3/4] overflow-hidden mb-4 rounded-lg">
+                  <div className="relative aspect-[3/4] overflow-hidden mb-3 sm:mb-4 rounded-lg">
                     <Image
                       src={collection.image}
                       alt={collection.name}
                       fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                       sizes="(max-width: 768px) 50vw, 25vw"
                     />
-                    <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors duration-500" />
+                    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-500" />
                   </div>
-                  <h3 className="text-sm md:text-base tracking-[0.1em] uppercase mb-2">
+                  <h3 className="text-[11px] sm:text-sm md:text-base tracking-[0.08em] sm:tracking-[0.15em] uppercase mb-1 sm:mb-2">
                     {collection.name}
                   </h3>
-                  <p className="text-[11px] md:text-[12px] text-warm-grey leading-relaxed hidden sm:block">
+                  <p className="text-[10px] sm:text-[12px] text-warm-grey leading-relaxed hidden sm:block">
                     {collection.description}
                   </p>
                 </Link>
@@ -518,18 +535,84 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Projects Showcase */}
-      <section className="relative h-[70vh] md:h-[80vh] overflow-hidden">
-        <Image
-          src="/marble-elegance.png"
-          alt="Our Projects"
-          fill
-          className="object-cover"
-          sizes="100vw"
-        />
-        <div className="absolute inset-0 bg-black/50" />
+      {/* About Section */}
+      <section className="py-12 sm:py-16 md:py-24 px-4 sm:px-6 bg-white">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-20 items-center">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.5 }}
+            className="order-2 lg:order-1"
+          >
+            <p className="text-[10px] sm:text-[11px] tracking-[0.15em] sm:tracking-[0.2em] text-warm-grey uppercase mb-3 sm:mb-4">About House of Clarence</p>
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-display tracking-[0.1em] sm:tracking-[0.15em] mb-4 sm:mb-6">
+              EXCEPTIONAL QUALITY, TIMELESS DESIGN
+            </h2>
+            <div className="space-y-3 sm:space-y-4 text-warm-grey leading-relaxed text-sm sm:text-base">
+              <p>
+                House of Clarence was founded with a singular vision: to bring together the finest 
+                bathroom, kitchen, and interior finishing materials under one roof.
+              </p>
+              <p>
+                Every product in our collection is carefully selected for its superior materials, 
+                expert craftsmanship, and timeless design.
+              </p>
+            </div>
+            <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4">
+              <Link
+                href="/about"
+                className="inline-block px-6 sm:px-8 py-3 sm:py-4 border border-primary-black text-primary-black text-[11px] sm:text-[12px] tracking-[0.15em] uppercase hover:bg-primary-black hover:text-white transition-all duration-500 text-center"
+              >
+                Our Story
+              </Link>
+              <Link
+                href="/bespoke"
+                className="inline-block px-6 sm:px-8 py-3 sm:py-4 border border-primary-black text-primary-black text-[11px] sm:text-[12px] tracking-[0.15em] uppercase hover:bg-primary-black hover:text-white transition-all duration-500 text-center"
+              >
+                Bespoke Service
+              </Link>
+            </div>
+          </motion.div>
 
-        <div className="relative z-10 h-full flex items-center justify-center px-6">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.5 }}
+            className="relative aspect-[4/3] sm:aspect-[4/5] order-1 lg:order-2 overflow-hidden rounded-lg"
+          >
+            <Image
+              src="/stone-sanctuary.png"
+              alt="House of Clarence Craftsmanship"
+              fill
+              className="object-cover"
+              sizes="(max-width: 1024px) 100vw, 50vw"
+            />
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Projects Showcase */}
+      <section className="relative h-[60vh] sm:h-[70vh] md:h-[80vh] overflow-hidden">
+        <motion.div 
+          className="absolute inset-0"
+          initial={{ scale: 1.05 }}
+          whileInView={{ scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
+          <Image
+            src="/marble-elegance.png"
+            alt="Our Projects"
+            fill
+            className="object-cover"
+            sizes="100vw"
+          />
+          <div className="absolute inset-0 bg-black/50" />
+        </motion.div>
+
+        <div className="relative z-10 h-full flex items-center justify-center px-4 sm:px-6">
           <motion.div
             className="text-center text-white"
             initial={{ opacity: 0, y: 40 }}
@@ -537,18 +620,18 @@ export default function HomePage() {
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <p className="text-[11px] tracking-[0.3em] uppercase mb-6 text-white/60">
+            <p className="text-[10px] sm:text-[11px] tracking-[0.15em] sm:tracking-[0.25em] uppercase mb-4 sm:mb-6 text-white/60">
               Portfolio
             </p>
-            <h2 className="text-3xl md:text-5xl lg:text-6xl font-display tracking-[0.1em] mb-8">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display tracking-[0.1em] sm:tracking-[0.15em] mb-4 sm:mb-8">
               OUR PROJECTS
             </h2>
-            <p className="text-white/70 md:text-lg max-w-lg mx-auto mb-10 leading-relaxed">
+            <p className="text-white/70 text-sm sm:text-base md:text-lg max-w-lg mx-auto mb-6 sm:mb-10 leading-relaxed px-2">
               Explore our work across London&apos;s most prestigious addresses
             </p>
             <Link
               href="/projects"
-              className="inline-flex items-center gap-3 px-10 py-5 bg-white text-primary-black text-[12px] tracking-[0.2em] uppercase hover:bg-off-white transition-all duration-300 group"
+              className="inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-10 py-4 sm:py-5 bg-white text-primary-black text-[11px] sm:text-[12px] tracking-[0.15em] sm:tracking-[0.2em] uppercase hover:bg-off-white transition-all duration-500 group"
             >
               View Projects
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -558,7 +641,7 @@ export default function HomePage() {
       </section>
 
       {/* Contact CTA */}
-      <section className="py-16 md:py-24 px-6 bg-off-white">
+      <section className="py-12 sm:py-16 md:py-24 px-4 sm:px-6 bg-off-white">
         <motion.div
           className="max-w-4xl mx-auto text-center"
           initial={{ opacity: 0, y: 30 }}
@@ -566,21 +649,21 @@ export default function HomePage() {
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="text-2xl md:text-3xl font-display tracking-[0.2em] mb-4">GET IN TOUCH</h2>
-          <p className="text-warm-grey mb-8 max-w-xl mx-auto">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-display tracking-[0.15em] sm:tracking-[0.25em] mb-3 sm:mb-4">GET IN TOUCH</h2>
+          <p className="text-warm-grey mb-6 sm:mb-8 max-w-xl mx-auto text-sm sm:text-base px-2">
             Our team is available to discuss your project requirements and provide personalised quotes.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
             <a
               href="tel:+442033704057"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-primary-black text-white text-[12px] tracking-[0.15em] uppercase hover:bg-charcoal transition-all duration-300"
+              className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-primary-black text-white text-[11px] sm:text-[12px] tracking-[0.15em] uppercase hover:bg-charcoal transition-all duration-500"
             >
               <Phone className="w-4 h-4" />
               020 3370 4057
             </a>
             <Link
               href="/contact"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 border border-primary-black text-primary-black text-[12px] tracking-[0.15em] uppercase hover:bg-primary-black hover:text-white transition-all duration-300 group"
+              className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 border border-primary-black text-primary-black text-[11px] sm:text-[12px] tracking-[0.15em] uppercase hover:bg-primary-black hover:text-white transition-all duration-500 group"
             >
               Send Enquiry
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
