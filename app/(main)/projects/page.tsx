@@ -194,11 +194,21 @@ export default function ProjectsPage() {
           </motion.p>
 
           {/* Main title */}
+          <div className="overflow-hidden mb-2">
+            <motion.p
+              initial={{ y: "100%" }}
+              animate={{ y: "0%" }}
+              transition={{ duration: 1, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              className="text-2xl md:text-3xl lg:text-4xl font-display tracking-[0.15em] text-white/60 font-extralight"
+            >
+              OUR FEATURED
+            </motion.p>
+          </div>
           <div className="overflow-hidden mb-4">
             <motion.h1
               initial={{ y: "100%" }}
               animate={{ y: "0%" }}
-              transition={{ duration: 1, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 1, delay: 0.85, ease: [0.16, 1, 0.3, 1] }}
               className="text-6xl md:text-8xl lg:text-[10rem] font-display tracking-[0.08em] text-white font-extralight"
             >
               PROJECTS
@@ -220,12 +230,11 @@ export default function ProjectsPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 1.4 }}
-            className="flex items-center justify-center gap-12 md:gap-16"
+            className="flex items-center justify-center gap-16 md:gap-24"
           >
             {[
-              { value: projects.length.toString(), label: "Projects" },
-              { value: "2023-24", label: "Timeline" },
-              { value: "London", label: "Location" },
+              { value: "14", label: "Projects" },
+              { value: "2025-26", label: "Timeline" },
             ].map((stat, i) => (
               <div key={i} className="text-center">
                 <p className="text-2xl md:text-3xl font-display text-white/90 mb-1">{stat.value}</p>
