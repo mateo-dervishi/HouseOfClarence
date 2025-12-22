@@ -65,17 +65,29 @@ function ProjectCard({
   project, 
   index,
   totalProjects,
+  direction,
 }: { 
   project: typeof projects[0]; 
   index: number;
   totalProjects: number;
+  direction: number;
 }) {
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
+      initial={{ 
+        clipPath: direction > 0 
+          ? "inset(100% 0 0 0)" 
+          : "inset(0 0 100% 0)",
+      }}
+      animate={{ 
+        clipPath: "inset(0 0 0 0)",
+      }}
+      exit={{ 
+        clipPath: direction > 0 
+          ? "inset(0 0 100% 0)" 
+          : "inset(100% 0 0 0)",
+      }}
+      transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
       className="absolute inset-0"
     >
       {/* Background image */}
@@ -100,70 +112,40 @@ function ProjectCard({
             {/* Left - Main content */}
             <div>
               {/* Project number */}
-              <motion.div 
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                className="flex items-center gap-4 mb-6"
-              >
+              <div className="flex items-center gap-4 mb-6">
                 <span className="text-7xl md:text-8xl font-display font-extralight text-white/20">
                   {String(index + 1).padStart(2, '0')}
                 </span>
                 <span className="text-[11px] tracking-[0.4em] uppercase text-white/50">
                   / {String(totalProjects).padStart(2, '0')}
                 </span>
-              </motion.div>
+              </div>
 
               {/* Category */}
-              <motion.p 
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                className="text-[11px] tracking-[0.35em] uppercase text-amber-200/70 mb-4"
-              >
+              <p className="text-[11px] tracking-[0.35em] uppercase text-amber-200/70 mb-4">
                 {project.category}
-              </motion.p>
+              </p>
 
               {/* Title */}
-              <motion.h2 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                className="text-4xl md:text-5xl lg:text-6xl font-display tracking-[0.02em] text-white mb-6 leading-[1.1]"
-              >
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-display tracking-[0.02em] text-white mb-6 leading-[1.1]">
                 {project.title}
-              </motion.h2>
+              </h2>
 
               {/* Description */}
-              <motion.p 
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.4 }}
-                className="text-white/60 text-base md:text-lg leading-relaxed max-w-md mb-8"
-              >
+              <p className="text-white/60 text-base md:text-lg leading-relaxed max-w-md mb-8">
                 {project.description}
-              </motion.p>
+              </p>
 
               {/* Meta info */}
-              <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5, delay: 0.5 }}
-                className="flex items-center gap-8 text-[12px] tracking-[0.2em] text-white/40 uppercase"
-              >
+              <div className="flex items-center gap-8 text-[12px] tracking-[0.2em] text-white/40 uppercase">
                 <span>{project.location}</span>
                 <span className="w-1 h-1 rounded-full bg-white/30" />
                 <span>{project.year}</span>
-              </motion.div>
+              </div>
             </div>
 
             {/* Right - CTA */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.6 }}
-              className="lg:text-right"
-            >
+            <div className="lg:text-right">
               <Link
                 href={`/projects/${project.slug}`}
                 className="group inline-flex items-center gap-6"
@@ -175,7 +157,7 @@ function ProjectCard({
                   <ExternalLink className="w-5 h-5 md:w-6 md:h-6 text-white/70 group-hover:text-white group-hover:scale-110 transition-all duration-300" />
                 </span>
               </Link>
-            </motion.div>
+            </div>
           </div>
         </div>
       </div>
@@ -186,6 +168,7 @@ function ProjectCard({
 export default function ProjectsPage() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [direction, setDirection] = useState(1); // 1 = scrolling down, -1 = scrolling up
   
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -199,6 +182,7 @@ export default function ProjectsPage() {
       projects.length - 1
     );
     if (newIndex !== activeIndex && newIndex >= 0) {
+      setDirection(newIndex > activeIndex ? 1 : -1);
       setActiveIndex(newIndex);
     }
   });
@@ -323,13 +307,14 @@ export default function ProjectsPage() {
       >
         {/* Sticky viewport */}
         <div className="sticky top-0 h-screen overflow-hidden bg-black">
-          {/* Only render the active project - clean crossfade */}
-          <AnimatePresence mode="wait">
+          {/* Only render the active project - cinematic wipe */}
+          <AnimatePresence initial={false} mode="wait">
             <ProjectCard
               key={projects[activeIndex].id}
               project={projects[activeIndex]}
               index={activeIndex}
               totalProjects={projects.length}
+              direction={direction}
             />
           </AnimatePresence>
         </div>
