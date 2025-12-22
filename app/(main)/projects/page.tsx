@@ -175,28 +175,63 @@ export default function ProjectsPage() {
 
         <div className="text-center px-6 relative z-10">
           {/* Top line decoration */}
-          <div className="w-[1px] h-16 md:h-20 bg-gradient-to-b from-transparent via-white/30 to-white/50 mx-auto mb-8 md:mb-12" />
+          <motion.div
+            initial={{ scaleY: 0 }}
+            animate={{ scaleY: 1 }}
+            transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="w-[1px] h-16 md:h-20 bg-gradient-to-b from-transparent via-white/30 to-white/50 mx-auto mb-8 md:mb-12"
+            style={{ transformOrigin: 'top' }}
+          />
 
           {/* Intro text */}
-          <p className="text-[10px] md:text-[11px] tracking-[0.4em] md:tracking-[0.5em] uppercase text-white/40 mb-6 md:mb-8">
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+            className="text-[10px] md:text-[11px] tracking-[0.4em] md:tracking-[0.5em] uppercase text-white/40 mb-6 md:mb-8"
+          >
             House of Clarence Presents
-          </p>
+          </motion.p>
 
           {/* Main title */}
-          <p className="text-xl md:text-3xl lg:text-4xl font-display tracking-[0.12em] md:tracking-[0.15em] text-white/60 font-extralight mb-1 md:mb-2">
-            OUR FEATURED
-          </p>
-          <h1 className="text-5xl md:text-8xl lg:text-[10rem] font-display tracking-[0.06em] md:tracking-[0.08em] text-white font-extralight mb-4">
-            PROJECTS
-          </h1>
+          <div className="overflow-hidden mb-1 md:mb-2">
+            <motion.p
+              initial={{ y: "100%" }}
+              animate={{ y: "0%" }}
+              transition={{ duration: 1, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              className="text-xl md:text-3xl lg:text-4xl font-display tracking-[0.12em] md:tracking-[0.15em] text-white/60 font-extralight"
+            >
+              OUR FEATURED
+            </motion.p>
+          </div>
+          <div className="overflow-hidden mb-4">
+            <motion.h1
+              initial={{ y: "100%" }}
+              animate={{ y: "0%" }}
+              transition={{ duration: 1, delay: 0.85, ease: [0.16, 1, 0.3, 1] }}
+              className="text-5xl md:text-8xl lg:text-[10rem] font-display tracking-[0.06em] md:tracking-[0.08em] text-white font-extralight"
+            >
+              PROJECTS
+            </motion.h1>
+          </div>
 
           {/* Subtitle */}
-          <p className="text-[11px] md:text-[13px] tracking-[0.2em] md:tracking-[0.3em] text-white/30 mb-12 md:mb-16">
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 1.2 }}
+            className="text-[11px] md:text-[13px] tracking-[0.2em] md:tracking-[0.3em] text-white/30 mb-12 md:mb-16"
+          >
             A CURATED SELECTION OF OUR FINEST WORK
-          </p>
+          </motion.p>
 
           {/* Stats row */}
-          <div className="flex items-center justify-center gap-12 md:gap-24">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 1.4 }}
+            className="flex items-center justify-center gap-12 md:gap-24"
+          >
             <div className="text-center">
               <p className="text-xl md:text-3xl font-display text-white/90 mb-1">14</p>
               <p className="text-[8px] md:text-[9px] tracking-[0.25em] uppercase text-white/30">Projects</p>
@@ -205,16 +240,27 @@ export default function ProjectsPage() {
               <p className="text-xl md:text-3xl font-display text-white/90 mb-1">2025-26</p>
               <p className="text-[8px] md:text-[9px] tracking-[0.25em] uppercase text-white/30">Timeline</p>
             </div>
-          </div>
+          </motion.div>
         </div>
 
-        {/* Scroll indicator - simplified */}
-        <div className="absolute bottom-10 md:bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
-          <span className="text-[9px] md:text-[10px] tracking-[0.25em] uppercase text-white/30">
-            Scroll
-          </span>
-          <ArrowDown className="w-4 h-4 text-white/30 animate-bounce" />
-        </div>
+        {/* Scroll indicator */}
+        <motion.div
+          className="absolute bottom-10 md:bottom-12 left-1/2 -translate-x-1/2"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.8 }}
+        >
+          <motion.div
+            className="flex flex-col items-center gap-2"
+            animate={{ y: [0, 8, 0] }}
+            transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+          >
+            <span className="text-[9px] md:text-[10px] tracking-[0.25em] uppercase text-white/30">
+              Scroll
+            </span>
+            <ArrowDown className="w-4 h-4 text-white/30" />
+          </motion.div>
+        </motion.div>
 
         {/* Corner decorations - desktop only */}
         <div className="hidden md:block">
