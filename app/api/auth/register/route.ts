@@ -30,7 +30,7 @@ export async function POST(request: Request) {
     // Generate account number using the database function
     const { data: accountNumber } = await supabase.rpc('generate_account_number')
 
-    // Create profile with account number
+    // Create profile with account number and lead source
     const { error: profileError } = await supabase.from('profiles').insert({
       id: authData.user.id,
       email,
@@ -39,6 +39,8 @@ export async function POST(request: Request) {
       phone: phone || null,
       account_type: accountType,
       account_number: accountNumber,
+      lead_source: 'website_signup',
+      interest_level: 'warm',
     })
 
     if (profileError) {
